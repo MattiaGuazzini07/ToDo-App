@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>La mia lista TODO</title>
+</head>
+<body>
+
+    <h1>Le mie attività</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="title" placeholder="Scrivi una nuova attività" required>
+        <button type="submit">Aggiungi</button>
+    </form>
+
+    <ul>
+    {% for task in tasks %}
+        <li>
+            {{ task.title }}
+            {% if task.completed %}
+                (fatto)
+            {% else %}
+                <a href="{% url 'complete_task' task.id %}">[Completa]</a>
+            {% endif %}
+            <a href="{% url 'delete_task' task.id %}">[Elimina]</a>
+        </li>
+    {% empty %}
+        <li>Nessuna attività</li>
+    {% endfor %}
+</ul>
+
+</body>
+</html>
