@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from .models import Task
 
 def home(request):
@@ -11,12 +12,14 @@ def home(request):
     tasks = Task.objects.all()
     return render(request, 'todo/home.html', {'tasks': tasks})
 
+@login_required
 def complete_task(request, task_id):
     task = get_object_or_404(Task, id=task_id)
     task.completed = True
     task.save()
     return redirect('home')
 
+@login_required
 def delete_task(request, task_id):
     task = get_object_or_404(Task, id=task_id)
     task.delete()
