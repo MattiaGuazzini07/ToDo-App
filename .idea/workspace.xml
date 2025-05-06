@@ -5,11 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7a35cf85-e058-4299-a4b6-0528a1e1acc4" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/DjangoProject1/todo/templates/todo/Signup.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DjangoProject1/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/DjangoProject1/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DjangoProject1/todo/templates/todo/Login.html" beforeDir="false" afterPath="$PROJECT_DIR$/DjangoProject1/todo/templates/todo/Login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DjangoProject1/todo/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/DjangoProject1/todo/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DjangoProject1/todo/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/DjangoProject1/todo/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -67,7 +63,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "django.template.preview.state": "SHOW_EDITOR_AND_PREVIEW",
-    "git-widget-placeholder": "feature/Registration",
+    "git-widget-placeholder": "dev",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -143,6 +139,17 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Add login functionality and user authentication&#10;&#10;- Created a new login.html template with a login form.&#10;- Updated home.html to include a stylesheet.&#10;- Added user foreign key to Task model.&#10;- Implemented login and logout paths in urls.py.&#10;- Protected complete_task and delete_task views with login_required decorator.&#10;- Added style.css for basic styling." />

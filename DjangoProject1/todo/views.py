@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from .models import Task
 
+@login_required
 def home(request):
     if request.method == 'POST':
         title = request.POST.get('title')
