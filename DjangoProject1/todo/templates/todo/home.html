@@ -29,6 +29,11 @@
     {% empty %}
         <li>Nessuna attività</li>
     {% endfor %}
+    <form action="{% url 'logout' %}" method="post">
+    {% csrf_token %}
+    <button type="submit">Logout</button>
+</form>
+
 </ul>
 
 </body>
