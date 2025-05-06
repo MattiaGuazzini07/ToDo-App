@@ -12,5 +12,9 @@
         {{ form.as_p }}
         <button type="submit">Login</button>
     </form>
+    <p>Non hai un account?<a href="{% url 'signup' %}">Registrati qui</a></p>
+    {% if form.non_field_errors %}
+        <div class="error">{{ form.non_field_errors }}</div>
+    {% endif %}
 </body>
 </html>
