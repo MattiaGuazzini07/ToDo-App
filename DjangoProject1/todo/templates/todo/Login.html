@@ -12,10 +12,5 @@
         {{ form.as_p }}
         <button type="submit">Login</button>
     </form>
-    <p>Non hai un account? <a href="{% url 'signup' %}">Registrati qui</a>.</p>
-    <p><a href="{% url 'home' %}">Torna alla home</a></p>
-    {% if error %}
-        <p class="error">{{ error }}</p>
-    {% endif %}
 </body>
 </html>
