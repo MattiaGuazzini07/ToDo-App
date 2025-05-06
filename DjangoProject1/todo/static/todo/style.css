@@ -17,7 +17,8 @@ li {
     background: white;
     padding: 10px;
     margin-bottom: 5px;
-    border-radius: 5px;
+    border-radius: 50px;
+    display: flex;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
@@ -42,4 +43,8 @@ button {
 
 button:hover {
     background-color: #0056b3;
+}
+.logout_button_container {
+    background-color: black;
+    color: white;
 }

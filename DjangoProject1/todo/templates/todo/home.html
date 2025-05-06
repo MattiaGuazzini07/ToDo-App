@@ -23,18 +23,34 @@
                 (fatto)
             {% else %}
                 <a href="{% url 'complete_task' task.id %}">[Completa]</a>
+                <!-- se l'attività è completata non mostrarla in questo elenco -->
             {% endif %}
             <a href="{% url 'delete_task' task.id %}">[Elimina]</a>
         </li>
     {% empty %}
         <li>Nessuna attività</li>
     {% endfor %}
-    <form action="{% url 'logout' %}" method="post">
-    {% csrf_token %}
-    <button type="submit">Logout</button>
-</form>
-
 </ul>
+
+<h2>Attività completate</h2>
+<ul>
+{% for task in tasks %}
+    <li>
+        {% if task.completed %}
+            {{ task.title }} (fatto)
+        {% endif %}
+        {% empty %}
+        <li>Nessuna attività completata ancora</li>
+    </li>
+{% endfor %}
+</ul>
+
+<div class="logout_button_container">
+    <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+    </form>
+</div>
 
 </body>
 </html>
