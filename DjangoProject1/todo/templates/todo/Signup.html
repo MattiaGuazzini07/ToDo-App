@@ -1,0 +1,17 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registrazione</title>
+    <link rel="stylesheet" href="{% static 'todo/style.css' %}">
+</head>
+<body>
+    <h1>Registrati</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Crea account</button>
+    </form>
+    <p>Hai già un account? <a href="{% url 'login' %}">Accedi qui</a>.</p>
+</body>
+</html>
