@@ -1,13 +1,14 @@
 from re import search
-
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import Task
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from datetime import datetime
 from django.utils import timezone
 from .forms import TaskForm
+from django.contrib.auth.models import User
+from django.db.models import Count, Q
 
 @login_required
 def home(request):
@@ -98,3 +99,26 @@ def uncomplete_task(request, task_id):
     task.completed_at = None
     task.save()
     return redirect('home')
+
+@user_passes_test(lambda u: u.is_superuser)
+def admin_dashboard(request):
+    query = request.GET.get('q', '')  # prende il valore della query
+
+    users = User.objects.annotate(
+        total_tasks=Count('task'),
+        completed_tasks=Count('task', filter=Q(task__is_completed=True))
+    ).order_by('-date_joined')
+
+    if query:
+        users = users.filter(username__icontains=query)
+
+    return render(request, 'todo/admin_dashboard.html', {
+        'users': users,
+        'query': query,
+    })
+
+@user_passes_test(lambda u: u.is_superuser)
+def user_tasks(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    tasks = Task.objects.filter(user=user)
+    return render(request, 'todo/user_tasks.html', {'user': user, 'tasks': tasks})

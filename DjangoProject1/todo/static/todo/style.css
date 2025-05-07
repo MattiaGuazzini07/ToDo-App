@@ -80,12 +80,6 @@ button:hover {
 .delete-icon:hover {
     color: red;
 }
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0px;
-}
 
 .field {
     margin-bottom: 15px;
@@ -175,4 +169,79 @@ input[name="q"] {
   font-size: 14px;
   border-radius: 5px;
   min-width: 150px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-panel {
+  text-align: right;
+}
+
+.user-panel p {
+  margin: 0;
+}
+
+.btn-admin {
+  display: inline-block;
+  margin-right: 5px;
+  padding: 6px 12px;
+  background-color: #6c63ff;
+  color: white;
+  text-decoration: none;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+.btn-admin:hover {
+  background-color: #4e4bff;
+}
+
+.btn-logout {
+  padding: 6px 12px;
+  background-color: #ff5c5c;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+.btn-logout:hover {
+  background-color: #950808;
+}
+
+.todo-list,
+.completed-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem; /* distanza uniforme tra i task */
+}
+
+.todo-card {
+  flex: 0 1 300px; /* larghezza massima consigliata per i task */
+  background: #fff;
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 0 4px rgba(0,0,0,0.1);
+}
+.collapsible-toggle {
+  background-color: transparent;
+    color: black;
+  border: none;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.collapsible-toggle:hover {
+    background-color: #fff;
+}
+
+.collapsible-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
