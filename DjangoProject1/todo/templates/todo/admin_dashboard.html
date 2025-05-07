@@ -46,10 +46,15 @@
 <p>Totale utenti: {{ total_users }}</p>
 <a href="{% url 'home' %}">← Torna alla home</a>
 <h1>Crea un nuovo utente</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Crea utente</button>
-    </form>
+<form method="post" class="user-form">
+    {% csrf_token %}
+    <label for="{{ form.username.id_for_label }}">Username:</label>
+    {{ form.username }}
+    <label for="{{ form.email.id_for_label }}">Email:</label>
+    {{ form.email }}
+    <label for="{{ form.password.id_for_label }}">Password:</label>
+    {{ form.password }}
+    <button type="submit" class="submit-btn">Crea utente</button>
+</form>
 </body>
 </html>

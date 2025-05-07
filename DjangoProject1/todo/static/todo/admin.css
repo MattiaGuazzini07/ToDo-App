@@ -47,3 +47,13 @@ a {
   color: #0066cc;
   text-decoration: none;
 }
+.user-form {
+    max-width: 600px;
+    margin: auto;
+}
+
+.submit-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+}

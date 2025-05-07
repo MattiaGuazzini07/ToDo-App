@@ -6,7 +6,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from datetime import datetime
 from django.utils import timezone
-from .forms import TaskForm
+from .forms import TaskForm, UserForm
 from django.contrib.auth.models import User
 from django.db.models import Count, Q
 
@@ -128,3 +128,15 @@ def delete_user(request, user_id):
     user = User.objects.get(id=user_id)
     user.delete()
     return redirect('admin_dashboard')
+
+@user_passes_test(lambda u: u.is_superuser)
+def create_user(request):
+    if request.method == 'POST':
+        form = UserForm(request.POST)
+        if form.is_valid():
+            form.save()  # Salva il nuovo utente
+            return redirect('admin_dashboard')
+    else:
+        form = UserForm()  # Mostra un form vuoto
+
+    return render(request, 'nome_template.html', {'form': form})
