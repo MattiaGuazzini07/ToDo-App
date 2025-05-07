@@ -3,54 +3,53 @@
 <html>
 <head>
     <title>La mia lista TODO</title>
-    <link rel="stylesheet" href="{% static 'todo/style.css' %}">
+    <link rel="stylesheet" href="{% static 'todo/style.css' %}?v={{ timestamp }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-
-    <h1>Le mie attività</h1>
-
-    <form method="POST">
-        {% csrf_token %}
-        <input type="text" name="title" placeholder="Scrivi una nuova attività" required>
-        <button type="submit">Aggiungi</button>
-    </form>
-
-    <ul>
-    {% for task in tasks %}
-        <li>
-            {{ task.title }}
-            {% if task.completed %}
-                (fatto)
-            {% else %}
-                <a href="{% url 'complete_task' task.id %}">[Completa]</a>
-                <!-- se l'attività è completata non mostrarla in questo elenco -->
-            {% endif %}
-            <a href="{% url 'delete_task' task.id %}">[Elimina]</a>
-        </li>
-    {% empty %}
-        <li>Nessuna attività</li>
-    {% endfor %}
-</ul>
-
-<h2>Attività completate</h2>
-<ul>
-{% for task in tasks %}
-    <li>
-        {% if task.completed %}
-            {{ task.title }} (fatto)
-        {% endif %}
-        {% empty %}
-        <li>Nessuna attività completata ancora</li>
-    </li>
-{% endfor %}
-</ul>
-
-<div class="logout_button_container">
+<div class="header">
+    <h2>Le mie attività</h2>
     <form action="{% url 'logout' %}" method="post">
         {% csrf_token %}
+        <p>Benvenuto {{ user.username }}</p>
         <button type="submit">Logout</button>
     </form>
 </div>
 
+<form method="post">
+    {% csrf_token %}
+    <input type="text" name="title" placeholder="Scrivi una nuova attività">
+    <button type="submit">Aggiungi</button>
+</form>
+
+<ul>
+    {% for task in tasks_da_fare %}
+        <li>
+            <a href="{% url 'complete_task' task.id %}" class="circle"></a>
+            {{ task.title }}
+            <a href="{% url 'delete_task' task.id %}" class="delete-icon" title="Elimina">
+                <i class="fas fa-trash"></i>
+            </a>
+        </li>
+        {% empty %}
+        <li>Nessuna attività da fare</li>
+    {% endfor %}
+</ul>
+
+<h3>Attività completate</h3>
+<ul>
+    {% for task in tasks_fatti %}
+        <li>
+            <a href="{% url 'uncomplete_task' task.id %}" class="circle completed"></a>
+            {{ task.title }}
+            <a href="{% url 'delete_task' task.id %}" class="delete-icon" title="Elimina">
+                <i class="fas fa-trash"></i>
+            </a>
+        </li>
+
+    {% empty %}
+        <li>Nessuna attività completata</li>
+    {% endfor %}
+</ul>
 </body>
 </html>
