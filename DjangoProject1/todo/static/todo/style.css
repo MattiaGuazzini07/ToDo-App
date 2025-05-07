@@ -48,40 +48,131 @@ button:hover {
 }
 /* il bottone deve essere allineato  destra */
 .logout_button_container {
-    display: flex;
+    float: right;
     justify-content: flex-end;
     margin-top: 20px;
     border-radius: 100px;
 }
 
 .circle {
-  display: inline-block;
-  width: 9px;
-  height: 9px;
-  border: 2px solid #333;
-  border-radius: 50%;
-  margin-right: 8px;
-  vertical-align: middle;
-  background-color: white;
-  text-decoration: none;
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    border: 2px solid #333;
+    border-radius: 50%;
+    margin-right: 8px;
+    vertical-align: middle;
+    background-color: white;
+    text-decoration: none;
 }
 
 .circle.completed {
-  background-color: #333;
+    background-color: #333;
 }
 
 .delete-icon {
-  color: #888;
-  margin-left: 10px;
-  text-decoration: none;
+    color: #888;
+    margin-left: 10px;
+    margin-right: 20px;
+    text-decoration: none;
 }
 
 .delete-icon:hover {
-  color: red;
+    color: red;
 }
 .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0px;
+}
+
+.field {
+    margin-bottom: 15px;
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 6px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.form-box {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    max-width: 500px;
+    float: left;
+    margin-right: 40px;
+}
+
+.task-box {
+    background: #fff;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    list-style-type: none;
+    min-width: 250px;
+}
+.task-box strong {
+    font-size: 16px;
+}
+.task-box div {
+    margin-top: 5px;
+}
+.task-box span {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.priority.low {
+    color: green;
+}
+.priority.medium {
+    color: orange;
+}
+.priority.high {
+    color: red;
+}
+.order-form {
   display: flex;
-  justify-content: space-between;
+  gap: 8px;
   align-items: center;
-  margin-bottom: 0px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.small-select {
+  padding: 4px 6px;
+  font-size: 14px;
+  border-radius: 5px;
+  width: auto; /* 👈 importante */
+  min-width: 120px; /* 👈 larghezza minima elegante */
+  max-width: 160px;
+}
+
+.small-button {
+  padding: 4px 10px;
+  font-size: 14px;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.order-form select,
+.order-form button {
+  padding: 5px;
+  border-radius: 5px;
+}
+
+input[name="q"] {
+  padding: 4px 6px;
+  font-size: 14px;
+  border-radius: 5px;
+  min-width: 150px;
 }

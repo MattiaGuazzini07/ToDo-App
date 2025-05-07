@@ -15,40 +15,120 @@
         <button type="submit">Logout</button>
     </form>
 </div>
+{% if form.errors %}
+  <div style="color: red; margin-bottom: 10px;">
+    <strong>Attenzione:</strong>
+    <ul>
+      {% for field in form %}
+        {% for error in field.errors %}
+          <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+        {% endfor %}
+      {% endfor %}
+      {% for error in form.non_field_errors %}
+        <li>{{ error }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}
+<div class="form-box">
+    <h2>Nuovo Attività</h2>
+    <form method="post">
+        {% csrf_token %}
 
-<form method="post">
-    {% csrf_token %}
-    <input type="text" name="title" placeholder="Scrivi una nuova attività">
-    <button type="submit">Aggiungi</button>
+        <div class="field">
+            <label for="{{ form.title.id_for_label }}">Titolo</label><br>
+            {{ form.title }}
+        </div>
+
+        <div class="field">
+            <label for="{{ form.due_date.id_for_label }}">Data di scadenza</label><br>
+            {{ form.due_date }}
+        </div>
+
+        <div class="field">
+            <label for="{{ form.priority.id_for_label }}">Priorità</label><br>
+            {{ form.priority }}
+        </div>
+        <button type="submit">Salva</button>
+    </form>
+</div>
+
+<h3>Attività da fare</h3>
+<form method="get" class="order-form">
+    <input type="text" name="q" placeholder="Cerca attività..." value="{{ search_query }}" class="small-select">
+  <label for="order_by">Ordina:</label>
+  <select name="order_by" id="order_by" class="small-select">
+    <option value="priority" {% if order_by == 'priority' %}selected{% endif %}>Priorità</option>
+    <option value="due_date" {% if order_by == 'due_date' %}selected{% endif %}>Scadenza</option>
+    <option value="created_at" {% if order_by == 'created_at' %}selected{% endif %}>Creato</option>
+    <option value="title" {% if order_by == 'title' %}selected{% endif %}>Titolo</option>
+  </select>
+
+  <label for="order_dir">Direzione:</label>
+  <select name="order_dir" id="order_dir" class="small-select">
+    <option value="asc" {% if order_dir == 'asc' %}selected{% endif %}>↑ Cresc</option>
+    <option value="desc" {% if order_dir == 'desc' %}selected{% endif %}>↓ Decr</option>
+  </select>
+
+    <label for="priority">Filtra priorità:</label>
+    <select name="priority" id="priority" class="small-select">
+      <option value="">Tutte</option>
+      <option value="high" {% if priority_filter == 'high' %}selected{% endif %}>Alta</option>
+      <option value="medium" {% if priority_filter == 'medium' %}selected{% endif %}>Media</option>
+      <option value="low" {% if priority_filter == 'low' %}selected{% endif %}>Bassa</option>
+    </select>
+
+<label>
+  <input type="checkbox" name="only_future" {% if only_future %}checked{% endif %}>
+  Solo con scadenza futura
+</label>
+
+
+  <button type="submit" class="small-button">↻</button>
 </form>
 
 <ul>
     {% for task in tasks_da_fare %}
-        <li>
-            <a href="{% url 'complete_task' task.id %}" class="circle"></a>
-            {{ task.title }}
+    <li class="task-box">
+        <div style="display: flex; align-items: center;">
+            <a href="{% url 'complete_task' task.id %}" class="circle" title="Completa"></a>
+            <strong style="margin-right: auto;">{{ task.title }}</strong>
             <a href="{% url 'delete_task' task.id %}" class="delete-icon" title="Elimina">
                 <i class="fas fa-trash"></i>
             </a>
-        </li>
-        {% empty %}
-        <li>Nessuna attività da fare</li>
+        </div>
+        <div>
+            <span class="priority {{ task.priority }}">Priorità: {{ task.get_priority_display }}</span><br>
+            {% if task.due_date %}
+                <span>Scadenza: {{ task.due_date|date:"d/m/Y" }}</span>
+            {% endif %}
+        </div>
+    </li>
+    {% empty %}
+    <li>Nessun task da fare.</li>
     {% endfor %}
 </ul>
 
 <h3>Attività completate</h3>
 <ul>
     {% for task in tasks_fatti %}
-        <li>
-            <a href="{% url 'uncomplete_task' task.id %}" class="circle completed"></a>
-            {{ task.title }}
+    <li class="task-box">
+        <div style="display: flex; align-items: center;">
+            <a href="{% url 'uncomplete_task' task.id %}" class="circle completed" title="Sgna come da fare"></a>
+            <strong style="margin-right: auto;">{{ task.title }}</strong>
             <a href="{% url 'delete_task' task.id %}" class="delete-icon" title="Elimina">
                 <i class="fas fa-trash"></i>
             </a>
-        </li>
-
+        </div>
+        <div>
+            <span class="priority {{ task.priority }}">Priorità: {{ task.get_priority_display }}</span><br>
+            {% if task.due_date %}
+                <span>Scadenza: {{ task.due_date|date:"d/m/Y" }}</span>
+            {% endif %}
+        </div>
+    </li>
     {% empty %}
-        <li>Nessuna attività completata</li>
+    <li>Nessun task completato.</li>
     {% endfor %}
 </ul>
 </body>
