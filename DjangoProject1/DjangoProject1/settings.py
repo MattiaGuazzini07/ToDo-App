@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+import json
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +27,7 @@ SECRET_KEY = 'django-insecure-3m-1ecd0=x1*4tu^f74t+pjqss06x=l&@2k7-tbj4@18z6itz0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['todo-gcp1.onrender.com']
+ALLOWED_HOSTS = json.loads(os.environ.get('ALLOWED_HOSTS', '[]'))
 
 
 # Application definition
