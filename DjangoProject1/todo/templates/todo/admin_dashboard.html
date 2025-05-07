@@ -43,6 +43,13 @@
     {% endfor %}
   </tbody>
 </table>
+<p>Totale utenti: {{ total_users }}</p>
 <a href="{% url 'home' %}">← Torna alla home</a>
+<h1>Crea un nuovo utente</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Crea utente</button>
+    </form>
 </body>
 </html>
