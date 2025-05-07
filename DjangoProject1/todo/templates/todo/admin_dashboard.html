@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="{% static 'todo/admin.css' %}">
+</head>
+<body>
+<h1>Admin Dashboard</h1>
+
+<form method="get" style="margin-bottom: 20px;">
+  <input type="text" name="q" placeholder="Cerca utente..." value="{{ query }}">
+  <button type="submit">Cerca</button>
+</form>
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>Username</th>
+      <th>Email</th>
+      <th>Data iscrizione</th>
+      <th>Task totali</th>
+      <th>Task completati</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for user in users %}
+    <tr>
+      <td><a href="{% url 'user_tasks' user.id %}">{{ user.username }}</a></td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.date_joined|date:"Y-m-d H:i" }}</td>
+      <td>{{ user.total_tasks }}</td>
+      <td>{{ user.completed_tasks }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="5">Nessun utente trovato</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+<a href="{% url 'home' %}">← Torna alla home</a>
+</body>
+</html>

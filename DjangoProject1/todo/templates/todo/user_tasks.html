@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="{% static 'todo/admin.css' %}">
+</head>
+<body>
+    <h2>Task di {{ user.username }}</h2>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Titolo</th>
+                <th>Completato</th>
+                <th>Data creazione</th>
+                <th>Priorità</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr>
+                <td>{{ task.title }}</td>
+                <td>{{ task.is_completed }}</td>
+                <td>{{ task.created_at|date:"Y-m-d H:i" }}</td>
+                <td>{{ task.get_priority_display }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4">Nessun task attiva o completata</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{% url 'admin_dashboard' %}">← Torna alla dashboard</a>
+</body>
+</html>

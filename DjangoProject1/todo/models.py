@@ -18,5 +18,6 @@ class Task(models.Model):
     priority = models.CharField(max_length=10, choices=PRIORITY_CHOICES, default='medium')
     completed_at = models.DateTimeField(null=True, blank=True)
 
-def __str__(self):
+    def __str__(self):
         return self.title
+

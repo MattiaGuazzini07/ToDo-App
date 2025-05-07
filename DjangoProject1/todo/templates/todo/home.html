@@ -9,11 +9,17 @@
 <body>
 <div class="header">
     <h2>Le mie attività</h2>
-    <form action="{% url 'logout' %}" method="post">
-        {% csrf_token %}
-        <p>Benvenuto {{ user.username }}</p>
-        <button type="submit">Logout</button>
-    </form>
+
+    <div class="user-panel">
+        <p>Benvenuto <strong>{{ user.username }}</strong></p>
+        {% if request.user.is_superuser %}
+            <a href="{% url 'admin_dashboard' %}" class="btn-admin">Dashboard Admin</a>
+        {% endif %}
+        <form action="{% url 'logout' %}" method="post" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn-logout">Logout</button>
+        </form>
+    </div>
 </div>
 {% if form.errors %}
   <div style="color: red; margin-bottom: 10px;">
@@ -87,9 +93,11 @@
   <button type="submit" class="small-button">↻</button>
 </form>
 
-<ul>
+<h3>Attività da fare</h3>
+
+<div class="todo-list">
     {% for task in tasks_da_fare %}
-    <li class="task-box">
+    <div class="todo-card">
         <div style="display: flex; align-items: center;">
             <a href="{% url 'complete_task' task.id %}" class="circle" title="Completa"></a>
             <strong style="margin-right: auto;">{{ task.title }}</strong>
@@ -103,18 +111,18 @@
                 <span>Scadenza: {{ task.due_date|date:"d/m/Y" }}</span>
             {% endif %}
         </div>
-    </li>
+    </div>
     {% empty %}
-    <li>Nessun task da fare.</li>
+    <p>Nessun task da fare.</p>
     {% endfor %}
-</ul>
-
-<h3>Attività completate</h3>
-<ul>
+</div>
+<div class="collapsible-section">
+  <button class="collapsible-toggle" type="button" onclick="toggleCompleted()">▶ Attività completate</button>
+  <div id="completed-content" class="collapsible-content">
     {% for task in tasks_fatti %}
-    <li class="task-box">
+    <div class="todo-card">
         <div style="display: flex; align-items: center;">
-            <a href="{% url 'uncomplete_task' task.id %}" class="circle completed" title="Sgna come da fare"></a>
+            <a href="{% url 'uncomplete_task' task.id %}" class="circle completed" title="Segna come da fare"></a>
             <strong style="margin-right: auto;">{{ task.title }}</strong>
             <a href="{% url 'delete_task' task.id %}" class="delete-icon" title="Elimina">
                 <i class="fas fa-trash"></i>
@@ -126,10 +134,25 @@
                 <span>Scadenza: {{ task.due_date|date:"d/m/Y" }}</span>
             {% endif %}
         </div>
-    </li>
+    </div>
     {% empty %}
-    <li>Nessun task completato.</li>
+    <p>Nessun task completato.</p>
     {% endfor %}
-</ul>
+  </div>
+</div>
+
+<script>
+  function toggleCompleted() {
+    const content = document.getElementById("completed-content");
+    const button = document.querySelector(".collapsible-toggle");
+    const isHidden = content.style.display === "none";
+
+    content.style.display = isHidden ? "flex" : "none";
+    button.textContent = isHidden ? "▼ Attività completate" : "▶ Attività completate";
+  }
+  window.onload = () => {
+    document.getElementById("completed-content").style.display = "none";
+  };
+</script>
 </body>
 </html>
