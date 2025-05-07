@@ -9,10 +9,10 @@ def home(request):
     if request.method == 'POST':
         title = request.POST.get('title')
         if title:
-            Task.objects.create(title=title)
+            Task.objects.create(title=title, user=request.user)
             return redirect('home')  # ricarica la pagina
 
-    tasks = Task.objects.all()
+    tasks = Task.objects.filter(user=request.user)
     return render(request, 'todo/home.html', {'tasks': tasks})
 
 @login_required
