@@ -13,13 +13,15 @@ ul {
     padding: 0;
 }
 
-li {
+li { /*devono esserre grandi quanto le scritte, non di piu*/
     background: white;
-    padding: 10px;
-    margin-bottom: 5px;
+    padding: 5px 15px; /* Increased padding for larger size */
+    margin-bottom: 10px; /* Increased margin for spacing */
     border-radius: 50px;
-    display: flex;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    display: inline-flex; /* Adjust to fit content */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Slightly larger shadow */
+    justify-content: space-between;
+    align-items: center; /* Align content vertically */
 }
 
 form {
@@ -44,7 +46,42 @@ button {
 button:hover {
     background-color: #0056b3;
 }
+/* il bottone deve essere allineato  destra */
 .logout_button_container {
-    background-color: black;
-    color: white;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+    border-radius: 100px;
+}
+
+.circle {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border: 2px solid #333;
+  border-radius: 50%;
+  margin-right: 8px;
+  vertical-align: middle;
+  background-color: white;
+  text-decoration: none;
+}
+
+.circle.completed {
+  background-color: #333;
+}
+
+.delete-icon {
+  color: #888;
+  margin-left: 10px;
+  text-decoration: none;
+}
+
+.delete-icon:hover {
+  color: red;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0px;
 }
