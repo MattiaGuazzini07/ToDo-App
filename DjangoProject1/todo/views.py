@@ -1,7 +1,7 @@
 from re import search
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
-from .models import Task
+from .models import Task, User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from datetime import datetime
@@ -122,3 +122,9 @@ def user_tasks(request, user_id):
     user = get_object_or_404(User, id=user_id)
     tasks = Task.objects.filter(user=user)
     return render(request, 'todo/user_tasks.html', {'user': user, 'tasks': tasks})
+
+@user_passes_test(lambda u: u.is_superuser)
+def delete_user(request, user_id):
+    user = User.objects.get(id=user_id)
+    user.delete()
+    return redirect('admin_dashboard')
