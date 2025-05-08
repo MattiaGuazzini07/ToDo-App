@@ -449,3 +449,23 @@ input[name="q"] {
   font-size: 0.9rem;
   font-weight: bold;
 }
+
+.edit-icon {
+    color: #007bff;
+    margin-left: 10px;
+    text-decoration: none;
+}
+
+.edit-icon:hover {
+    color: #0056b3;
+}
+
+input[type="date"],
+select {
+  font-size: 14px;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  width: 100%;
+}

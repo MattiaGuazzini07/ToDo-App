@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Modifica Task</title>
+    <link rel="stylesheet" href="{% static 'todo/style.css' %}?v=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<div class="header">
+    <h2>Modifica Attività</h2>
+    <div class="user-panel">
+        <a href="{% url 'home' %}" class="btn-admin">← Torna alla home</a>
+    </div>
+</div>
+
+<div class="form-box">
+    <form method="post">
+        {% csrf_token %}
+        <div class="field">
+            <label for="{{ form.title.id_for_label }}">Titolo</label>
+            {{ form.title }}
+        </div>
+        <div class="field">
+            <label for="{{ form.due_date.id_for_label }}">Data di scadenza</label>
+            {{ form.due_date }}
+        </div>
+        <div class="field">
+            <label for="{{ form.priority.id_for_label }}">Priorità</label>
+            {{ form.priority }}
+        </div>
+        <div class="field">
+            <label for="{{ form.is_completed.id_for_label }}">Completato</label>
+            {{ form.is_completed}}
+        </div>
+        <button type="submit">Salva modifiche</button>
+    </form>
+</div>
+
+</body>
+</html>
