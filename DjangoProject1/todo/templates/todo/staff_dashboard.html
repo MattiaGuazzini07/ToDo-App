@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Staff</title>
+    <link rel="stylesheet" href="{% static 'todo/admin.css' %}">
+</head>
+<body>
+
+<h1>📋 Dashboard Staff</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Utente</th>
+            <th>Titolo</th>
+            <th>Priorità</th>
+            <th>Completato</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in tasks %}
+        <tr>
+            <td>{{ task.user.username }}</td>
+            <td>{{ task.title }}</td>
+            <td>{{ task.priority }}</td>
+            <td>
+                {% if task.is_completed %}
+                    <span style="color: green; font-weight: bold;">✅</span>
+                {% else %}
+                    <span style="color: red; font-weight: bold;">❌</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<p style="margin-top: 20px;">
+    <a href="{% url 'home' %}">← Torna alla home</a>
+</p>
+
+</body>
+</html>
