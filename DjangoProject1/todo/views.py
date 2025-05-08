@@ -102,23 +102,6 @@ def uncomplete_task(request, task_id):
     return redirect('home')
 
 @user_passes_test(lambda u: u.is_superuser)
-def admin_dashboard(request):
-    query = request.GET.get('q', '')  # prende il valore della query
-
-    users = User.objects.annotate(
-        total_tasks=Count('task'),
-        completed_tasks=Count('task', filter=Q(task__is_completed=True))
-    ).order_by('-date_joined')
-
-    if query:
-        users = users.filter(username__icontains=query)
-
-    return render(request, 'todo/admin_dashboard.html', {
-        'users': users,
-        'query': query,
-    })
-
-@user_passes_test(lambda u: u.is_superuser)
 def user_tasks(request, user_id):
     user = get_object_or_404(User, id=user_id)
     tasks = Task.objects.filter(user=user)
@@ -164,23 +147,51 @@ def create_user(request):
 
 @user_passes_test(lambda u: u.is_superuser)
 def admin_dashboard(request):
+    query = request.GET.get("q", "")
+    sort_by = request.GET.get("sort_by", "username")
+
+    allowed_sort_fields = ['username', '-username', 'email', '-email', 'date_joined', '-date_joined']
+    if sort_by not in allowed_sort_fields:
+        sort_by = 'username'
+
     form = UserForm()
 
     if request.method == 'POST':
         form = UserForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('admin_dashboard')
+            try:
+                form.save()
+                messages.success(request, f"Utente '{form.cleaned_data['username']}' creato con successo ✅")
+                return redirect('admin_dashboard')
+            except IntegrityError:
+                form.add_error('username', 'Questo username è già in uso.')
+                messages.error(request, "Username già in uso.")
+        else:
+            messages.error(request, "Dati non validi.")
 
-    users = User.objects.all()
-    for user in users:
-        user.total_tasks = Task.objects.filter(user=user).count()
-        user.completed_tasks = Task.objects.filter(user=user, is_completed=True).count()
+    pinned_email = "mattiaguazzini007@gmail.com"
+    pinned_user = User.objects.filter(email=pinned_email).annotate(
+        total_tasks=Count('task'),
+        completed_tasks=Count('task', filter=Q(task__is_completed=True))
+    ).first()
+
+    user_qs = User.objects.annotate(
+        total_tasks=Count('task'),
+        completed_tasks=Count('task', filter=Q(task__is_completed=True))
+    )
+
+    if query:
+        user_qs = user_qs.filter(username__icontains=query)
+
+    user_qs = user_qs.exclude(email=pinned_email).order_by(sort_by)
 
     context = {
         'form': form,
-        'users': users,
-        'total_users': users.count()
+        'pinned_user': pinned_user,
+        'users': user_qs,
+        'query': query,
+        'sort_by': sort_by,
+        'total_users': User.objects.count(),
     }
 
     return render(request, 'todo/admin_dashboard.html', context)
