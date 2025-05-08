@@ -21,7 +21,7 @@
         <option value="-username" {% if request.GET.sort_by == '-username' %}selected{% endif %}>Username (Z-A)</option>
     </select>
 
-    <button type="submit">Filtra</button>
+    <button type="submit" class="btn-search">Filtra</button>
 </form>
 
 <!-- User List -->
@@ -44,12 +44,7 @@
     <td>{{ pinned_user.date_joined|date:"Y-m-d H:i" }}</td>
     <td>{{ pinned_user.total_tasks }}</td>
     <td>{{ pinned_user.completed_tasks }}</td>
-    <td>
-      <form method="post" action="{% url 'delete_user' pinned_user.id %}" class="delete-form">
-        {% csrf_token %}
-        <button type="submit" onclick="return confirm('Vuoi davvero eliminare questo utente?');">Elimina {{ pinned_user.username }}</button>
-      </form>
-    </td>
+    <td>You can't delete Admin</td>
   </tr>
   {% endif %}
 
@@ -63,7 +58,7 @@
     <td>
       <form method="post" action="{% url 'delete_user' user.id %}" class="delete-form">
         {% csrf_token %}
-        <button type="submit" onclick="return confirm('Sei sicuro di voler eliminare questo utente?');">Elimina {{ user.username }}</button>
+        <button type="submit" class="btn-danger" onclick="return confirm('Sei sicuro di voler eliminare questo utente?');">Elimina {{ user.username }}</button>
       </form>
     </td>
   </tr>
