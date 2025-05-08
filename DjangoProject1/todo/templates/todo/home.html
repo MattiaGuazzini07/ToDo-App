@@ -23,6 +23,14 @@
         {% if request.user.is_superuser %}
             <a href="{% url 'admin_dashboard' %}" class="btn-admin">Dashboard Admin</a>
         {% endif %}
+        {% for group in user.groups.all %}
+          {% if group.name == "Staff" %}
+            <a href="{% url 'staff_dashboard' %}" class="btn-admin">Dashboard</a>
+          {% endif %}
+        {% endfor %}
+        {% if user.is_superuser %}
+          <a href="{% url 'staff_dashboard' %}" class="btn-admin">Dashboard</a>
+        {% endif %}
         <form action="{% url 'logout' %}" method="post" style="display: inline;">
             {% csrf_token %}
             <button type="submit" class="btn-logout">Logout</button>

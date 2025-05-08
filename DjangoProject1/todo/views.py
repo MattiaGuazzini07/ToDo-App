@@ -236,3 +236,11 @@ def edit_task(request, task_id):
         form = TaskForm(instance=task)
 
     return render(request, 'todo/edit_task.html', {'form': form, 'task': task})
+
+@user_passes_test(lambda u: u.groups.filter(name='Staff').exists() or u.is_superuser)
+def staff_dashboard(request):
+    tasks = Task.objects.all().select_related('user').order_by('-created_at')
+
+    return render(request, 'todo/staff_dashboard.html', {
+        'tasks': tasks,
+    })
