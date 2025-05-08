@@ -11,34 +11,6 @@
 <body>
 
   <h2>Task di {{ user.username }}</h2>
-
-  <!-- ✅ Form creazione task -->
-  <div class="form-wrapper" style="margin-bottom: 50px;">
-    <div class="form-container">
-      <h3 style="margin-top: 0;">Crea nuovo task</h3>
-      <form method="POST" action="{% url 'user_tasks' user.id %}" class="user-form">
-        {% csrf_token %}
-        <div>
-          <label for="{{ form.title.id_for_label }}">Titolo:</label>
-          {{ form.title }}
-        </div>
-        <div>
-          <label for="{{ form.due_date.id_for_label }}">Data di scadenza:</label>
-          {{ form.due_date }}
-        </div>
-        <div>
-          <label for="{{ form.priority.id_for_label }}">Priorità:</label>
-          {{ form.priority }}
-        </div>
-        <div>
-          <label for="{{ form.is_completed.id_for_label }}">Completato:</label>
-          {{ form.is_completed }}
-        </div>
-        <button type="submit" class="submit-btn">Crea task</button>
-      </form>
-    </div>
-  </div>
-
   <!-- ✅ Tabella task -->
   <table>
     <thead>
@@ -68,11 +40,39 @@
   </table>
 
   <a href="{% url 'admin_dashboard' %}">← Torna alla dashboard</a>
+  <div style="display: flex; gap: 40px; margin-top: 30px; align-items: flex-start;">
+      <!-- ✅ Form creazione task -->
+      <div class="form-wrapper" style="margin-bottom: 50px;">
+        <div class="form-container">
+          <h3 style="margin-top: 0;">Crea nuovo task</h3>
+          <form method="POST" action="{% url 'user_tasks' user.id %}" class="user-form">
+            {% csrf_token %}
+            <div>
+              <label for="{{ form.title.id_for_label }}">Titolo:</label>
+              {{ form.title }}
+            </div>
+            <div>
+              <label for="{{ form.due_date.id_for_label }}">Data di scadenza:</label>
+              {{ form.due_date }}
+            </div>
+            <div>
+              <label for="{{ form.priority.id_for_label }}">Priorità:</label>
+              {{ form.priority }}
+            </div>
+            <div>
+              <label for="{{ form.is_completed.id_for_label }}">Completato:</label>
+              {{ form.is_completed }}
+            </div>
+            <button type="submit" class="submit-btn">Crea task</button>
+          </form>
+        </div>
+      </div>
 
-  <!-- ✅ Grafico -->
-  <div class="chart-container">
-    <h3 style="text-align: center;">Stato dei task</h3>
-    <canvas id="taskChart"></canvas>
+      <!-- ✅ Grafico -->
+      <div class="chart-container">
+        <h3 style="text-align: center;">Stato dei task</h3>
+        <canvas id="taskChart"></canvas>
+      </div>
   </div>
 
   <script>
