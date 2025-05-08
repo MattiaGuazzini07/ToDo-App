@@ -106,7 +106,17 @@ def uncomplete_task(request, task_id):
 def user_tasks(request, user_id):
     user = get_object_or_404(User, id=user_id)
     tasks = Task.objects.filter(user=user)
-    return render(request, 'todo/user_tasks.html', {'user': user, 'tasks': tasks})
+
+    completed_count = tasks.filter(is_completed=True).count()
+    total_count = tasks.count()
+
+    return render(request, 'todo/user_tasks.html', {
+        'user': user,
+        'tasks': tasks,
+        'completed_count': completed_count,
+        'total_count': total_count,
+    })
+
 
 @user_passes_test(lambda u: u.is_superuser)
 def delete_user(request, user_id):
