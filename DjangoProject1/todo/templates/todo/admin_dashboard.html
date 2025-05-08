@@ -9,11 +9,21 @@
 <body>
 <h1>Admin Dashboard</h1>
 
-<form method="get" style="margin-bottom: 20px;">
-  <input type="text" name="q" placeholder="Cerca utente..." value="{{ query }}">
-  <button type="submit">Cerca</button>
+<form method="get" class="filter-form">
+  <input type="text" name="q" placeholder="Cerca utente..." value="{{ request.GET.q }}">
+
+    <select name="sort_by">
+        <option value="">Ordina per...</option>
+        <option value="date_joined" {% if request.GET.sort_by == 'date_joined' %}selected{% endif %}>Data iscrizione (crescente)</option>
+        <option value="-date_joined" {% if request.GET.sort_by == '-date_joined' %}selected{% endif %}>Data iscrizione (decrescente)</option>
+        <option value="username" {% if request.GET.sort_by == 'username' %}selected{% endif %}>Username (A-Z)</option>
+        <option value="-username" {% if request.GET.sort_by == '-username' %}selected{% endif %}>Username (Z-A)</option>
+    </select>
+
+    <button type="submit">Filtra</button>
 </form>
 
+<!-- User List -->
 <table border="1">
   <thead>
     <tr>
@@ -22,31 +32,49 @@
       <th>Data iscrizione</th>
       <th>Task totali</th>
       <th>Task completati</th>
-        <th>Elimina User</th>
+      <th>Elimina User</th>
     </tr>
   </thead>
   <tbody>
-    {% for user in users %}
-    <tr>
-      <td><a href="{% url 'user_tasks' user.id %}">{{ user.username }}</a></td>
-      <td>{{ user.email }}</td>
-      <td>{{ user.date_joined|date:"Y-m-d H:i" }}</td>
-      <td>{{ user.total_tasks }}</td>
-      <td>{{ user.completed_tasks }}</td>
-        <td>
-            <form method="post" action="{% url 'delete_user' user.id %}">
-            {% csrf_token %}
-            <button type="submit" onclick="return confirm('Sei sicuro di voler eliminare questo utente?');">Elimina {{ user.username }} </button>
-            </form>
-        </td>
-    </tr>
-    {% empty %}
-    <tr><td colspan="5">Nessun utente trovato</td></tr>
-    {% endfor %}
+  {% if pinned_user %}
+  <tr style="background-color: #fff3cd;">
+    <td><a href="{% url 'user_tasks' pinned_user.id %}">{{ pinned_user.username }}</a> ⭐</td>
+    <td>{{ pinned_user.email }}</td>
+    <td>{{ pinned_user.date_joined|date:"Y-m-d H:i" }}</td>
+    <td>{{ pinned_user.total_tasks }}</td>
+    <td>{{ pinned_user.completed_tasks }}</td>
+    <td>
+      <form method="post" action="{% url 'delete_user' pinned_user.id %}" class="delete-form">
+        {% csrf_token %}
+        <button type="submit" onclick="return confirm('Vuoi davvero eliminare questo utente?');">Elimina {{ pinned_user.username }}</button>
+      </form>
+    </td>
+  </tr>
+  {% endif %}
+
+  {% for user in users %}
+  <tr>
+    <td><a href="{% url 'user_tasks' user.id %}">{{ user.username }}</a></td>
+    <td>{{ user.email }}</td>
+    <td>{{ user.date_joined|date:"Y-m-d H:i" }}</td>
+    <td>{{ user.total_tasks }}</td>
+    <td>{{ user.completed_tasks }}</td>
+    <td>
+      <form method="post" action="{% url 'delete_user' user.id %}" class="delete-form">
+        {% csrf_token %}
+        <button type="submit" onclick="return confirm('Sei sicuro di voler eliminare questo utente?');">Elimina {{ user.username }}</button>
+      </form>
+    </td>
+  </tr>
+  {% endfor %}
   </tbody>
 </table>
+
+<!-- Pagination -->
 <p>Totale utenti: {{ total_users }}</p>
 <a href="{% url 'home' %}">← Torna alla home</a>
+
+<!-- Create User Form -->
 <h1>Crea un nuovo utente</h1>
 {% if messages %}
   <ul class="messages">
