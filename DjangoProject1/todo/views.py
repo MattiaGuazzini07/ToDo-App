@@ -21,6 +21,7 @@ def home(request):
             task.is_completed = False
             task.completed_at = None
             task.save()
+            messages.success(request, "✅ Attività creata con successo!")
             return redirect('home')
     else:
         form = TaskForm()
