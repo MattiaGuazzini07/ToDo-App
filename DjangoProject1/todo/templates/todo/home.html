@@ -112,6 +112,9 @@
             <a href="{% url 'delete_task' task.id %}" class="delete-icon" title="Elimina">
                 <i class="fas fa-trash"></i>
             </a>
+            <a href="{% url 'edit_task' task.id %}" class="edit-icon" title="Modifica">
+                <i class="fas fa-pen"></i>
+            </a>
         </div>
         <div>
             <span class="priority {{ task.priority }}">Priorità: {{ task.get_priority_display }}</span><br>
