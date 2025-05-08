@@ -6,10 +6,11 @@ from django.contrib.auth.models import User
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
-        fields = ['title', 'due_date', 'priority']
+        fields = ['title', 'due_date', 'priority', 'is_completed']
         widgets = {
             'due_date': forms.DateInput(attrs={'type': 'date'}),
             'priority': forms.Select(),
+            'is_completed': forms.CheckboxInput(),
         }
 
 class UserForm(forms.Form):

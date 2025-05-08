@@ -7,10 +7,11 @@ from django.contrib.auth import login
 from datetime import datetime
 from django.utils import timezone
 from .forms import TaskForm, UserForm
-from django.contrib.auth.models import User
 from django.db.models import Count, Q
 from django.contrib import messages
 from django.db import IntegrityError
+
+
 @login_required
 def home(request):
     if request.method == 'POST':
@@ -26,7 +27,6 @@ def home(request):
     else:
         form = TaskForm()
 
-    # 🧠 Gestione ordinamento
     order_by = request.GET.get('order_by', 'created_at')
     order_dir = request.GET.get('order_dir', 'asc')
     priority_filter = request.GET.get('priority')
@@ -39,7 +39,6 @@ def home(request):
 
     ordering = order_by if order_dir == 'asc' else f'-{order_by}'
 
-    # 📥 Query ordinata
     tasks_da_fare = Task.objects.filter(user=request.user, is_completed=False)
 
     if priority_filter in ['low', 'medium', 'high']:
@@ -52,7 +51,6 @@ def home(request):
         tasks_da_fare = tasks_da_fare.filter(title__icontains=search_query)
 
     tasks_da_fare = tasks_da_fare.order_by(ordering)
-
     tasks_fatti = Task.objects.filter(user=request.user, is_completed=True).order_by(ordering)
 
     return render(request, 'todo/home.html', {
@@ -76,23 +74,26 @@ def complete_task(request, task_id):
     task.save()
     return redirect('home')
 
+
 @login_required
 def delete_task(request, task_id):
     task = get_object_or_404(Task, id=task_id, user=request.user)
     task.delete()
     return redirect('home')
 
+
 def signup(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)  # login automatico dopo la registrazione
+            login(request, user)
             return redirect('home')
     else:
         form = UserCreationForm()
 
     return render(request, 'todo/signup.html', {'form': form})
+
 
 @login_required
 def uncomplete_task(request, task_id):
@@ -102,19 +103,33 @@ def uncomplete_task(request, task_id):
     task.save()
     return redirect('home')
 
+
 @user_passes_test(lambda u: u.is_superuser)
 def user_tasks(request, user_id):
     user = get_object_or_404(User, id=user_id)
     tasks = Task.objects.filter(user=user)
-
     completed_count = tasks.filter(is_completed=True).count()
     total_count = tasks.count()
+
+    if request.method == 'POST':
+        form = TaskForm(request.POST)
+        if form.is_valid():
+            task = form.save(commit=False)
+            task.user = user
+            task.is_completed = False
+            task.completed_at = None
+            task.save()
+            messages.success(request, "Task creato con successo ✅")
+            return redirect('user_tasks', user_id=user.id)
+    else:
+        form = TaskForm()
 
     return render(request, 'todo/user_tasks.html', {
         'user': user,
         'tasks': tasks,
         'completed_count': completed_count,
         'total_count': total_count,
+        'form': form,
     })
 
 
@@ -125,11 +140,6 @@ def delete_user(request, user_id):
     return redirect('admin_dashboard')
 
 
-from .forms import UserForm
-from django.contrib.auth.decorators import user_passes_test
-from django.shortcuts import redirect
-
-
 @user_passes_test(lambda u: u.is_superuser)
 def create_user(request):
     if request.method == 'POST':
@@ -137,14 +147,13 @@ def create_user(request):
         if form.is_valid():
             try:
                 form.save()
-                messages.success(request, f"Utente '{form.cleaned_data['username']}' creato con successo ✅") #nome utente registrato in output
+                messages.success(request, f"Utente '{form.cleaned_data['username']}' creato con successo ✅")
                 return redirect('admin_dashboard')
             except IntegrityError:
                 form.add_error('username', 'Questo username è già in uso.')
     else:
         form = UserForm()
 
-    # In caso di errore, reinvia tutto
     users = User.objects.all()
     for user in users:
         user.total_tasks = Task.objects.filter(user=user).count()
@@ -155,6 +164,7 @@ def create_user(request):
         'users': users,
         'total_users': users.count()
     })
+
 
 @user_passes_test(lambda u: u.is_superuser)
 def admin_dashboard(request):
@@ -196,13 +206,33 @@ def admin_dashboard(request):
 
     user_qs = user_qs.exclude(email=pinned_email).order_by(sort_by)
 
-    context = {
+    return render(request, 'todo/admin_dashboard.html', {
         'form': form,
         'pinned_user': pinned_user,
         'users': user_qs,
         'query': query,
         'sort_by': sort_by,
         'total_users': User.objects.count(),
-    }
+    })
 
-    return render(request, 'todo/admin_dashboard.html', context)
+
+@login_required
+def edit_task(request, task_id):
+    if request.user.is_superuser:
+        task = get_object_or_404(Task, id=task_id)
+    else:
+        task = get_object_or_404(Task, id=task_id, user=request.user)
+
+    if request.method == 'POST':
+        form = TaskForm(request.POST, instance=task)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Task aggiornato con successo ✅")
+            if request.user.is_superuser:
+                return redirect('user_tasks', user_id=task.user.id)
+            else:
+                return redirect('home')
+    else:
+        form = TaskForm(instance=task)
+
+    return render(request, 'todo/edit_task.html', {'form': form, 'task': task})
