@@ -1,0 +1,247 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 20px;
+}
+
+h1 {
+    color: #333;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li { /*devono esserre grandi quanto le scritte, non di piu*/
+    background: white;
+    padding: 5px 15px; /* Increased padding for larger size */
+    margin-bottom: 10px; /* Increased margin for spacing */
+    border-radius: 50px;
+    display: inline-flex; /* Adjust to fit content */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Slightly larger shadow */
+    justify-content: space-between;
+    align-items: center; /* Align content vertically */
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+input[type="text"] {
+    padding: 8px;
+    width: 300px;
+    margin-right: 10px;
+}
+
+button {
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+/* il bottone deve essere allineato  destra */
+.logout_button_container {
+    float: right;
+    justify-content: flex-end;
+    margin-top: 20px;
+    border-radius: 100px;
+}
+
+.circle {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    border: 2px solid #333;
+    border-radius: 50%;
+    margin-right: 8px;
+    vertical-align: middle;
+    background-color: white;
+    text-decoration: none;
+}
+
+.circle.completed {
+    background-color: #333;
+}
+
+.delete-icon {
+    color: #888;
+    margin-left: 10px;
+    margin-right: 20px;
+    text-decoration: none;
+}
+
+.delete-icon:hover {
+    color: red;
+}
+
+.field {
+    margin-bottom: 15px;
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 6px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.form-box {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    max-width: 500px;
+    float: left;
+    margin-right: 40px;
+}
+
+.task-box {
+    background: #fff;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    list-style-type: none;
+    min-width: 250px;
+}
+.task-box strong {
+    font-size: 16px;
+}
+.task-box div {
+    margin-top: 5px;
+}
+.task-box span {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.priority.low {
+    color: green;
+}
+.priority.medium {
+    color: orange;
+}
+.priority.high {
+    color: red;
+}
+.order-form {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.small-select {
+  padding: 4px 6px;
+  font-size: 14px;
+  border-radius: 5px;
+  width: auto; /* 👈 importante */
+  min-width: 120px; /* 👈 larghezza minima elegante */
+  max-width: 160px;
+}
+
+.small-button {
+  padding: 4px 10px;
+  font-size: 14px;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.order-form select,
+.order-form button {
+  padding: 5px;
+  border-radius: 5px;
+}
+
+input[name="q"] {
+  padding: 4px 6px;
+  font-size: 14px;
+  border-radius: 5px;
+  min-width: 150px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-panel {
+  text-align: right;
+}
+
+.user-panel p {
+  margin: 0;
+}
+
+.btn-admin {
+  display: inline-block;
+  margin-right: 5px;
+  padding: 6px 12px;
+  background-color: #6c63ff;
+  color: white;
+  text-decoration: none;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+.btn-admin:hover {
+  background-color: #4e4bff;
+}
+
+.btn-logout {
+  padding: 6px 12px;
+  background-color: #ff5c5c;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+.btn-logout:hover {
+  background-color: #950808;
+}
+
+.todo-list,
+.completed-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem; /* distanza uniforme tra i task */
+}
+
+.todo-card {
+  flex: 0 1 300px; /* larghezza massima consigliata per i task */
+  background: #fff;
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 0 4px rgba(0,0,0,0.1);
+}
+.collapsible-toggle {
+  background-color: transparent;
+    color: black;
+  border: none;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.collapsible-toggle:hover {
+    background-color: #fff;
+}
+
+.collapsible-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
