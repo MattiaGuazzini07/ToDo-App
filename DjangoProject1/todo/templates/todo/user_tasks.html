@@ -2,37 +2,78 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="{% static 'todo/admin.css' %}">
-    <link rel="icon" href="{% static 'favicon.png' %}" type="image/png">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Task di {{ user.username }}</title>
+  <link rel="stylesheet" href="{% static 'todo/admin.css' %}">
+  <link rel="icon" href="{% static 'favicon.png' %}" type="image/png">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <h2>Task di {{ user.username }}</h2>
 
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Titolo</th>
-                <th>Completato</th>
-                <th>Data creazione</th>
-                <th>Priorità</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for task in tasks %}
-            <tr>
-                <td>{{ task.title }}</td>
-                <td>{{ task.is_completed }}</td>
-                <td>{{ task.created_at|date:"Y-m-d H:i" }}</td>
-                <td>{{ task.get_priority_display }}</td>
-            </tr>
-            {% empty %}
-            <tr><td colspan="4">Nessun task attiva o completata</td></tr>
-            {% endfor %}
-        </tbody>
-    </table>
+  <h2>Task di {{ user.username }}</h2>
 
-    <a href="{% url 'admin_dashboard' %}">← Torna alla dashboard</a>
+  <!-- Grafico -->
+  <canvas id="userTaskChart" width="0" height="0" style="margin-bottom: 30px;"></canvas>
+
+  <!-- Tabella task -->
+  <table border="1">
+      <thead>
+          <tr>
+              <th>Titolo</th>
+              <th>Completato</th>
+              <th>Data creazione</th>
+              <th>Priorità</th>
+          </tr>
+      </thead>
+      <tbody>
+          {% for task in tasks %}
+          <tr>
+              <td>{{ task.title }}</td>
+              <td>{% if task.is_completed %}✅{% else %}❌{% endif %}</td>
+              <td>{{ task.created_at|date:"Y-m-d H:i" }}</td>
+              <td>{{ task.get_priority_display }}</td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="4">Nessun task attiva o completata</td></tr>
+          {% endfor %}
+      </tbody>
+  </table>
+
+  <a href="{% url 'admin_dashboard' %}" style="padding-top: 20px">← Torna alla dashboard</a>
+
+<!-- Spazio tra tabella e grafico -->
+<div style="margin-top: 40px;"></div>
+
+<!-- Chart -->
+<div class="chart-container">
+  <h3 style="text-align: center;">Stato dei task</h3>
+  <canvas id="taskChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const total = {{ total_count }};
+  const completed = {{ completed_count }};
+  const pending = total - completed;
+
+  const ctx = document.getElementById('taskChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Completati', 'Da fare'],
+      datasets: [{
+        data: [completed, pending],
+        backgroundColor: ['#28a745', '#ffc107'],
+        borderColor: ['#fff', '#fff'],
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false
+    }
+  });
+</script>
+
 </body>
 </html>

@@ -304,6 +304,21 @@ input[name="q"] {
   text-decoration: underline;
 }
 
+.messages {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.messages li {
+    background-color: #e6ffed;
+    color: #256029;
+    border: 1px solid #b6e0c3;
+    padding: 10px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
 @media (max-width: 768px) {
 
     body {
@@ -421,4 +436,16 @@ input[name="q"] {
   .btn-admin {
     margin-top: 0;
   }
+}
+
+.errorlist,
+.field-error {
+  background-color: #ffe6e6;
+  color: #a70000;
+  border: 1px solid #ffb3b3;
+  padding: 10px 15px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  font-weight: bold;
 }

@@ -13,19 +13,19 @@
 <form method="get" class="filter-form">
   <input type="text" name="q" placeholder="Cerca utente..." value="{{ request.GET.q }}">
 
-    <select name="sort_by">
-        <option value="">Ordina per...</option>
-        <option value="date_joined" {% if request.GET.sort_by == 'date_joined' %}selected{% endif %}>Data iscrizione (crescente)</option>
-        <option value="-date_joined" {% if request.GET.sort_by == '-date_joined' %}selected{% endif %}>Data iscrizione (decrescente)</option>
-        <option value="username" {% if request.GET.sort_by == 'username' %}selected{% endif %}>Username (A-Z)</option>
-        <option value="-username" {% if request.GET.sort_by == '-username' %}selected{% endif %}>Username (Z-A)</option>
-    </select>
+  <select name="sort_by">
+      <option value="">Ordina per...</option>
+      <option value="date_joined" {% if request.GET.sort_by == 'date_joined' %}selected{% endif %}>Data iscrizione (crescente)</option>
+      <option value="-date_joined" {% if request.GET.sort_by == '-date_joined' %}selected{% endif %}>Data iscrizione (decrescente)</option>
+      <option value="username" {% if request.GET.sort_by == 'username' %}selected{% endif %}>Username (A-Z)</option>
+      <option value="-username" {% if request.GET.sort_by == '-username' %}selected{% endif %}>Username (Z-A)</option>
+  </select>
 
-    <button type="submit" class="btn-search">Filtra</button>
+  <button type="submit" class="btn-search">Filtra</button>
 </form>
 
 <!-- User List -->
-<table border="1">
+<table>
   <thead>
     <tr>
       <th>Username</th>
@@ -58,7 +58,9 @@
     <td>
       <form method="post" action="{% url 'delete_user' user.id %}" class="delete-form">
         {% csrf_token %}
-        <button type="submit" class="btn-danger" onclick="return confirm('Sei sicuro di voler eliminare questo utente?');">Elimina {{ user.username }}</button>
+        <button type="submit" class="btn-danger" onclick="return confirm('Sei sicuro di voler eliminare questo utente?');">
+          Elimina {{ user.username }}
+        </button>
       </form>
     </td>
   </tr>
@@ -66,12 +68,12 @@
   </tbody>
 </table>
 
-<!-- Pagination -->
 <p>Totale utenti: {{ total_users }}</p>
 <a href="{% url 'home' %}">← Torna alla home</a>
 
 <!-- Create User Form -->
 <h1>Crea un nuovo utente</h1>
+
 {% if messages %}
   <ul class="messages">
     {% for message in messages %}
@@ -79,23 +81,30 @@
     {% endfor %}
   </ul>
 {% endif %}
+
+{% if form.errors %}
+  <div class="field-error">
+    <strong>Attenzione:</strong>
+    <ul>
+      {% for field in form %}
+        {% for error in field.errors %}
+          <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+        {% endfor %}
+      {% endfor %}
+      {% for error in form.non_field_errors %}
+        <li>{{ error }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}
+
 <div class="form-wrapper">
   <div class="form-container">
     <form method="POST" action="{% url 'create_user' %}" class="user-form">
         {% csrf_token %}
-        {% if form.non_field_errors %}
-        <div class="error">
-            {% for error in form.non_field_errors %}
-                <p>{{ error }}</p>
-            {% endfor %}
-        </div>
-        {% endif %}
         <div>
             <label for="{{ form.username.id_for_label }}">Username:</label>
             {{ form.username }}
-            {% if form.username.errors %}
-                <p class="error">{{ form.username.errors.0 }}</p>
-            {% endif %}
         </div>
         <div>
             <label for="{{ form.password.id_for_label }}">Password:</label>
