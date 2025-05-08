@@ -9,7 +9,8 @@ from django.utils import timezone
 from .forms import TaskForm, UserForm
 from django.contrib.auth.models import User
 from django.db.models import Count, Q
-
+from django.contrib import messages
+from django.db import IntegrityError
 @login_required
 def home(request):
     if request.method == 'POST':
@@ -129,14 +130,57 @@ def delete_user(request, user_id):
     user.delete()
     return redirect('admin_dashboard')
 
+
+from .forms import UserForm
+from django.contrib.auth.decorators import user_passes_test
+from django.shortcuts import redirect
+
+
 @user_passes_test(lambda u: u.is_superuser)
 def create_user(request):
     if request.method == 'POST':
         form = UserForm(request.POST)
         if form.is_valid():
-            form.save()  # Salva il nuovo utente
-            return redirect('admin_dashboard')
+            try:
+                form.save()
+                messages.success(request, f"Utente '{form.cleaned_data['username']}' creato con successo ✅") #nome utente registrato in output
+                return redirect('admin_dashboard')
+            except IntegrityError:
+                form.add_error('username', 'Questo username è già in uso.')
     else:
-        form = UserForm()  # Mostra un form vuoto
+        form = UserForm()
 
-    return render(request, 'nome_template.html', {'form': form})
+    # In caso di errore, reinvia tutto
+    users = User.objects.all()
+    for user in users:
+        user.total_tasks = Task.objects.filter(user=user).count()
+        user.completed_tasks = Task.objects.filter(user=user, is_completed=True).count()
+
+    return render(request, 'todo/admin_dashboard.html', {
+        'form': form,
+        'users': users,
+        'total_users': users.count()
+    })
+
+@user_passes_test(lambda u: u.is_superuser)
+def admin_dashboard(request):
+    form = UserForm()
+
+    if request.method == 'POST':
+        form = UserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('admin_dashboard')
+
+    users = User.objects.all()
+    for user in users:
+        user.total_tasks = Task.objects.filter(user=user).count()
+        user.completed_tasks = Task.objects.filter(user=user, is_completed=True).count()
+
+    context = {
+        'form': form,
+        'users': users,
+        'total_users': users.count()
+    }
+
+    return render(request, 'todo/admin_dashboard.html', context)
