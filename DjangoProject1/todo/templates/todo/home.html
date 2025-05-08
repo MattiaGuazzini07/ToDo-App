@@ -11,7 +11,13 @@
 <body>
 <div class="header">
     <h2>Le mie attività</h2>
-
+    {% if messages %}
+        <ul class="messages">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
     <div class="user-panel">
         <p>Benvenuto <strong>{{ user.username }}</strong></p>
         {% if request.user.is_superuser %}
@@ -24,7 +30,7 @@
     </div>
 </div>
 {% if form.errors %}
-  <div style="color: red; margin-bottom: 10px;">
+  <div class="field-error">
     <strong>Attenzione:</strong>
     <ul>
       {% for field in form %}
@@ -115,7 +121,9 @@
         </div>
     </div>
     {% empty %}
-    <p>Nessun task da fare.</p>
+        <div style="padding: 10px; font-style: italic; color: #555;">
+            Nessuna attività trovata.
+        </div>
     {% endfor %}
 </div>
 <div class="collapsible-section">
@@ -138,7 +146,9 @@
         </div>
     </div>
     {% empty %}
-    <p>Nessun task completato.</p>
+        <div style="padding: 10px; font-style: italic; color: #555;">
+            Nessuna attività completata.
+        </div>
     {% endfor %}
   </div>
 </div>
