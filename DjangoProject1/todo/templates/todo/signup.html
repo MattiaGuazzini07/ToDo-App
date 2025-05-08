@@ -7,12 +7,23 @@
     <link rel="icon" href="{% static 'favicon.png' %}" type="image/png">
 </head>
 <body>
+
+<div class="auth-container">
     <h1>Registrati</h1>
+
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
+
+        {% if form.non_field_errors %}
+            <div class="error">{{ form.non_field_errors }}</div>
+        {% endif %}
+
         <button type="submit">Crea account</button>
     </form>
+
     <p>Hai già un account? <a href="{% url 'login' %}">Accedi qui</a>.</p>
+</div>
+
 </body>
 </html>
