@@ -1,14 +1,7 @@
-{% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <meta http-equiv="refresh" content="2; url={% url 'login' %}">
-    <title>Logout</title>
-    <link rel="stylesheet" href="{% static 'todo/style.css' %}?v={{ timestamp }}">
-    <link rel="icon" href="{% static 'favicon.png' %}" type="image/png">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-<body>
-    <h2>Logout effettuato. Verrai reindirizzato...</h2>
-</body>
-</html>
+{% extends 'todo/user_base.html' %}
+{% block title %}Logout{% endblock %}
+
+{% block content %}
+  <meta http-equiv="refresh" content="2; url={% url 'login' %}">
+  <h2>Logout effettuato. Verrai reindirizzato...</h2>
+{% endblock %}

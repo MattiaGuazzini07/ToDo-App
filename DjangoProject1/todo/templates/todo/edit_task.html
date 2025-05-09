@@ -1,14 +1,7 @@
-{% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Modifica Task</title>
-    <link rel="stylesheet" href="{% static 'todo/style.css' %}?v=1">
-    <link rel="icon" href="{% static 'favicon.png' %}" type="image/png">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-<body>
+{% extends 'todo/user_base.html' %}
+{% block title %}Modifica Task{% endblock %}
 
+{% block content %}
 <div class="header">
     <h2>Modifica Attività</h2>
     <div class="user-panel">
@@ -33,11 +26,9 @@
         </div>
         <div class="field">
             <label for="{{ form.is_completed.id_for_label }}">Completato</label>
-            {{ form.is_completed}}
+            {{ form.is_completed }}
         </div>
         <button type="submit">Salva modifiche</button>
     </form>
 </div>
-
-</body>
-</html>
+{% endblock %}
