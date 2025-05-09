@@ -534,3 +534,17 @@ select {
     font-size: 13px;
   }
 }
+.lucide-icon {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2;
+  color: #555;
+}
+
+.delete-icon:hover .lucide-icon {
+  color: red;
+}
+
+.edit-icon:hover .lucide-icon {
+  color: #007bff;
+}

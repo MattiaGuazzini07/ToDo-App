@@ -18,7 +18,9 @@
 
         <form action="{% url 'logout' %}" method="post" style="display: inline;">
             {% csrf_token %}
-            <button type="submit" class="btn-logout">Logout</button>
+            <button type="submit" class="btn-logout">
+                <i data-lucide="log-out" class="lucide-icon" style="vertical-align: middle;"></i> Logout
+            </button>
         </form>
     </div>
 {% endblock %}
@@ -70,10 +72,10 @@
             <a href="{% url 'complete_task' task.id %}" class="circle" title="Completa"></a>
             <strong style="margin-right: auto;">{{ task.title }}</strong>
             <a href="{% url 'delete_task' task.id %}" class="delete-icon" title="Elimina">
-                <i class="fas fa-trash"></i>
+                <i data-lucide="trash"></i>
             </a>
             <a href="{% url 'edit_task' task.id %}" class="edit-icon" title="Modifica">
-                <i class="fa-solid fa-pen"></i>
+                <i data-lucide="pencil"></i>
             </a>
         </div>
         <div>
@@ -99,7 +101,7 @@
                 <a href="{% url 'uncomplete_task' task.id %}" class="circle completed" title="Segna come da fare"></a>
                 <strong style="margin-right: auto;">{{ task.title }}</strong>
                 <a href="{% url 'delete_task' task.id %}" class="delete-icon" title="Elimina">
-                    <i class="fas fa-trash"></i>
+                    <i data-lucide="trash"></i>
                 </a>
             </div>
             <div>
@@ -119,6 +121,7 @@
 {% endblock %}
 
 {% block scripts %}
+<script src="https://unpkg.com/lucide@latest"></script>
 <script>
     function toggleCompleted() {
         const content = document.getElementById("completed-content");
@@ -127,8 +130,17 @@
         content.style.display = isHidden ? "flex" : "none";
         button.textContent = isHidden ? "▼ Attività completate" : "▶ Attività completate";
     }
+
     window.onload = () => {
         document.getElementById("completed-content").style.display = "none";
+
+        // ATTIVA ICONE LUCIDE
+        if (typeof lucide !== 'undefined' && lucide.createIcons) {
+            lucide.createIcons();
+        } else {
+            console.error("❌ Lucide non trovato.");
+        }
     };
 </script>
 {% endblock %}
+
