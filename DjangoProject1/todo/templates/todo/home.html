@@ -69,6 +69,28 @@
         <!-- QUI VA LA TUA LISTA DI TASK -->
         <div class="task-section">
             <h3>Attività da fare</h3>
+            <form method="get" class="order-form">
+                <input type="text" name="q" placeholder="Cerca per titolo" value="{{ search_query }}">
+
+                <select name="priority">
+                    <option value="">Tutte le priorità</option>
+                    <option value="low" {% if priority_filter == "low" %}selected{% endif %}>Bassa</option>
+                    <option value="medium" {% if priority_filter == "medium" %}selected{% endif %}>Media</option>
+                    <option value="high" {% if priority_filter == "high" %}selected{% endif %}>Alta</option>
+                </select>
+
+                <select name="completed">
+                    <option value="">Stato</option>
+                    <option value="false" {% if completed_filter == "false" %}selected{% endif %}>Da fare</option>
+                    <option value="true" {% if completed_filter == "true" %}selected{% endif %}>Completati</option>
+                </select>
+
+                <button type="submit" class="small-button">Filtra</button>
+
+                {% if request.GET %}
+                    <a href="{% url 'home' %}" class="small-button" style="background-color: #ccc; color: black;">Reset</a>
+                {% endif %}
+            </form>
             <div class="todo-list">
                 {% for task in tasks_da_fare %}
                 <div class="todo-card" style="animation-delay: {{ forloop.counter0|add:"0.05"|floatformat:2 }}s;">

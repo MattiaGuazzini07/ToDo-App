@@ -139,6 +139,14 @@ button:hover { background-color: #0056b3; }
     border: 1px solid #ccc;
     background-color: #fff;
 }
+
+.order-form input,
+.order-form select,
+.order-form button {
+    width: auto; /* o semplicemente non forzarlo */
+    flex: 1; /* opzionale, se vuoi adattarli */
+}
+
 .order-form .small-button {
     padding: 8px 12px;
     font-size: 14px;

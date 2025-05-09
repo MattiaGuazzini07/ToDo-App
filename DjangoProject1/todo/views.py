@@ -13,8 +13,17 @@ from django.db import IntegrityError
 from django.http import JsonResponse
 
 
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from .models import Task
+from .forms import TaskForm
+from django.utils import timezone
+from django.contrib import messages
+from datetime import datetime
+
 @login_required
 def home(request):
+    # Gestione creazione nuova attività
     if request.method == 'POST':
         form = TaskForm(request.POST)
         if form.is_valid():
@@ -28,30 +37,45 @@ def home(request):
     else:
         form = TaskForm()
 
+    # Filtri e ordinamento
     order_by = request.GET.get('order_by', 'created_at')
     order_dir = request.GET.get('order_dir', 'asc')
     priority_filter = request.GET.get('priority')
     search_query = request.GET.get('q', '').strip()
     only_future = request.GET.get('only_future') == 'on'
-    allowed_fields = ['priority', 'due_date', 'created_at', 'title']
+    completed_filter = request.GET.get('completed')
 
+    allowed_fields = ['priority', 'due_date', 'created_at', 'title']
     if order_by not in allowed_fields:
         order_by = 'created_at'
 
     ordering = order_by if order_dir == 'asc' else f'-{order_by}'
 
-    tasks_da_fare = Task.objects.filter(user=request.user, is_completed=False)
+    # Base query
+    tasks_da_fare = Task.objects.filter(user=request.user)
 
+    # Filtro completati / da fare
+    if completed_filter == "true":
+        tasks_da_fare = tasks_da_fare.filter(is_completed=True)
+    else:
+        tasks_da_fare = tasks_da_fare.filter(is_completed=False)
+
+    # Filtro per priorità
     if priority_filter in ['low', 'medium', 'high']:
         tasks_da_fare = tasks_da_fare.filter(priority=priority_filter)
 
+    # Solo future
     if only_future:
         tasks_da_fare = tasks_da_fare.filter(due_date__gte=datetime.today())
 
+    # Ricerca per titolo
     if search_query:
         tasks_da_fare = tasks_da_fare.filter(title__icontains=search_query)
 
+    # Ordinamento
     tasks_da_fare = tasks_da_fare.order_by(ordering)
+
+    # Task completati per sezione dedicata
     tasks_fatti = Task.objects.filter(user=request.user, is_completed=True).order_by(ordering)
 
     return render(request, 'todo/home.html', {
@@ -64,7 +88,9 @@ def home(request):
         'priority_filter': priority_filter,
         'search_query': search_query,
         'only_future': only_future,
+        'completed_filter': completed_filter,
     })
+
 
 
 @login_required
