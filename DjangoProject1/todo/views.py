@@ -241,6 +241,16 @@ def edit_task(request, task_id):
 def staff_dashboard(request):
     tasks = Task.objects.all().select_related('user').order_by('-created_at')
 
+    users = User.objects.annotate(
+        total_tasks=Count('task'),
+        completed_tasks=Count('task', filter=Q(task__is_completed=True))
+    )
+
     return render(request, 'todo/staff_dashboard.html', {
         'tasks': tasks,
+        'users': users,
+        'total_tasks': tasks.count(),
+        'total_users': User.objects.count(),
+        'total_completed_tasks': tasks.filter(is_completed=True).count(),
+        'total_incomplete_tasks': tasks.filter(is_completed=False).count(),
     })

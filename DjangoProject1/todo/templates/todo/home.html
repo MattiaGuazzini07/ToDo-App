@@ -19,23 +19,24 @@
         </ul>
     {% endif %}
     <div class="user-panel">
-        <p>Benvenuto <strong>{{ user.username }}</strong></p>
-        {% if request.user.is_superuser %}
-            <a href="{% url 'admin_dashboard' %}" class="btn-admin">Dashboard Admin</a>
-        {% endif %}
+    <p>Benvenuto <strong>{{ user.username }}</strong></p>
+
+    {% if request.user.is_superuser %}
+        <a href="{% url 'admin_dashboard' %}" class="btn-admin">Dashboard Admin</a>
+    {% else %}
         {% for group in user.groups.all %}
-          {% if group.name == "Staff" %}
-            <a href="{% url 'staff_dashboard' %}" class="btn-admin">Dashboard</a>
-          {% endif %}
+            {% if group.name == "Staff" %}
+                <a href="{% url 'staff_dashboard' %}" class="btn-admin">Dashboard</a>
+            {% endif %}
         {% endfor %}
-        {% if user.is_superuser %}
-          <a href="{% url 'staff_dashboard' %}" class="btn-admin">Dashboard</a>
-        {% endif %}
-        <form action="{% url 'logout' %}" method="post" style="display: inline;">
-            {% csrf_token %}
-            <button type="submit" class="btn-logout">Logout</button>
-        </form>
-    </div>
+    {% endif %}
+
+    <form action="{% url 'logout' %}" method="post" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit" class="btn-logout">Logout</button>
+    </form>
+</div>
+
 </div>
 {% if form.errors %}
   <div class="field-error">
