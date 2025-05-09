@@ -1,14 +1,7 @@
-{% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Registrazione</title>
-    <link rel="stylesheet" href="{% static 'todo/style.css' %}?v={{ timestamp }}">
-    <link rel="icon" href="{% static 'favicon.png' %}" type="image/png">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-<body>
+{% extends 'todo/user_base.html' %}
+{% block title %}Registrazione{% endblock %}
 
+{% block content %}
 <div class="auth-container">
     <h1>Registrati</h1>
 
@@ -25,6 +18,4 @@
 
     <p>Hai già un account? <a href="{% url 'login' %}">Accedi qui</a>.</p>
 </div>
-
-</body>
-</html>
+{% endblock %}

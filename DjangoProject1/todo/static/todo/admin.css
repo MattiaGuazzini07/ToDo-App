@@ -1,9 +1,13 @@
 
 body {
-    font-family: sans-serif;
+    font-family: 'meriweather', sans-serif;  /* font principale */
     background-color: #f9f9f9;
     padding: 20px;
 }
+h1, h2 {
+  font-family: 'Playfair Display', serif;  /* titoli eleganti */
+}
+
 
 h1 {
     color: #333;

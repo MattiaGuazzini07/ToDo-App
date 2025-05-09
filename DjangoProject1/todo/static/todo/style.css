@@ -1,7 +1,11 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Merriweather', serif;
     background-color: #f5f5f5;
     margin: 20px;
+}
+
+h1, h2 {
+  font-family: 'Playfair Display', serif;  /* titoli eleganti */
 }
 
 h1 {
@@ -12,6 +16,12 @@ ul {
     list-style: none;
     padding: 0;
 }
+.checkbox-field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 
 li { /*devono esserre grandi quanto le scritte, non di piu*/
     background: white;

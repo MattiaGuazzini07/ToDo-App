@@ -1,116 +1,67 @@
-{% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>La mia lista TODO</title>
-    <link rel="stylesheet" href="{% static 'todo/style.css' %}?v={{ timestamp }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="icon" href="{% static 'favicon.png' %}" type="image/png">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-<body>
-<div class="header">
+<!-- templates/home.html -->
+{% extends 'todo/user_base.html' %}
+{% block title %}La mia lista TODO{% endblock %}
+{% block header %}
     <h2>Le mie attività</h2>
-    {% if messages %}
-        <ul class="messages">
-        {% for message in messages %}
-            <li class="{{ message.tags }}">{{ message }}</li>
-        {% endfor %}
-        </ul>
-    {% endif %}
     <div class="user-panel">
-    <p>Benvenuto <strong>{{ user.username }}</strong></p>
+        <p>Benvenuto <strong>{{ user.username }}</strong></p>
 
-    {% if request.user.is_superuser %}
-        <a href="{% url 'admin_dashboard' %}" class="btn-admin">Dashboard Admin</a>
-    {% else %}
-        {% for group in user.groups.all %}
-            {% if group.name == "Staff" %}
-                <a href="{% url 'staff_dashboard' %}" class="btn-admin">Dashboard</a>
-            {% endif %}
-        {% endfor %}
+        {% if request.user.is_superuser %}
+            <a href="{% url 'admin_dashboard' %}" class="btn-admin">Dashboard Admin</a>
+        {% else %}
+            {% for group in user.groups.all %}
+                {% if group.name == "Staff" %}
+                    <a href="{% url 'staff_dashboard' %}" class="btn-admin">Dashboard</a>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+
+        <form action="{% url 'logout' %}" method="post" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn-logout">Logout</button>
+        </form>
+    </div>
+{% endblock %}
+
+{% block content %}
+    {% if form.errors %}
+        <div class="field-error">
+            <strong>Attenzione:</strong>
+            <ul>
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+            </ul>
+        </div>
     {% endif %}
 
-    <form action="{% url 'logout' %}" method="post" style="display: inline;">
-        {% csrf_token %}
-        <button type="submit" class="btn-logout">Logout</button>
-    </form>
-</div>
+    <!-- FORM NUOVA ATTIVITÀ -->
+    <div class="form-box">
+        <h2>Nuovo Attività</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="field">
+                <label for="{{ form.title.id_for_label }}">Titolo</label><br>
+                {{ form.title }}
+            </div>
+            <div class="field">
+                <label for="{{ form.due_date.id_for_label }}">Data di scadenza</label><br>
+                {{ form.due_date }}
+            </div>
+            <div class="field">
+                <label for="{{ form.priority.id_for_label }}">Priorità</label><br>
+                {{ form.priority }}
+            </div>
+            <button type="submit">Salva</button>
+        </form>
+    </div>
 
-</div>
-{% if form.errors %}
-  <div class="field-error">
-    <strong>Attenzione:</strong>
-    <ul>
-      {% for field in form %}
-        {% for error in field.errors %}
-          <li><strong>{{ field.label }}:</strong> {{ error }}</li>
-        {% endfor %}
-      {% endfor %}
-      {% for error in form.non_field_errors %}
-        <li>{{ error }}</li>
-      {% endfor %}
-    </ul>
-  </div>
-{% endif %}
-<div class="form-box">
-    <h2>Nuovo Attività</h2>
-    <form method="post">
-        {% csrf_token %}
-
-        <div class="field">
-            <label for="{{ form.title.id_for_label }}">Titolo</label><br>
-            {{ form.title }}
-        </div>
-
-        <div class="field">
-            <label for="{{ form.due_date.id_for_label }}">Data di scadenza</label><br>
-            {{ form.due_date }}
-        </div>
-
-        <div class="field">
-            <label for="{{ form.priority.id_for_label }}">Priorità</label><br>
-            {{ form.priority }}
-        </div>
-        <button type="submit">Salva</button>
-    </form>
-</div>
-
-<h3>Attività da fare</h3>
-<form method="get" class="order-form">
-    <input type="text" name="q" placeholder="Cerca attività..." value="{{ search_query }}" class="small-select">
-  <label for="order_by">Ordina:</label>
-  <select name="order_by" id="order_by" class="small-select">
-    <option value="priority" {% if order_by == 'priority' %}selected{% endif %}>Priorità</option>
-    <option value="due_date" {% if order_by == 'due_date' %}selected{% endif %}>Scadenza</option>
-    <option value="created_at" {% if order_by == 'created_at' %}selected{% endif %}>Creato</option>
-    <option value="title" {% if order_by == 'title' %}selected{% endif %}>Titolo</option>
-  </select>
-
-  <label for="order_dir">Direzione:</label>
-  <select name="order_dir" id="order_dir" class="small-select">
-    <option value="asc" {% if order_dir == 'asc' %}selected{% endif %}>↑ Cresc</option>
-    <option value="desc" {% if order_dir == 'desc' %}selected{% endif %}>↓ Decr</option>
-  </select>
-
-    <label for="priority">Filtra priorità:</label>
-    <select name="priority" id="priority" class="small-select">
-      <option value="">Tutte</option>
-      <option value="high" {% if priority_filter == 'high' %}selected{% endif %}>Alta</option>
-      <option value="medium" {% if priority_filter == 'medium' %}selected{% endif %}>Media</option>
-      <option value="low" {% if priority_filter == 'low' %}selected{% endif %}>Bassa</option>
-    </select>
-
-<label>
-  <input type="checkbox" name="only_future" {% if only_future %}checked{% endif %}>
-  Solo con scadenza futura
-</label>
-
-
-  <button type="submit" class="small-button">↻</button>
-</form>
-
-<h3>Attività da fare</h3>
+    <h3>Attività da fare</h3>
 
 <div class="todo-list">
     {% for task in tasks_da_fare %}
@@ -122,7 +73,7 @@
                 <i class="fas fa-trash"></i>
             </a>
             <a href="{% url 'edit_task' task.id %}" class="edit-icon" title="Modifica">
-                <i class="fas fa-pen"></i>
+                <i class="fa-solid fa-pen"></i>
             </a>
         </div>
         <div>
@@ -133,50 +84,51 @@
         </div>
     </div>
     {% empty %}
-        <div style="padding: 10px; font-style: italic; color: #555;">
-            Nessuna attività trovata.
-        </div>
+    <div style="padding: 10px; font-style: italic; color: #555;">
+        Nessuna attività trovata.
+    </div>
     {% endfor %}
 </div>
+
 <div class="collapsible-section">
-  <button class="collapsible-toggle" type="button" onclick="toggleCompleted()">▶ Attività completate</button>
-  <div id="completed-content" class="collapsible-content">
-    {% for task in tasks_fatti %}
-    <div class="todo-card">
-        <div style="display: flex; align-items: center;">
-            <a href="{% url 'uncomplete_task' task.id %}" class="circle completed" title="Segna come da fare"></a>
-            <strong style="margin-right: auto;">{{ task.title }}</strong>
-            <a href="{% url 'delete_task' task.id %}" class="delete-icon" title="Elimina">
-                <i class="fas fa-trash"></i>
-            </a>
+    <button class="collapsible-toggle" type="button" onclick="toggleCompleted()">▼ Attività completate</button>
+    <div id="completed-content" class="collapsible-content">
+        {% for task in tasks_fatti %}
+        <div class="todo-card">
+            <div style="display: flex; align-items: center;">
+                <a href="{% url 'uncomplete_task' task.id %}" class="circle completed" title="Segna come da fare"></a>
+                <strong style="margin-right: auto;">{{ task.title }}</strong>
+                <a href="{% url 'delete_task' task.id %}" class="delete-icon" title="Elimina">
+                    <i class="fas fa-trash"></i>
+                </a>
+            </div>
+            <div>
+                <span class="priority {{ task.priority }}">Priorità: {{ task.get_priority_display }}</span><br>
+                {% if task.due_date %}
+                    <span>Scadenza: {{ task.due_date|date:"d/m/Y" }}</span>
+                {% endif %}
+            </div>
         </div>
-        <div>
-            <span class="priority {{ task.priority }}">Priorità: {{ task.get_priority_display }}</span><br>
-            {% if task.due_date %}
-                <span>Scadenza: {{ task.due_date|date:"d/m/Y" }}</span>
-            {% endif %}
-        </div>
-    </div>
-    {% empty %}
+        {% empty %}
         <div style="padding: 10px; font-style: italic; color: #555;">
             Nessuna attività completata.
         </div>
-    {% endfor %}
-  </div>
+        {% endfor %}
+    </div>
 </div>
+{% endblock %}
 
+{% block scripts %}
 <script>
-  function toggleCompleted() {
-    const content = document.getElementById("completed-content");
-    const button = document.querySelector(".collapsible-toggle");
-    const isHidden = content.style.display === "none";
-
-    content.style.display = isHidden ? "flex" : "none";
-    button.textContent = isHidden ? "▼ Attività completate" : "▶ Attività completate";
-  }
-  window.onload = () => {
-    document.getElementById("completed-content").style.display = "none";
-  };
+    function toggleCompleted() {
+        const content = document.getElementById("completed-content");
+        const button = document.querySelector(".collapsible-toggle");
+        const isHidden = content.style.display === "none";
+        content.style.display = isHidden ? "flex" : "none";
+        button.textContent = isHidden ? "▼ Attività completate" : "▶ Attività completate";
+    }
+    window.onload = () => {
+        document.getElementById("completed-content").style.display = "none";
+    };
 </script>
-</body>
-</html>
+{% endblock %}
