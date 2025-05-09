@@ -1,9 +1,13 @@
 
 body {
-    font-family: sans-serif;
+    font-family: 'meriweather', sans-serif;  /* font principale */
     background-color: #f9f9f9;
     padding: 20px;
 }
+h1, h2 {
+  font-family: 'Playfair Display', serif;  /* titoli eleganti */
+}
+
 
 h1 {
     color: #333;
@@ -80,6 +84,23 @@ form {
     margin-right: 10px;
     min-width: 200px;
     background-color: #fff;
+}
+
+.dashboard-link {
+    display: inline-block;
+    margin-right: 10px;
+    padding: 8px 12px;
+    background-color: #f0f4ff;
+    color: #1a73e8;
+    border: 1px solid #c3dafe;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+
+.dashboard-link:hover {
+    background-color: #e0ecff;
 }
 
 .submit-btn {

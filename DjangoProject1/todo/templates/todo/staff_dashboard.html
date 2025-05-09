@@ -1,16 +1,10 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <title>Dashboard Staff</title>
-    <link rel="stylesheet" href="{% static 'todo/admin.css' %}">
-    <link rel="icon" href="{% static 'favicon.png' %}" type="image/png">
-</head>
-<body>
+{% extends 'todo/staff_base.html' %}
+{% block title %}Dashboard Staff{% endblock %}
 
+{% block content %}
 <h1>📋 Dashboard Staff</h1>
 <p>Benvenuto, {{ user.username }}!</p>
+
 <form method="get" class="filter-form">
   <input type="text" name="q" placeholder="Cerca utente..." value="{{ request.GET.q }}">
 
@@ -48,7 +42,4 @@
 
 <p>Totale utenti: {{ total_users }}</p>
 <a href="{% url 'home' %}">← Torna alla home</a>
-
-
-</body>
-</html>
+{% endblock %}
