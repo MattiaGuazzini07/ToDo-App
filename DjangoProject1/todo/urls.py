@@ -13,4 +13,7 @@ urlpatterns = [
     path('create_user/', views.create_user, name='create_user'),
     path('tasks/<int:task_id>/edit/', views.edit_task, name='edit_task'),
     path('staff/dashboard/', views.staff_dashboard, name='staff_dashboard'),
+    path('calendar/', views.calendar_view, name='calendar'),
+    path('calendar/events/', views.task_events, name='task_events'),
+
 ]

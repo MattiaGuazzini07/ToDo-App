@@ -13,7 +13,10 @@
             <div class="error">{{ form.non_field_errors }}</div>
         {% endif %}
 
-        <button type="submit">Crea account</button>
+        <button type="submit">
+            <i data-lucide="user-plus" class="lucide-icon" style="vertical-align: middle;"></i> Crea account
+        </button>
+
     </form>
 
     <p>Hai già un account? <a href="{% url 'login' %}">Accedi qui</a>.</p>

@@ -5,7 +5,7 @@
     <h2>Le mie attività</h2>
     <div class="user-panel">
         <p>Benvenuto <strong>{{ user.username }}</strong></p>
-
+        <a href="{% url 'calendar' %}" class="btn-admin">📅 Calendario</a>
         {% if request.user.is_superuser %}
             <a href="{% url 'admin_dashboard' %}" class="btn-admin">Dashboard Admin</a>
         {% else %}
@@ -18,7 +18,9 @@
 
         <form action="{% url 'logout' %}" method="post" style="display: inline;">
             {% csrf_token %}
-            <button type="submit" class="btn-logout">Logout</button>
+            <button type="submit" class="btn-logout">
+                <i data-lucide="log-out" class="lucide-icon" style="vertical-align: middle;"></i> Logout
+            </button>
         </form>
     </div>
 {% endblock %}
@@ -65,15 +67,15 @@
 
 <div class="todo-list">
     {% for task in tasks_da_fare %}
-    <div class="todo-card">
+    <div class="todo-card" style="animation-delay: {{ forloop.counter0|add:"0.05"|floatformat:2 }}s;">
         <div style="display: flex; align-items: center;">
             <a href="{% url 'complete_task' task.id %}" class="circle" title="Completa"></a>
             <strong style="margin-right: auto;">{{ task.title }}</strong>
             <a href="{% url 'delete_task' task.id %}" class="delete-icon" title="Elimina">
-                <i class="fas fa-trash"></i>
+                <i data-lucide="trash"></i>
             </a>
             <a href="{% url 'edit_task' task.id %}" class="edit-icon" title="Modifica">
-                <i class="fa-solid fa-pen"></i>
+                <i data-lucide="pencil"></i>
             </a>
         </div>
         <div>
@@ -94,12 +96,12 @@
     <button class="collapsible-toggle" type="button" onclick="toggleCompleted()">▼ Attività completate</button>
     <div id="completed-content" class="collapsible-content">
         {% for task in tasks_fatti %}
-        <div class="todo-card">
+        <div class="todo-card" style="animation-delay: {{ forloop.counter0|add:"0.05"|floatformat:2 }}s;">
             <div style="display: flex; align-items: center;">
                 <a href="{% url 'uncomplete_task' task.id %}" class="circle completed" title="Segna come da fare"></a>
                 <strong style="margin-right: auto;">{{ task.title }}</strong>
                 <a href="{% url 'delete_task' task.id %}" class="delete-icon" title="Elimina">
-                    <i class="fas fa-trash"></i>
+                    <i data-lucide="trash"></i>
                 </a>
             </div>
             <div>
@@ -119,16 +121,27 @@
 {% endblock %}
 
 {% block scripts %}
+<script src="https://unpkg.com/lucide@latest"></script>
 <script>
     function toggleCompleted() {
         const content = document.getElementById("completed-content");
         const button = document.querySelector(".collapsible-toggle");
-        const isHidden = content.style.display === "none";
-        content.style.display = isHidden ? "flex" : "none";
-        button.textContent = isHidden ? "▼ Attività completate" : "▶ Attività completate";
+        const isOpen = content.classList.contains("open");
+    content.classList.toggle("open");
+    button.textContent = isOpen ? "▶ Attività completate" : "▼ Attività completate";
     }
+
     window.onload = () => {
-        document.getElementById("completed-content").style.display = "none";
+    document.getElementById("completed-content").classList.remove("open");
+
+    // ATTIVA ICONE LUCIDE
+    if (typeof lucide !== 'undefined' && lucide.createIcons) {
+        lucide.createIcons();
+    } else {
+        console.error("❌ Lucide non trovato.");
+    }
     };
+
 </script>
 {% endblock %}
+

@@ -21,11 +21,16 @@
         {% block header %}{% endblock %}
     </div>
 
-
     <main>
         {% block content %}{% endblock %}
     </main>
 
-    {% block scripts %}{% endblock %}
+{% block scripts %}
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+{% endblock %}
+
 </body>
 </html>

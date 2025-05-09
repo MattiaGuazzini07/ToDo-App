@@ -515,3 +515,63 @@ select {
 .order-form .small-button:hover {
   background-color: #004a99;
 }
+
+#calendar {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  margin-top: 20px;
+}
+
+.fc {
+  font-family: 'Merriweather', serif;
+}
+
+@media (max-width: 768px) {
+  #calendar {
+    padding: 10px;
+    font-size: 13px;
+  }
+}
+.lucide-icon {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2;
+  color: #555;
+}
+
+.delete-icon:hover .lucide-icon {
+  color: red;
+}
+
+.edit-icon:hover .lucide-icon {
+  color: #007bff;
+}
+@keyframes fadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.todo-card {
+  animation: fadeSlideIn 0.4s ease forwards;
+  opacity: 0; /* base prima dell'animazione */
+    will-change: transform, opacity; /* ottimizzazione per le prestazioni */
+}
+.collapsible-content {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, opacity 0.4s ease;
+}
+
+.collapsible-content.open {
+  max-height: 2000px; /* abbastanza per farci stare tutto */
+  opacity: 1;
+}
