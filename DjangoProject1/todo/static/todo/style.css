@@ -469,3 +469,38 @@ select {
   box-sizing: border-box;
   width: 100%;
 }
+
+/* Uniforma stile filtri attività */
+.order-form input[type="text"],
+.order-form select {
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  min-width: 160px;
+}
+
+.order-form input[type="checkbox"] {
+  transform: scale(1.2);
+  margin-right: 5px;
+}
+
+.order-form label {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.order-form .small-button {
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: 6px;
+  background-color: #0066cc;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.order-form .small-button:hover {
+  background-color: #004a99;
+}

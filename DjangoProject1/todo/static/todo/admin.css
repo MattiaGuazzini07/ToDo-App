@@ -1,3 +1,4 @@
+
 body {
     font-family: sans-serif;
     background-color: #f9f9f9;
@@ -70,6 +71,16 @@ form {
     box-sizing: border-box;
 }
 
+.filter-form input[type="text"],
+.filter-form select {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-right: 10px;
+    min-width: 200px;
+    background-color: #fff;
+}
 
 .submit-btn {
     background-color: #4CAF50;
@@ -89,6 +100,7 @@ form {
     color: red;
     font-size: 14px;
 }
+
 .messages {
     list-style: none;
     padding: 0;
@@ -103,6 +115,7 @@ form {
     border-radius: 4px;
     font-weight: bold;
 }
+
 .btn-danger {
     all: unset;
     background-color: #ff4d4d;
@@ -130,7 +143,7 @@ form {
   cursor: pointer;
   font-weight: bold;
   transition: background-color 0.2s;
-    appearance: none;
+  appearance: none;
   -webkit-appearance: none;
   text-align: center;
 }
@@ -149,7 +162,6 @@ td form {
 td form button{
     min-width: 120px;
 }
-
 
 /* Responsive Styles */
 @media (max-width: 768px) {
@@ -200,9 +212,9 @@ td form button{
 
 .chart-container {
   max-width: 500px;
-  height: 300px;          /* Altezza fissa */
+  height: 300px;
   margin: 40px auto;
-  position: relative;     /* Importante per Chart.js */
+  position: relative;
 }
 
 canvas {
