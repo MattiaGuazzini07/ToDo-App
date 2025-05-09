@@ -8,7 +8,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<h1>Admin Dashboard</h1>
+<h1>📋 Admin Dashoard</h1>
+<p>Benvenuto, {{ user.username }}!</p>
+<div style="margin: 1em 0;">
+    <a href="https://console.neon.tech/app/projects/mute-pine-98162889/branches/br-blue-lake-a4ye8j72/tables?database=neondb"
+       class="dashboard-link" target="_blank">🗄️ Database Dashboard</a>
+    <a href="https://dashboard.render.com/web/srv-d0dlq7je5dus738ct810/deploys/dep-d0eqq5re5dus73dsg0d0"
+       class="dashboard-link" target="_blank">🚀 Render Dashboard</a>
+</div>
 
 <form method="get" class="filter-form">
   <input type="text" name="q" placeholder="Cerca utente..." value="{{ request.GET.q }}">
