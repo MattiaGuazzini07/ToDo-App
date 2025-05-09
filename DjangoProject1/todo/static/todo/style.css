@@ -16,6 +16,12 @@ ul {
     list-style: none;
     padding: 0;
 }
+.checkbox-field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 
 li { /*devono esserre grandi quanto le scritte, non di piu*/
     background: white;
