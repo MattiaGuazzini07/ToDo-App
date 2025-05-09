@@ -1,0 +1,117 @@
+{% extends 'todo/user_base.html' %}
+
+{% block content %}
+<div class="guida-page">
+
+    <section class="guida-blocco">
+        <h2>📘 Guida all'app ToDo</h2>
+        <p>Benvenuto nella guida di ToDo! Qui troverai tutte le informazioni per usare al meglio l'app.</p>
+        <a href="{% url 'home' %}" class="btn-admin">🏠 Torna alla Home</a>
+    </section>
+
+    <section class="guida-blocco">
+        <h3>💎 Cos'è ToDo</h3>
+        <p>ToDo è una web app per gestire le tue attività in modo semplice, ordinato e personalizzabile.</p>
+    </section>
+
+    <section class="guida-blocco">
+        <h3>✨ Come usare ToDo al meglio</h3>
+        <p>Accedi ogni giorno, aggiorna i tuoi task, usa filtri e calendario per restare sempre organizzato.</p>
+    </section>
+
+    <section class="guida-blocco">
+        <h3>📝 Come creare una nuova attività</h3>
+        <p>Inserisci titolo, priorità e scadenza nella sezione “Nuova Attività” e clicca su Salva.</p>
+    </section>
+
+    <section class="guida-blocco">
+        <h3>📂 Come organizzare le attività (liste, categorie, tag)</h3>
+        <p>Attualmente puoi usare titoli e priorità per distinguere i task. In futuro aggiungeremo tag e liste!</p>
+    </section>
+
+    <section class="guida-blocco">
+        <h3>⏰ Come impostare promemoria e notifiche</h3>
+        <p>Funzionalità in sviluppo: riceverai avvisi prima della scadenza tramite email o browser.</p>
+    </section>
+
+    <section class="guida-blocco">
+        <h3>📅 Come usare il calendario integrato</h3>
+        <p>Vai su “Calendario” per visualizzare le attività in formato mensile, con colori in base alla priorità.</p>
+    </section>
+
+    <section class="guida-blocco">
+        <h3>🔄 Come sincronizzare ToDo su più dispositivi</h3>
+        <p>Accedi con lo stesso account da qualsiasi browser: i dati sono salvati nel tuo profilo.</p>
+    </section>
+
+    <section class="guida-blocco">
+        <h3>📴 Come usare ToDo offline</h3>
+        <p>Per ora ToDo funziona solo online. In futuro potrai accedere anche senza connessione.</p>
+    </section>
+
+    <section class="guida-blocco">
+        <h3>🎨 Come personalizzare l'app</h3>
+        <p>Presto potrai scegliere tra temi chiari e scuri, cambiare font e colori delle priorità.</p>
+    </section>
+
+    <section class="guida-blocco">
+        <h3>👤 Come gestire account e backup</h3>
+        <p>Potrai modificare i dati del tuo account e in futuro esportare tutte le attività in CSV o PDF.</p>
+    </section>
+
+    <section class="guida-blocco">
+        <h3>🧠 Come usare le funzionalità avanzate (filtri, ricerca, widget)</h3>
+        <p>Filtra le attività per titolo, priorità, stato e data. Cerca in tempo reale e organizza meglio il tuo lavoro.</p>
+    </section>
+
+    <section class="guida-blocco">
+        <h3>❓ Domande frequenti</h3>
+        <ul>
+            <li><strong>Posso condividere task?</strong> 👉 Funzione Co-Op in arrivo!</li>
+            <li><strong>I miei dati sono al sicuro?</strong> 👉 Sì, ogni utente vede solo i propri dati.</li>
+            <li><strong>Posso usare ToDo da smartphone?</strong> 👉 Sì! È responsive.</li>
+        </ul>
+    </section>
+
+    <section class="guida-blocco">
+        <h3>📬 Come contattare il supporto</h3>
+        <p>Scrivici via email: <a href="mailto:support@todoapp.dev">support@todoapp.dev</a></p>
+    </section>
+
+    <section class="guida-blocco">
+    <h3>🔐 Come funziona la sicurezza</h3>
+    <p>I tuoi dati sono protetti: solo tu puoi visualizzare e gestire le tue attività.</p>
+    <p>Tutte le azioni richiedono l’accesso con il tuo account personale.</p>
+    </section>
+
+    <section class="guida-blocco">
+        <h3>👥 Come funzioneranno le amicizie e i task condivisi</h3>
+        <p>Presto potrai inviare richieste d'amicizia ad altri utenti e creare attività condivise (Co-Op) per collaborare in tempo reale!</p>
+    </section>
+
+    <section class="guida-blocco">
+        <h3>🧪 Suggerimenti pratici</h3>
+        <ul>
+            <li>Assegna nomi chiari alle attività per ritrovarle velocemente</li>
+            <li>Usa le priorità per sapere cosa fare prima</li>
+            <li>Controlla le attività completate per tenere traccia dei tuoi progressi</li>
+        </ul>
+    </section>
+
+    <section class="guida-blocco">
+        <h3>🔗 Integrazioni future</h3>
+        <p>Stiamo lavorando a:</p>
+        <ul>
+            <li>Integrazione con Google Calendar</li>
+            <li>Notifiche push nel browser</li>
+            <li>Backup automatici in cloud</li>
+        </ul>
+    </section>
+
+    <section class="guida-blocco">
+        <h3>🧰 Per chi è pensata l'app</h3>
+        <p>ToDo è ideale per studenti, freelance, team piccoli e chiunque voglia restare organizzato con semplicità.</p>
+    </section>
+
+</div>
+{% endblock %}
