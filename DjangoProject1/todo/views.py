@@ -115,12 +115,17 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
+
+            messages.success(
+                request,
+                "🎉 Benvenuto su ToDo! Dai un'occhiata alla \t <a href='/guida/'><strong>guida introduttiva</strong></a> \t per iniziare 🔍",
+            )
+
             return redirect('home')
     else:
         form = UserCreationForm()
 
     return render(request, 'todo/signup.html', {'form': form})
-
 
 @login_required
 def uncomplete_task(request, task_id):
@@ -307,3 +312,7 @@ def get_color(priority):
         'medium': '#ffc107',
         'low': '#28a745'
     }.get(priority, '#007bff')
+
+@login_required
+def guida_view(request):
+    return render(request, 'todo/guida.html')
