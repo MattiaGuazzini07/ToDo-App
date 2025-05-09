@@ -548,3 +548,30 @@ select {
 .edit-icon:hover .lucide-icon {
   color: #007bff;
 }
+@keyframes fadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.todo-card {
+  animation: fadeSlideIn 0.4s ease forwards;
+  opacity: 0; /* base prima dell'animazione */
+    will-change: transform, opacity; /* ottimizzazione per le prestazioni */
+}
+.collapsible-content {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, opacity 0.4s ease;
+}
+
+.collapsible-content.open {
+  max-height: 2000px; /* abbastanza per farci stare tutto */
+  opacity: 1;
+}
