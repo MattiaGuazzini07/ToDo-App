@@ -10,6 +10,7 @@ from .forms import TaskForm, UserForm
 from django.db.models import Count, Q
 from django.contrib import messages
 from django.db import IntegrityError
+from django.http import JsonResponse
 
 
 @login_required
@@ -254,3 +255,29 @@ def staff_dashboard(request):
         'total_completed_tasks': tasks.filter(is_completed=True).count(),
         'total_incomplete_tasks': tasks.filter(is_completed=False).count(),
     })
+
+@login_required
+def calendar_view(request):
+    return render(request, 'todo/calendar.html')
+
+@login_required
+def task_events(request):
+    tasks = Task.objects.filter(user=request.user)
+    events = []
+
+    for task in tasks:
+        if task.due_date:
+            events.append({
+                'title': task.title,
+                'start': task.due_date.isoformat(),
+                'color': get_color(task.priority),
+                'url': f'/edit/{task.id}/'
+            })
+    return JsonResponse(events, safe=False)
+
+def get_color(priority):
+    return {
+        'high': '#dc3545',
+        'medium': '#ffc107',
+        'low': '#28a745'
+    }.get(priority, '#007bff')
