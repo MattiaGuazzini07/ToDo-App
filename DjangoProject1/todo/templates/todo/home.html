@@ -5,7 +5,7 @@
     <h2>Le mie attività</h2>
     <div class="user-panel">
         <p>Benvenuto <strong>{{ user.username }}</strong></p>
-
+        <a href="{% url 'calendar' %}" class="btn-admin">📅 Calendario</a>
         {% if request.user.is_superuser %}
             <a href="{% url 'admin_dashboard' %}" class="btn-admin">Dashboard Admin</a>
         {% else %}
