@@ -4,7 +4,7 @@
 {% block header %}
     <h2>Le mie attività</h2>
     <div class="user-dropdown">
-    <span class="user-name">Benvenuto <strong>{{ user.username }}</strong></span>
+        <span class="user-name">Benvenuto <strong>{{ user.username }}</strong></span>
         <div class="dropdown-menu">
             <a href="{% url 'calendar' %}" class="btn-admin">📅 Calendario</a>
             {% if request.user.is_superuser %}
@@ -16,6 +16,7 @@
                     {% endif %}
                 {% endfor %}
             {% endif %}
+            <a href="{% url 'guida' %}" class="btn-admin">📘 Guida</a>
 
             <form action="{% url 'logout' %}" method="post">
                 {% csrf_token %}
@@ -28,6 +29,13 @@
 {% endblock %}
 
 {% block content %}
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li>{{ message|safe }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
     {% if form.errors %}
         <div class="field-error">
             <strong>Attenzione:</strong>
@@ -43,6 +51,7 @@
             </ul>
         </div>
     {% endif %}
+
 
     <div class="main-content">
     <!-- FORM NUOVA ATTIVITÀ -->

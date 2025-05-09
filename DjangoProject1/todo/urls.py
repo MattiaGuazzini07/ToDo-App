@@ -15,5 +15,5 @@ urlpatterns = [
     path('staff/dashboard/', views.staff_dashboard, name='staff_dashboard'),
     path('calendar/', views.calendar_view, name='calendar'),
     path('calendar/events/', views.task_events, name='task_events'),
-
+    path('guida/', views.guida_view, name='guida'),
 ]

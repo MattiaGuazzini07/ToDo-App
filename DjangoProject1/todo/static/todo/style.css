@@ -435,3 +435,27 @@ input[name="q"] { min-width: 150px; }
         box-sizing: border-box; /* ✅ Include padding e border nel calcolo */
     }
 }
+
+.guida-page {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 2rem 1rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.guida-blocco {
+    background-color: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    animation: fadeSlideIn 0.4s ease forwards;
+}
+.guida-blocco h3 {
+    margin-top: 0;
+}
+.guida-blocco ul {
+    list-style: disc;
+    padding-left: 20px;
+}
