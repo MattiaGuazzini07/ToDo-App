@@ -44,9 +44,10 @@
         </div>
     {% endif %}
 
+    <div class="main-content">
     <!-- FORM NUOVA ATTIVITÀ -->
     <div class="form-box">
-        <h2>Nuovo Attività</h2>
+        <h2>Nuova Attività</h2>
         <form method="post">
             {% csrf_token %}
             <div class="field">
@@ -65,61 +66,67 @@
         </form>
     </div>
 
-    <h3>Attività da fare</h3>
+    <!-- QUI VA LA TUA LISTA DI TASK -->
+    <div class="task-section">
+        <h3>Attività da fare</h3>
+        <div class="todo-list">
+            {% for task in tasks_da_fare %}
+            <div class="todo-card" style="animation-delay: {{ forloop.counter0|add:"0.05"|floatformat:2 }}s;">
+                <div style="display: flex; align-items: center;">
+                    <a href="{% url 'complete_task' task.id %}" class="circle" title="Completa"></a>
+                    <strong style="margin-right: auto;">{{ task.title }}</strong>
+                    <a href="{% url 'delete_task' task.id %}" class="delete-icon" title="Elimina">
+                        <i data-lucide="trash"></i>
+                    </a>
+                    <a href="{% url 'edit_task' task.id %}" class="edit-icon" title="Modifica">
+                        <i data-lucide="pencil"></i>
+                    </a>
+                </div>
+                <div>
+                    <span class="priority {{ task.priority }}">Priorità: {{ task.get_priority_display }}</span><br>
+                    {% if task.due_date %}
+                        <span>Scadenza: {{ task.due_date|date:"d/m/Y" }}</span>
+                    {% endif %}
+                </div>
+            </div>
+            {% empty %}
+            <div style="padding: 10px; font-style: italic; color: #555;">
+                Nessuna attività trovata.
+            </div>
+            {% endfor %}
+        </div>
 
-<div class="todo-list">
-    {% for task in tasks_da_fare %}
-    <div class="todo-card" style="animation-delay: {{ forloop.counter0|add:"0.05"|floatformat:2 }}s;">
-        <div style="display: flex; align-items: center;">
-            <a href="{% url 'complete_task' task.id %}" class="circle" title="Completa"></a>
-            <strong style="margin-right: auto;">{{ task.title }}</strong>
-            <a href="{% url 'delete_task' task.id %}" class="delete-icon" title="Elimina">
-                <i data-lucide="trash"></i>
-            </a>
-            <a href="{% url 'edit_task' task.id %}" class="edit-icon" title="Modifica">
-                <i data-lucide="pencil"></i>
-            </a>
-        </div>
-        <div>
-            <span class="priority {{ task.priority }}">Priorità: {{ task.get_priority_display }}</span><br>
-            {% if task.due_date %}
-                <span>Scadenza: {{ task.due_date|date:"d/m/Y" }}</span>
-            {% endif %}
+        <div class="collapsible-section">
+            <button class="collapsible-toggle" type="button" onclick="toggleCompleted()">▼ Attività completate</button>
+            <div id="completed-content" class="collapsible-content">
+                {% for task in tasks_fatti %}
+                <div class="todo-card" style="animation-delay: {{ forloop.counter0|add:"0.05"|floatformat:2 }}s;">
+                    <div style="display: flex; align-items: center;">
+                        <a href="{% url 'uncomplete_task' task.id %}" class="circle completed" title="Segna come da fare"></a>
+                        <strong style="margin-right: auto;">{{ task.title }}</strong>
+                        <a href="{% url 'delete_task' task.id %}" class="delete-icon" title="Elimina">
+                            <i data-lucide="trash"></i>
+                        </a>
+                    </div>
+                    <div>
+                        <span class="priority {{ task.priority }}">Priorità: {{ task.get_priority_display }}</span><br>
+                        {% if task.due_date %}
+                            <span>Scadenza: {{ task.due_date|date:"d/m/Y" }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+                {% empty %}
+                <div style="padding: 10px; font-style: italic; color: #555;">
+                    Nessuna attività completata.
+                </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
-    {% empty %}
-    <div style="padding: 10px; font-style: italic; color: #555;">
-        Nessuna attività trovata.
-    </div>
-    {% endfor %}
 </div>
 
-<div class="collapsible-section">
-    <button class="collapsible-toggle" type="button" onclick="toggleCompleted()">▼ Attività completate</button>
-    <div id="completed-content" class="collapsible-content">
-        {% for task in tasks_fatti %}
-        <div class="todo-card" style="animation-delay: {{ forloop.counter0|add:"0.05"|floatformat:2 }}s;">
-            <div style="display: flex; align-items: center;">
-                <a href="{% url 'uncomplete_task' task.id %}" class="circle completed" title="Segna come da fare"></a>
-                <strong style="margin-right: auto;">{{ task.title }}</strong>
-                <a href="{% url 'delete_task' task.id %}" class="delete-icon" title="Elimina">
-                    <i data-lucide="trash"></i>
-                </a>
-            </div>
-            <div>
-                <span class="priority {{ task.priority }}">Priorità: {{ task.get_priority_display }}</span><br>
-                {% if task.due_date %}
-                    <span>Scadenza: {{ task.due_date|date:"d/m/Y" }}</span>
-                {% endif %}
-            </div>
-        </div>
-        {% empty %}
-        <div style="padding: 10px; font-style: italic; color: #555;">
-            Nessuna attività completata.
-        </div>
-        {% endfor %}
-    </div>
-</div>
+
+
 {% endblock %}
 
 {% block scripts %}
