@@ -9,37 +9,45 @@
 <body>
 
 <h1>📋 Dashboard Staff</h1>
+<p>Benvenuto, {{ user.username }}!</p>
+<form method="get" class="filter-form">
+  <input type="text" name="q" placeholder="Cerca utente..." value="{{ request.GET.q }}">
+
+  <select name="sort_by">
+      <option value="">Ordina per...</option>
+      <option value="date_joined" {% if request.GET.sort_by == 'date_joined' %}selected{% endif %}>Data iscrizione (crescente)</option>
+      <option value="-date_joined" {% if request.GET.sort_by == '-date_joined' %}selected{% endif %}>Data iscrizione (decrescente)</option>
+      <option value="username" {% if request.GET.sort_by == 'username' %}selected{% endif %}>Username (A-Z)</option>
+      <option value="-username" {% if request.GET.sort_by == '-username' %}selected{% endif %}>Username (Z-A)</option>
+  </select>
+
+  <button type="submit" class="btn-search">Filtra</button>
+</form>
 
 <table>
     <thead>
         <tr>
-            <th>Utente</th>
-            <th>Titolo</th>
-            <th>Priorità</th>
-            <th>Completato</th>
+            <th>Username</th>
+            <th>Data iscrizione</th>
+            <th>Task totali</th>
+            <th>Task completati</th>
         </tr>
     </thead>
     <tbody>
-        {% for task in tasks %}
-        <tr>
-            <td>{{ task.user.username }}</td>
-            <td>{{ task.title }}</td>
-            <td>{{ task.priority }}</td>
-            <td>
-                {% if task.is_completed %}
-                    <span style="color: green; font-weight: bold;">✅</span>
-                {% else %}
-                    <span style="color: red; font-weight: bold;">❌</span>
-                {% endif %}
-            </td>
-        </tr>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.username }}</td>
+                <td>{{ user.date_joined|date:"Y-m-d H:i" }}</td>
+                <td>{{ user.total_tasks }}</td>
+                <td>{{ user.completed_tasks }}</td>
+            </tr>
         {% endfor %}
     </tbody>
 </table>
 
-<p style="margin-top: 20px;">
-    <a href="{% url 'home' %}">← Torna alla home</a>
-</p>
+<p>Totale utenti: {{ total_users }}</p>
+<a href="{% url 'home' %}">← Torna alla home</a>
+
 
 </body>
 </html>
