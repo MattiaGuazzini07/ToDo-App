@@ -3,25 +3,27 @@
 {% block title %}La mia lista TODO{% endblock %}
 {% block header %}
     <h2>Le mie attività</h2>
-    <div class="user-panel">
-        <p>Benvenuto <strong>{{ user.username }}</strong></p>
-        <a href="{% url 'calendar' %}" class="btn-admin">📅 Calendario</a>
-        {% if request.user.is_superuser %}
-            <a href="{% url 'admin_dashboard' %}" class="btn-admin">Dashboard Admin</a>
-        {% else %}
-            {% for group in user.groups.all %}
-                {% if group.name == "Staff" %}
-                    <a href="{% url 'staff_dashboard' %}" class="btn-admin">Dashboard</a>
-                {% endif %}
-            {% endfor %}
-        {% endif %}
+    <div class="user-dropdown">
+    <span class="user-name">Benvenuto <strong>{{ user.username }}</strong></span>
+        <div class="dropdown-menu">
+            <a href="{% url 'calendar' %}" class="btn-admin">📅 Calendario</a>
+            {% if request.user.is_superuser %}
+                <a href="{% url 'admin_dashboard' %}" class="btn-admin">Dashboard Admin</a>
+            {% else %}
+                {% for group in user.groups.all %}
+                    {% if group.name == "Staff" %}
+                        <a href="{% url 'staff_dashboard' %}" class="btn-admin">Dashboard</a>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
 
-        <form action="{% url 'logout' %}" method="post" style="display: inline;">
-            {% csrf_token %}
-            <button type="submit" class="btn-logout">
-                <i data-lucide="log-out" class="lucide-icon" style="vertical-align: middle;"></i> Logout
-            </button>
-        </form>
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn-logout">
+                    <i data-lucide="log-out" class="lucide-icon" style="vertical-align: middle;"></i> Logout
+                </button>
+            </form>
+        </div>
     </div>
 {% endblock %}
 
