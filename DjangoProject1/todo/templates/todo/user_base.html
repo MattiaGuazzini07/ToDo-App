@@ -5,7 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}La mia lista TODO{% endblock %}</title>
-
+    <!-- Shepherd.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shepherd.js@8.4.1/dist/css/shepherd.css" />
     <!-- CSS e Font -->
     <link rel="stylesheet" href="{% static 'todo/style.css' %}?v={{ timestamp }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -26,11 +27,25 @@
     </main>
 
 {% block scripts %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shepherd.js@8.3.1/dist/css/shepherd.css" />
+    <script src="https://cdn.jsdelivr.net/npm/shepherd.js@8.3.1/dist/js/shepherd.min.js"></script>
+    <!-- CSRF globale per il fetch -->
+
+    <script>
+        window.csrfToken = '{{ csrf_token }}';
+    </script>
+
+    <!-- Script del tour -->
+    <script src="{% static 'todo/js/tour.js' %}"></script>
+
+    <!-- Lucide -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
-        lucide.createIcons();
+        lucide?.createIcons?.();
     </script>
 {% endblock %}
+
+
 
 </body>
 </html>

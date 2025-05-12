@@ -1,5 +1,5 @@
 {% extends 'todo/user_base.html' %}
-
+{% load static %}
 {% block content %}
 <div class="guida-page">
 
@@ -7,6 +7,12 @@
         <h2>📘 Guida all'app ToDo</h2>
         <p>Benvenuto nella guida di ToDo! Qui troverai tutte le informazioni per usare al meglio l'app.</p>
         <a href="{% url 'home' %}" class="btn-admin">🏠 Torna alla Home</a>
+    </section>
+
+    <section class="guida-blocco">
+        <h3>🎯 Ripeti il tour interattivo</h3>
+        <p>Hai bisogno di un ripasso? Clicca qui sotto per rivedere il tour guidato dell'app!</p>
+        <button onclick="startTour()" class="small-button">🔄 Avvia il tour</button>
     </section>
 
     <section class="guida-blocco">
@@ -115,3 +121,15 @@
 
 </div>
 {% endblock %}
+
+{% block scripts %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shepherd.js@8.3.1/dist/css/shepherd.css" />
+    <script src="https://cdn.jsdelivr.net/npm/shepherd.js@8.3.1/dist/js/shepherd.min.js"></script>
+
+
+    <!-- Script tour che dipende da Shepherd -->
+    <script src="{% static 'todo/js/tour.js' %}"></script>
+{% endblock %}
+
+
+

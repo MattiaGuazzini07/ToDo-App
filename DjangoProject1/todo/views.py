@@ -1,7 +1,7 @@
 from re import search
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
-from .models import Task, User
+from .models import Task, User, UserProfile
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from datetime import datetime
@@ -20,9 +20,13 @@ from .forms import TaskForm
 from django.utils import timezone
 from django.contrib import messages
 from datetime import datetime
-
+from django.views.decorators.http import require_POST
+from django.http import HttpResponse
 @login_required
 def home(request):
+    # Se l'utente non ha ancora un profilo, crealo al volo
+    if not hasattr(request.user, 'userprofile'):
+        UserProfile.objects.create(user=request.user)
     # Gestione creazione nuova attività
     if request.method == 'POST':
         form = TaskForm(request.POST)
@@ -89,6 +93,7 @@ def home(request):
         'search_query': search_query,
         'only_future': only_future,
         'completed_filter': completed_filter,
+        'show_tour': not request.user.userprofile.has_seen_guide,
     })
 
 
@@ -316,3 +321,10 @@ def get_color(priority):
 @login_required
 def guida_view(request):
     return render(request, 'todo/guida.html')
+
+@require_POST
+@login_required
+def tour_seen(request):
+    request.user.userprofile.has_seen_guide = True
+    request.user.userprofile.save()
+    return HttpResponse(status=204)

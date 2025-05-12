@@ -1,5 +1,6 @@
 <!-- templates/home.html -->
 {% extends 'todo/user_base.html' %}
+{% load static %}
 {% block title %}La mia lista TODO{% endblock %}
 {% block header %}
     <h2>Le mie attività</h2>
@@ -158,27 +159,39 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="https://unpkg.com/lucide@latest"></script>
-<script>
-    function toggleCompleted() {
-        const content = document.getElementById("completed-content");
-        const button = document.querySelector(".collapsible-toggle");
-        const isOpen = content.classList.contains("open");
-    content.classList.toggle("open");
-    button.textContent = isOpen ? "▶ Attività completate" : "▼ Attività completate";
-    }
+    {% if show_tour %}
+    <!-- Shepherd CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shepherd.js@8.3.1/dist/css/shepherd.css" />
+    <script src="https://cdn.jsdelivr.net/npm/shepherd.js@8.3.1/dist/js/shepherd.min.js"></script>
 
-    window.onload = () => {
-    document.getElementById("completed-content").classList.remove("open");
 
-    // ATTIVA ICONE LUCIDE
-    if (typeof lucide !== 'undefined' && lucide.createIcons) {
-        lucide.createIcons();
-    } else {
-        console.error("❌ Lucide non trovato.");
-    }
-    };
 
-</script>
+        <!-- CSRF globale -->
+        <script>
+            window.csrfToken = "{{ csrf_token }}";
+        </script>
+
+        <!-- Tour interattivo -->
+        <script src="{% static 'todo/js/tour.js' %}"></script>
+    {% endif %}
+
+    <!-- Lucide (sempre) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- onload finale -->
+    <script>
+        window.onload = () => {
+            document.getElementById("completed-content")?.classList.remove("open");
+            lucide?.createIcons?.();
+
+            {% if show_tour %}
+                if (typeof startTour === "function") {
+                    startTour();
+                } else {
+                    console.warn("startTour non è definito");
+                }
+            {% endif %}
+
+        };
+    </script>
 {% endblock %}
-
