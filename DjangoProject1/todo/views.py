@@ -82,6 +82,8 @@ def home(request):
     # Task completati per sezione dedicata
     tasks_fatti = Task.objects.filter(user=request.user, is_completed=True).order_by(ordering)
 
+    start_tour = request.GET.get("tour") == "1"
+
     return render(request, 'todo/home.html', {
         'form': form,
         'tasks_da_fare': tasks_da_fare,
@@ -94,6 +96,7 @@ def home(request):
         'only_future': only_future,
         'completed_filter': completed_filter,
         'show_tour': not request.user.userprofile.has_seen_guide,
+        'start_tour': start_tour,
     })
 
 

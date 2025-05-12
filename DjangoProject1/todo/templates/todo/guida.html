@@ -3,120 +3,141 @@
 {% block content %}
 <div class="guida-page">
 
+    <!-- Bottone per tornare in alto con icona Lucide -->
+    <button id="scrollTopBtn" title="Torna su">
+        <i data-lucide="arrow-up"></i>
+    </button>
+
+    <!-- Indice cliccabile -->
     <section class="guida-blocco">
         <h2>📘 Guida all'app ToDo</h2>
-        <p>Benvenuto nella guida di ToDo! Qui troverai tutte le informazioni per usare al meglio l'app.</p>
+        <p>Benvenuto! Usa l'indice qui sotto per navigare la guida:</p>
+        <ul>
+            <li>🎯 <a href="#tour">Tour interattivo</a></li>
+            <li>💎 <a href="#cosetodo">Cos'è ToDo</a></li>
+            <li>🚀 <a href="#comeusarla">Come usare tutte le funzionalità</a></li>
+            <li>📅 <a href="#calendario">Il calendario</a></li>
+            <li>🛠 <a href="#funzioni">Funzionalità principali</a></li>
+            <li>🔐 <a href="#sicurezza">Sicurezza</a></li>
+            <li>📱 <a href="#dispositivi">Accessibilità</a></li>
+            <li>📬 <a href="#supporto">Supporto</a></li>
+            <li>🧭 <a href="#prossime">Prossime funzionalità</a></li>
+            <li>❓ <a href="#faq">FAQ</a></li>
+        </ul>
         <a href="{% url 'home' %}" class="btn-admin">🏠 Torna alla Home</a>
     </section>
 
-    <section class="guida-blocco">
+    <section class="guida-blocco" id="tour">
         <h3>🎯 Ripeti il tour interattivo</h3>
         <p>Hai bisogno di un ripasso? Clicca qui sotto per rivedere il tour guidato dell'app!</p>
-        <button onclick="startTour()" class="small-button">🔄 Avvia il tour</button>
+        <a href="{% url 'home' %}?tour=1" class="btn-admin">🔄 Avvia il tour</a>
+        <ul>
+            <li>📋 Crea le tue liste di attività in pochi tap</li>
+            <li>📌 Organizza le attività per priorità e scadenza</li>
+            <li>🔔 Ricevi promemoria intelligenti</li>
+            <li>🗂 Personalizza e filtra come preferisci</li>
+        </ul>
+        <p>➡ <a href="#comeusarla">Approfondisci nella sezione "Come usarla"</a></p>
     </section>
 
-    <section class="guida-blocco">
+    <section class="guida-blocco" id="cosetodo">
         <h3>💎 Cos'è ToDo</h3>
-        <p>ToDo è una web app per gestire le tue attività in modo semplice, ordinato e personalizzabile.</p>
-    </section>
-
-    <section class="guida-blocco">
-        <h3>✨ Come usare ToDo al meglio</h3>
-        <p>Accedi ogni giorno, aggiorna i tuoi task, usa filtri e calendario per restare sempre organizzato.</p>
-    </section>
-
-    <section class="guida-blocco">
-        <h3>📝 Come creare una nuova attività</h3>
-        <p>Inserisci titolo, priorità e scadenza nella sezione “Nuova Attività” e clicca su Salva.</p>
-    </section>
-
-    <section class="guida-blocco">
-        <h3>📂 Come organizzare le attività (liste, categorie, tag)</h3>
-        <p>Attualmente puoi usare titoli e priorità per distinguere i task. In futuro aggiungeremo tag e liste!</p>
-    </section>
-
-    <section class="guida-blocco">
-        <h3>⏰ Come impostare promemoria e notifiche</h3>
-        <p>Funzionalità in sviluppo: riceverai avvisi prima della scadenza tramite email o browser.</p>
-    </section>
-
-    <section class="guida-blocco">
-        <h3>📅 Come usare il calendario integrato</h3>
-        <p>Vai su “Calendario” per visualizzare le attività in formato mensile, con colori in base alla priorità.</p>
-    </section>
-
-    <section class="guida-blocco">
-        <h3>🔄 Come sincronizzare ToDo su più dispositivi</h3>
-        <p>Accedi con lo stesso account da qualsiasi browser: i dati sono salvati nel tuo profilo.</p>
-    </section>
-
-    <section class="guida-blocco">
-        <h3>📴 Come usare ToDo offline</h3>
-        <p>Per ora ToDo funziona solo online. In futuro potrai accedere anche senza connessione.</p>
-    </section>
-
-    <section class="guida-blocco">
-        <h3>🎨 Come personalizzare l'app</h3>
-        <p>Presto potrai scegliere tra temi chiari e scuri, cambiare font e colori delle priorità.</p>
-    </section>
-
-    <section class="guida-blocco">
-        <h3>👤 Come gestire account e backup</h3>
-        <p>Potrai modificare i dati del tuo account e in futuro esportare tutte le attività in CSV o PDF.</p>
-    </section>
-
-    <section class="guida-blocco">
-        <h3>🧠 Come usare le funzionalità avanzate (filtri, ricerca, widget)</h3>
-        <p>Filtra le attività per titolo, priorità, stato e data. Cerca in tempo reale e organizza meglio il tuo lavoro.</p>
-    </section>
-
-    <section class="guida-blocco">
-        <h3>❓ Domande frequenti</h3>
+        <p>ToDo è la tua assistente digitale per l'organizzazione personale. Con un'interfaccia semplice e intuitiva, ti aiuta a gestire attività, scadenze e obiettivi. Tutto è pensato per essere accessibile ovunque, con il massimo controllo e senza stress.</p>
+        <p><strong>Perché usare ToDo?</strong><br>Con ToDo puoi tenere traccia di tutto ciò che devi fare: dal lavoro quotidiano alla lista della spesa, dai progetti importanti ai promemoria personali.</p>
+        <p><strong>Esempi d'uso:</strong></p>
         <ul>
-            <li><strong>Posso condividere task?</strong> 👉 Funzione Co-Op in arrivo!</li>
-            <li><strong>I miei dati sono al sicuro?</strong> 👉 Sì, ogni utente vede solo i propri dati.</li>
-            <li><strong>Posso usare ToDo da smartphone?</strong> 👉 Sì! È responsive.</li>
+            <li>🛒 Lista spesa settimanale</li>
+            <li>📚 Organizzare i compiti scolastici</li>
+            <li>📆 Pianificare eventi o appuntamenti</li>
+            <li>🧘 Attività quotidiane personali o di benessere</li>
         </ul>
     </section>
 
-    <section class="guida-blocco">
-        <h3>📬 Come contattare il supporto</h3>
-        <p>Scrivici via email: <a href="mailto:support@todoapp.dev">support@todoapp.dev</a></p>
-    </section>
+    <section class="guida-blocco" id="comeusarla">
+        <h3>🚀 Come usare tutte le funzionalità al meglio</h3>
 
-    <section class="guida-blocco">
-    <h3>🔐 Come funziona la sicurezza</h3>
-    <p>I tuoi dati sono protetti: solo tu puoi visualizzare e gestire le tue attività.</p>
-    <p>Tutte le azioni richiedono l’accesso con il tuo account personale.</p>
-    </section>
-
-    <section class="guida-blocco">
-        <h3>👥 Come funzioneranno le amicizie e i task condivisi</h3>
-        <p>Presto potrai inviare richieste d'amicizia ad altri utenti e creare attività condivise (Co-Op) per collaborare in tempo reale!</p>
-    </section>
-
-    <section class="guida-blocco">
-        <h3>🧪 Suggerimenti pratici</h3>
+        <h4>📝 Aggiungere e gestire attività</h4>
         <ul>
-            <li>Assegna nomi chiari alle attività per ritrovarle velocemente</li>
-            <li>Usa le priorità per sapere cosa fare prima</li>
-            <li>Controlla le attività completate per tenere traccia dei tuoi progressi</li>
+            <li>Tocca il pulsante <strong>+</strong> in basso</li>
+            <li>Scrivi un titolo chiaro (es. "Inviare fattura")</li>
+            <li>Imposta una priorità e una scadenza</li>
+            <li>Salva!</li>
+        </ul>
+        <div class="guida-tip">💡 <strong>Consiglio:</strong> usa titoli con verbi per trovarli meglio (es. "Studiare matematica")</div>
+
+        <h4>📅 Usare il calendario</h4>
+        <p>La vista calendario ti mostra tutte le attività distribuite nel mese. Colori diversi ti aiutano a distinguere le priorità. Clicca su un'attività per modificarla rapidamente.</p>
+
+        <h4>⏰ Impostare promemoria</h4>
+        <p>Quando crei un'attività, puoi ricevere notifiche all'orario che preferisci. Ricorda di autorizzare le notifiche sul dispositivo!</p>
+        <div class="guida-tip">🔔 <strong>Nota:</strong> puoi impostare notifiche giornaliere anche per attività ricorrenti.</div>
+
+        <h4>✅ Completare e riaprire attività</h4>
+        <p>Cliccando sulla spunta puoi segnare l'attività come completata. Se cambi idea, puoi ripristinarla in ogni momento.</p>
+
+        <h4>🧠 Consigli utili</h4>
+        <ul>
+            <li>Filtra per priorità se hai troppi task</li>
+            <li>Usa la ricerca per trovare rapidamente vecchie attività</li>
+            <li>Controlla ogni mattina la scadenza giornaliera</li>
         </ul>
     </section>
 
-    <section class="guida-blocco">
-        <h3>🔗 Integrazioni future</h3>
-        <p>Stiamo lavorando a:</p>
+    <section class="guida-blocco" id="calendario">
+        <h3>📅 Il potere del calendario</h3>
+        <p>Il calendario integrato mostra tutti i tuoi task in formato mensile. I colori indicano la priorità. Clicca su ogni evento per modificarlo al volo.</p>
+    </section>
+
+    <section class="guida-blocco" id="funzioni">
+        <h3>🛠 Funzionalità principali</h3>
         <ul>
-            <li>Integrazione con Google Calendar</li>
-            <li>Notifiche push nel browser</li>
-            <li>Backup automatici in cloud</li>
+            <li><strong>Nuova attività</strong>: Inserisci titolo, scadenza, priorità e salva</li>
+            <li><strong>Filtri</strong>: Visualizza solo attività completate, da fare o urgenti</li>
+            <li><strong>Modifica</strong>: Cambia attività in ogni momento</li>
+            <li><strong>Profilo</strong>: Gestisci i tuoi dati personali</li>
         </ul>
     </section>
 
-    <section class="guida-blocco">
-        <h3>🧰 Per chi è pensata l'app</h3>
-        <p>ToDo è ideale per studenti, freelance, team piccoli e chiunque voglia restare organizzato con semplicità.</p>
+    <section class="guida-blocco" id="sicurezza">
+        <h3>🔐 Sicurezza dei dati</h3>
+        <p>Solo tu puoi vedere e gestire le tue attività. Ogni azione è protetta dal login e i dati sono associati al tuo account personale.</p>
+    </section>
+
+    <section class="guida-blocco" id="dispositivi">
+        <h3>📱 Accessibilità ovunque</h3>
+        <p>ToDo funziona su tutti i dispositivi connessi a internet. Nessuna app da installare: ti basta un browser!</p>
+    </section>
+
+    <section class="guida-blocco" id="supporto">
+        <h3>📬 Supporto</h3>
+        <p>Dubbi o problemi? Scrivici a <a href="mailto:support@todoapp.dev">support@todoapp.dev</a></p>
+    </section>
+
+    <section class="guida-blocco" id="prossime">
+        <h3>🧭 Prossime funzionalità</h3>
+        <ul>
+            <li>Task condivisi con amici/colleghi</li>
+            <li>Tag e categorie personalizzabili</li>
+            <li>Notifiche via email e push</li>
+            <li>Temi grafici e modalità notturna</li>
+            <li>Esportazione e backup</li>
+        </ul>
+    </section>
+
+    <section class="guida-blocco" id="faq">
+        <h3>❓ Domande frequenti (FAQ)</h3>
+        <details>
+            <summary><strong>Posso usare ToDo su più dispositivi?</strong></summary>
+            <p>Sì, basta usare lo stesso account da qualsiasi browser.</p>
+        </details>
+        <details>
+            <summary><strong>Posso condividere le attività?</strong></summary>
+            <p>La funzione è in arrivo! Presto potrai collaborare in tempo reale.</p>
+        </details>
+        <details>
+            <summary><strong>ToDo funziona offline?</strong></summary>
+            <p>Non ancora, ma stiamo lavorando per permetterlo in futuro.</p>
+        </details>
     </section>
 
 </div>
@@ -125,8 +146,61 @@
 {% block scripts %}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shepherd.js@8.3.1/dist/css/shepherd.css" />
     <script src="https://cdn.jsdelivr.net/npm/shepherd.js@8.3.1/dist/js/shepherd.min.js"></script>
-
-
-    <!-- Script tour che dipende da Shepherd -->
     <script src="{% static 'todo/js/tour.js' %}"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        #scrollTopBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 99;
+            font-size: 18px;
+            border: none;
+            outline: none;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            padding: 14px;
+            border-radius: 50%;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            display: none;
+            transition: opacity 0.3s ease;
+        }
+        #scrollTopBtn:hover {
+            background-color: #0056b3;
+        }
+        #scrollTopBtn i {
+            width: 20px;
+            height: 20px;
+        }
+    </style>
+    <script>
+        // Scroll morbido per indice
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener("click", function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute("href")).scrollIntoView({
+                    behavior: "smooth"
+                });
+            });
+        });
+
+        // Bottone scroll top
+        const scrollBtn = document.getElementById("scrollTopBtn");
+        scrollBtn.addEventListener("click", () => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+        window.onscroll = () => {
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                scrollBtn.style.display = "block";
+                scrollBtn.style.opacity = 1;
+            } else {
+                scrollBtn.style.opacity = 0;
+                scrollBtn.style.display = "none";
+            }
+        };
+
+        // Inizializza le icone Lucide
+        lucide?.createIcons?.();
+    </script>
 {% endblock %}
