@@ -31,11 +31,11 @@
 
 {% block content %}
     {% if messages %}
-        <div id="success-message" class="messages">
-            {% for message in messages %}
-                <div class="alert-success">{{ message|safe }}</div>
-            {% endfor %}
-        </div>
+      <div class="messages">
+        {% for message in messages %}
+          <div class="alert {{ message.tags }}">{{ message|safe }}</div>
+        {% endfor %}
+      </div>
     {% endif %}
     {% if form.errors %}
         <div class="field-error">
@@ -154,47 +154,4 @@
             </div>
         </div>
     </div>
-{% endblock %}
-
-{% block scripts %}
-    <!-- Shepherd (solo se serve) -->
-    {% if show_tour or start_tour %}
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shepherd.js@8.3.1/dist/css/shepherd.css" />
-        <script src="https://cdn.jsdelivr.net/npm/shepherd.js@8.3.1/dist/js/shepherd.min.js"></script>
-        <script src="{% static 'todo/js/tour.js' %}"></script>
-    {% endif %}
-
-    <!-- CSRF sempre -->
-    <script>
-        window.csrfToken = "{{ csrf_token }}";
-    </script>
-
-    <!-- Lucide -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-
-    <!-- onload finale -->
-    <script>
-        window.onload = () => {
-            document.getElementById("completed-content")?.classList.remove("open");
-            lucide?.createIcons?.();
-
-            {% if show_tour or start_tour %}
-                if (typeof startTour === "function") {
-                    startTour();
-                } else {
-                    console.warn("startTour non è definito");
-                }
-            {% endif %}
-        };
-    </script>
-
-    <script>
-        function toggleCompleted() {
-            const content = document.getElementById("completed-content");
-            if (content) {
-                content.classList.toggle("open");
-            }
-        }
-    </script>
-    <script src="{% static 'todo/js/auto_dismiss.js' %}"></script>
 {% endblock %}
