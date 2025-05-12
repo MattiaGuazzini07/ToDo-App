@@ -31,11 +31,11 @@
 
 {% block content %}
     {% if messages %}
-        <ul class="messages">
+        <div id="success-message" class="messages">
             {% for message in messages %}
-                <li>{{ message|safe }}</li>
+                <div class="alert-success">{{ message|safe }}</div>
             {% endfor %}
-        </ul>
+        </div>
     {% endif %}
     {% if form.errors %}
         <div class="field-error">
@@ -196,5 +196,16 @@
             }
         }
     </script>
-
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const alertBox = document.getElementById("success-message");
+            if (alertBox) {
+                setTimeout(() => {
+                    alertBox.style.transition = "opacity 0.5s ease-out";
+                    alertBox.style.opacity = 0;
+                    setTimeout(() => alertBox.remove(), 500);
+                }, 2000); // dopo 3 secondi
+            }
+        });
+    </script>
 {% endblock %}
