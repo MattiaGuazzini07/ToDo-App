@@ -37,20 +37,18 @@
     {% block scripts %}
         <!-- Shepherd.js funzionante -->
         <script src="https://cdn.jsdelivr.net/npm/shepherd.js@8.3.1/dist/js/shepherd.min.js"></script>
-
         <!-- Tour script (dopo Shepherd) -->
         <script src="{% static 'todo/js/tour.js' %}"></script>
-
         <!-- CSRF globale JS (dopo form invisibile) -->
         <script>
             window.csrfToken = '{{ csrf_token }}';
         </script>
-
         <!-- Lucide Icons -->
         <script src="https://unpkg.com/lucide@latest"></script>
         <script>
             lucide?.createIcons?.();
         </script>
+        <script src="{% static 'todo/js/auto_dismiss.js' %}"></script>
     {% endblock %}
 </body>
 </html>
