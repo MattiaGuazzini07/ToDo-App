@@ -189,4 +189,14 @@
             {% endif %}
         };
     </script>
+
+    <script>
+        function toggleCompleted() {
+            const content = document.getElementById("completed-content");
+            if (content) {
+                content.classList.toggle("open");
+            }
+        }
+    </script>
+
 {% endblock %}
