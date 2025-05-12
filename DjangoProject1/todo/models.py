@@ -21,3 +21,10 @@ class Task(models.Model):
     def __str__(self):
         return self.title
 
+# Modello per il profilo utente
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    has_seen_guide = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Profilo di {self.user.username}"

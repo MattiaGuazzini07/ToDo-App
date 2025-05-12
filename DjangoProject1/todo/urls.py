@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 from .views import admin_dashboard, user_tasks
 
+
 urlpatterns = [
     path('', views.home, name='home'),
     path('complete/<int:task_id>/', views.complete_task, name='complete_task'),
@@ -16,4 +17,5 @@ urlpatterns = [
     path('calendar/', views.calendar_view, name='calendar'),
     path('calendar/events/', views.task_events, name='task_events'),
     path('guida/', views.guida_view, name='guida'),
+    path('tour/seen/', views.tour_seen, name='tour_seen'),
 ]
