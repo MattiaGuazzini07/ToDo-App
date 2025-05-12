@@ -142,9 +142,7 @@
                         </div>
                         <div>
                             <span class="priority {{ task.priority }}">Priorità: {{ task.get_priority_display }}</span><br>
-                            {% if task.due_date %}
-                                <span>Scadenza: {{ task.due_date|date:"d/m/Y" }}</span>
-                            {% endif %}
+                            <span>Completata il: {{ task.completed_at|date:"d/m/Y" }}</span>
                         </div>
                     </div>
                     {% empty %}
