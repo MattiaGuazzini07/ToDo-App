@@ -159,23 +159,22 @@
 {% endblock %}
 
 {% block scripts %}
+    <!-- Shepherd (solo se serve) -->
     {% if show_tour %}
-    <!-- Shepherd CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shepherd.js@8.3.1/dist/css/shepherd.css" />
-    <script src="https://cdn.jsdelivr.net/npm/shepherd.js@8.3.1/dist/js/shepherd.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shepherd.js@8.3.1/dist/css/shepherd.css" />
+        <script src="https://cdn.jsdelivr.net/npm/shepherd.js@8.3.1/dist/js/shepherd.min.js"></script>
+    {% endif %}
 
+    <!-- CSRF sempre -->
+    <script>
+        window.csrfToken = "{{ csrf_token }}";
+    </script>
 
-
-        <!-- CSRF globale -->
-        <script>
-            window.csrfToken = "{{ csrf_token }}";
-        </script>
-
-        <!-- Tour interattivo -->
+    {% if show_tour %}
         <script src="{% static 'todo/js/tour.js' %}"></script>
     {% endif %}
 
-    <!-- Lucide (sempre) -->
+    <!-- Lucide -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <!-- onload finale -->
