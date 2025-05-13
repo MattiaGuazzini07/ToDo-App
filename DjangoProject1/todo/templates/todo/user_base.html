@@ -20,7 +20,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<body>
+<body class="{% if user.userprofile.prefers_dark_mode %}dark-theme{% endif %}">
     <!-- Form nascosta per forzare generazione CSRF token -->
     <form style="display: none;">
         {% csrf_token %}

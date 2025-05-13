@@ -1,5 +1,5 @@
 from django import forms
-from .models import Task
+from .models import Task, UserProfile
 from django.contrib.auth.models import User
 
 
@@ -29,3 +29,12 @@ class UserForm(forms.Form):
             password=self.cleaned_data['password']
         )
         return user
+
+class UserSettingsForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['email', 'prefers_dark_mode']
+        labels = {
+            'email': 'Email alternativa',
+            'prefers_dark_mode': 'Tema scuro',
+        }

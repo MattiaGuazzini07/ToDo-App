@@ -19,4 +19,5 @@ urlpatterns = [
     path('guida/', views.guida_view, name='guida'),
     path('tour/seen/', views.tour_seen, name='tour_seen'),
     path('profile/', views.profile_view, name='profile'),
+    path('settings/', views.settings_view, name='user_settings'),
 ]

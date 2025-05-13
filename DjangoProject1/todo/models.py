@@ -29,6 +29,8 @@ class UserProfile(models.Model):
     bio = models.TextField(blank=True)
     last_seen = models.DateTimeField(null=True, blank=True)
     do_not_disturb = models.BooleanField(default=False)
+    email = models.EmailField(blank=True)
+    prefers_dark_mode = models.BooleanField(default=False)
 
     def __str__(self):
         return f"Profilo di {self.user.username}"
