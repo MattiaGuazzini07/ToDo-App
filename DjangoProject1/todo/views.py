@@ -331,3 +331,23 @@ def tour_seen(request):
     request.user.userprofile.has_seen_guide = True
     request.user.userprofile.save()
     return HttpResponse(status=204)
+
+@login_required
+def profile_view(request):
+    profile = request.user.userprofile
+    avatar_list = [
+        'avatar0.png', 'avatar1.png', 'avatar2.png', 'avatar3.png', 'avatar4.png',
+        'avatar5.png', 'avatar6.png', 'avatar7.png', 'avatar8.png', 'avatar9.png',
+        'avatar10.png', 'avatar11.png', 'avatar12.png', 'avatar13.png'
+    ]
+
+    if request.method == 'POST':
+        selected_avatar = request.POST.get('avatar')
+        if selected_avatar in avatar_list:
+            profile.avatar = selected_avatar
+            profile.save()
+            messages.success(request, "Avatar aggiornato con successo ✅")
+
+    return render(request, 'todo/profile.html', {
+        'avatar_list': avatar_list
+    })

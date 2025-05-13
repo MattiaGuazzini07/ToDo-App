@@ -1,0 +1,38 @@
+{% extends 'todo/user_base.html' %}
+{% load static %}
+{% block content %}
+  <div class="profile-box">
+    <h2>Profilo di {{ user.username }}</h2>
+
+    <div class="avatar-preview">
+      <img src="{% static 'avatars/' %}{{ user.userprofile.avatar }}" alt="Avatar" class="avatar-preview-img">
+    </div>
+
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Bio:</strong> {{ user.userprofile.bio|default:"Nessuna biografia." }}</p>
+
+    <p>
+      {% if user.userprofile.last_seen|timesince < "5 minutes" %}
+        <span class="badge bg-success">🟢 Online</span>
+      {% else %}
+        <span class="badge bg-secondary">⚪ Offline</span>
+      {% endif %}
+    </p>
+
+    <hr>
+
+    <h3>Scegli il tuo avatar:</h3>
+    <form method="POST">
+      {% csrf_token %}
+      <div class="avatar-grid">
+        {% for img in avatar_list %}
+          <label>
+            <input type="radio" name="avatar" value="{{ img }}" {% if user.userprofile.avatar == img %}checked{% endif %} hidden>
+            <img src="{% static 'avatars/' %}{{ img }}" alt="{{ img }}" class="avatar-option {% if user.userprofile.avatar == img %}selected{% endif %}">
+          </label>
+        {% endfor %}
+      </div>
+      <button type="submit" class="btn btn-primary mt-4">Salva avatar</button>
+    </form>
+  </div>
+{% endblock %}
