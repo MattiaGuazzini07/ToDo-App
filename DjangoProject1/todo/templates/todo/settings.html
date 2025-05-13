@@ -1,0 +1,60 @@
+{% extends "todo/user_base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="settings-container">
+    <h2>⚙️ Impostazioni</h2>
+
+    <form method="post" class="settings-form">
+        {% csrf_token %}
+
+        <!-- GESTIONE EMAIL -->
+        <div class="email-settings">
+            {% if user.email %}
+                <div class="email-box">
+                    <span class="email-label">📧 Email collegata:</span><br>
+                    <strong>{{ user.email }}</strong>
+                    <button type="button" class="icon-button" onclick="toggleEmailEdit()" aria-label="Modifica email">
+                        <i data-lucide="pencil" class="lucide-icon edit-icon"></i>
+                    </button>
+                </div>
+            {% else %}
+                <p>
+                    📭 <em>Collega una mail al tuo account</em>
+                    <button type="button" class="edit-btn" onclick="toggleEmailEdit()" aria-label="Modifica email">
+                        <i data-lucide="pencil" class="lucide-icon edit-icon"></i>
+                    </button>
+                </p>
+            {% endif %}
+
+            <div id="email-edit" style="display: none; margin-top: 10px;">
+                {{ form.email }}
+            </div>
+        </div>
+        <!-- TEMA SCURO -->
+        <div class="field-wrapper" style="margin-top: 20px;">
+            {{ form.prefers_dark_mode.label_tag }} {{ form.prefers_dark_mode }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">💾 Salva modifiche</button>
+    </form>
+        <a href="{% url 'home' %}" class="btn-admin">🏠 Torna alla home</a>
+
+    <hr>
+
+    <p>
+        <a href="{% url 'password_change' %}" class="btn btn-outline">🔒 Cambia password</a>
+    </p>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    function toggleEmailEdit() {
+        const field = document.getElementById("email-edit");
+        if (field) {
+            field.style.display = field.style.display === "none" ? "block" : "none";
+        }
+    }
+</script>
+{% endblock %}

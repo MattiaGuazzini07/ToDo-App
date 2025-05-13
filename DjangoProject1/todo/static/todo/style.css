@@ -360,6 +360,7 @@ input[name="q"] { min-width: 150px; }
     display: flex;
     align-items: center;
     gap: 10px;
+    background-color: transparent;
 }
 .avatar-header-img {
   width: 40px;
@@ -421,7 +422,7 @@ input[name="q"] { min-width: 150px; }
 }
 .user-name {
     cursor: pointer;
-    font-weight: bold;
+    font-size: 1.2rem;
 }
 .user-dropdown .dropdown-menu {
     display: none;
@@ -441,8 +442,19 @@ input[name="q"] { min-width: 150px; }
     display: block;
     margin-bottom: 10px;
 }
-.user-dropdown:hover .dropdown-menu {
+.user-dropdown .dropdown-menu.open {
     display: block;
+}
+.dropdown-menu {
+    display: none;
+}
+.dropdown-toggle{
+    background-color: transparent;
+    color: black;
+}
+.dropdown-toggle:hover
+{
+    background-color: transparent;
 }
 
 /* === MEDIA QUERIES === */
@@ -748,3 +760,92 @@ hr {
 .toggle-dnd-btn:hover {
 transform: scale(1.2);
 }
+
+/* === IMPOSTAZIONI === */
+.icon-button {
+    background-color: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin-left: 8px;
+    cursor: pointer;
+    color: inherit;
+    box-shadow: none !important;
+}
+
+.icon-button:hover,
+.icon-button:focus,
+.icon-button:active {
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+.settings-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.settings-form input[type="text"],
+.settings-form input[type="email"],
+.settings-form textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.settings-form label {
+    font-weight: bold;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-outline {
+    border: 1px solid #007bff;
+    color: #007bff;
+    padding: 8px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+.btn-outline:hover {
+    background-color: #007bff;
+    color: white;
+}
+.email-box {
+    margin-bottom: 10px;
+}
+
+.email-label {
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 3px;
+}
+
+.edit-btn {
+    border: none;
+    cursor: pointer;
+    padding-left: 5px;
+    vertical-align: middle;
+    background: none;
+}
+
+.edit-btn .edit-icon {
+    width: 16px;
+    height: 16px;
+    stroke-width: 2;
+    background: none;
+}
+
+.edit-btn:hover .lucide-icon {
+    color: #0056b3;
+    background: none;
+}
+
