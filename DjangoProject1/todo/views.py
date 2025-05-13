@@ -331,3 +331,46 @@ def tour_seen(request):
     request.user.userprofile.has_seen_guide = True
     request.user.userprofile.save()
     return HttpResponse(status=204)
+
+from django.shortcuts import redirect
+
+@login_required
+def profile_view(request):
+    profile = request.user.userprofile
+    avatar_list = [
+        'avatar0.png', 'avatar1.png', 'avatar2.png', 'avatar3.png',
+        'avatar4.png', 'avatar5.png', 'avatar6.png', 'avatar7.png',
+        'avatar8.png', 'avatar9.png', 'avatar10.png', 'avatar11.png',
+        'avatar12.png', 'avatar13.png'
+    ]
+
+    total_count = Task.objects.filter(user=request.user).count()
+    completed_count = Task.objects.filter(user=request.user, is_completed=True).count()
+
+    if request.method == 'POST':
+        # Toggle "Non disturbare"
+        if "toggle_dnd" in request.POST:
+            profile.do_not_disturb = not profile.do_not_disturb
+            profile.save()
+            return redirect("profile")
+
+        # Modifica username
+        new_username = request.POST.get("username")
+        if new_username and new_username != request.user.username:
+            request.user.username = new_username
+            request.user.save()
+            return redirect("profile")
+
+        # Modifica avatar
+        avatar = request.POST.get('avatar')
+        if avatar and avatar in avatar_list:
+            profile.avatar = avatar
+            profile.save()
+            messages.success(request, "Avatar aggiornato!")
+            return redirect("profile")
+
+    return render(request, 'todo/profile.html', {
+        'avatar_list': avatar_list,
+        'total_count': total_count,
+        'completed_count': completed_count,
+    })

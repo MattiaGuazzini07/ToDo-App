@@ -3,6 +3,8 @@ from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from todo import views
 
+from django.conf import settings
+from django.conf.urls.static import static  # 👈 serve per servire i media file in debug
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -12,3 +14,7 @@ urlpatterns = [
 
     path('', include('todo.urls')),
 ]
+
+#Serve I file media solo se DEBUG=True
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -5,7 +5,12 @@
 {% block header %}
     <h2>Le mie attività</h2>
     <div class="user-dropdown">
-        <span class="user-name">Benvenuto <strong>{{ user.username }}</strong></span>
+        <div class="user-header">
+            <div class="user-name-wrapper">
+                <span class="user-name">Benvenuto <strong>{{ user.username }}</strong></span>
+                <img src="{% static 'avatars/' %}{{ user.userprofile.avatar }}" alt="Avatar" class="avatar-header-img">
+            </div>
+        </div>
         <div class="dropdown-menu">
             <a href="{% url 'calendar' %}" class="btn-admin">📅 Calendario</a>
             {% if request.user.is_superuser %}
