@@ -1,0 +1,21 @@
+{% extends "todo/user_base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="settings-container">
+    <h2>⚙️ Impostazioni</h2>
+
+    <form method="post" class="settings-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit" class="btn btn-primary">💾 Salva modifiche</button>
+    </form>
+
+    <hr>
+
+    <p>
+        <a href="{% url 'password_change' %}" class="btn btn-outline">🔒 Cambia password</a>
+    </p>
+</div>
+{% endblock %}

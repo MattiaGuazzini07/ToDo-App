@@ -1,22 +1,12 @@
-from re import search
-from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import Task, User, UserProfile
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
-from datetime import datetime
-from django.utils import timezone
-from .forms import TaskForm, UserForm
 from django.db.models import Count, Q
-from django.contrib import messages
 from django.db import IntegrityError
 from django.http import JsonResponse
-
-
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from .models import Task
-from .forms import TaskForm
+from .forms import TaskForm, UserForm, UserSettingsForm
 from django.utils import timezone
 from django.contrib import messages
 from datetime import datetime
@@ -374,3 +364,18 @@ def profile_view(request):
         'total_count': total_count,
         'completed_count': completed_count,
     })
+
+
+@login_required
+def settings_view(request):
+    profile = request.user.userprofile
+
+    if request.method == 'POST':
+        form = UserSettingsForm(request.POST, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('user_settings')  # oppure redirect alla stessa view
+    else:
+        form = UserSettingsForm(instance=profile)
+
+    return render(request, 'todo/settings.html', {'form': form})
