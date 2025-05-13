@@ -762,6 +762,22 @@ transform: scale(1.2);
 }
 
 /* === IMPOSTAZIONI === */
+.icon-button {
+    background-color: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin-left: 8px;
+    cursor: pointer;
+    color: inherit;
+    box-shadow: none !important;
+}
+
+.icon-button:hover,
+.icon-button:focus,
+.icon-button:active {
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
 .settings-container {
     max-width: 600px;
     margin: 0 auto;
@@ -803,3 +819,33 @@ transform: scale(1.2);
     background-color: #007bff;
     color: white;
 }
+.email-box {
+    margin-bottom: 10px;
+}
+
+.email-label {
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 3px;
+}
+
+.edit-btn {
+    border: none;
+    cursor: pointer;
+    padding-left: 5px;
+    vertical-align: middle;
+    background: none;
+}
+
+.edit-btn .edit-icon {
+    width: 16px;
+    height: 16px;
+    stroke-width: 2;
+    background: none;
+}
+
+.edit-btn:hover .lucide-icon {
+    color: #0056b3;
+    background: none;
+}
+
