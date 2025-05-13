@@ -18,4 +18,5 @@ urlpatterns = [
     path('calendar/events/', views.task_events, name='task_events'),
     path('guida/', views.guida_view, name='guida'),
     path('tour/seen/', views.tour_seen, name='tour_seen'),
+    path('profile/', views.profile_view, name='profile'),
 ]

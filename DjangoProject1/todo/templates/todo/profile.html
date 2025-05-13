@@ -1,0 +1,90 @@
+{% extends 'todo/user_base.html' %}
+{% load tz %}
+{% load static %}
+{% block content %}
+  <div class="profile-box">
+    <div class="profile-header">
+      <img src="{% static 'avatars/' %}{{ user.userprofile.avatar }}" alt="Avatar" class="avatar-preview-img">
+
+      <div class="user-info">
+        <form method="POST">
+          {% csrf_token %}
+          <a class="btn-admin" href="{% url 'home' %}">Torna alla home</a>
+
+          {% if request.GET.edit_username %}
+            <div class="username-edit">
+              <input type="text" name="username" value="{{ user.username }}" required class="username-input">
+              <button type="submit" class="btn btn-sm">Salva</button>
+            </div>
+          {% else %}
+            <h2>{{ user.username }}
+              <a href="?edit_username=1" class="edit-icon" title="Modifica nome utente">
+                <i class="lucide-icon" data-lucide="pencil"></i>
+              </a>
+            </h2>
+          {% endif %}
+
+        {% if user.userprofile.do_not_disturb %}
+              <div class="status-hover">
+              <span class="online-label">
+                <i class="lucide-icon" data-lucide="moon" style="color: #ff6600;"></i> Non disturbare
+              </span>
+              <button type="submit" name="toggle_dnd" value="1" class="toggle-dnd-btn" title="Disattiva Non disturbare">
+                <i class="lucide-icon" data-lucide="wifi"></i>
+              </button>
+            </div>
+        {% elif user.userprofile.last_seen|timesince < "5 minutes" %}
+              <div class="status-hover">
+                <span class="online-label">
+                  <i class="lucide-icon" data-lucide="wifi" style="color: #28a745;"></i> Online
+                </span>
+                <button type="submit" name="toggle_dnd" value="1" class="toggle-dnd-btn" title="Attiva Non disturbare">
+                  <i class="lucide-icon" data-lucide="moon"></i>
+                </button>
+              </div>
+        {% else %}
+              <p class="status">
+                <i class="lucide-icon" data-lucide="wifi-off" style="color: #999;"></i> Offline
+              </p>
+        {% endif %}
+
+
+          <p><strong>Registrato il:</strong> {{ user.date_joined|date:"d/m/Y" }}</p>
+          <p><strong>Ultimo accesso:</strong> {{ user.last_login|localtime|date:"d/m/Y H:i" }}</p>
+          <p><strong>Task completati:</strong> {{ completed_count }}</p>
+
+          <hr>
+
+            <h3>Scegli il tuo avatar:</h3>
+
+            <div class="avatar-select-wrapper">
+
+              <div class="custom-dropdown">
+                <input type="hidden" name="avatar" id="avatar-input" value="{{ user.userprofile.avatar }}">
+
+                <div class="dropdown-selected" id="dropdown-selected">
+                  <img id="dropdown-selected-img" src="{% static 'avatars/' %}{{ user.userprofile.avatar }}" alt="Selezionato">
+                  <span class="dropdown-arrow">▾</span>
+                </div>
+
+
+                <div class="dropdown-options" id="dropdown-options">
+                  {% for img in avatar_list %}
+                    <div class="dropdown-option" data-value="{{ img }}">
+                      <img src="{% static 'avatars/' %}{{ img }}" alt="{{ img }}">
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-4">Salva modifiche</button>
+
+
+        </form>
+      </div>
+    </div>
+  </div>
+<script src="{% static 'todo/js/avatar_dropdown.js' %}"></script>
+{% endblock %}
