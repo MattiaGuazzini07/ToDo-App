@@ -214,6 +214,9 @@ input[name="q"] { min-width: 150px; }
     cursor: pointer;
     margin: 10px 0;
 }
+.collapsible-toggle:hover {
+    background-color: #007bff ;
+}
 .collapsible-content {
     max-height: 0;
     opacity: 0;
@@ -347,6 +350,24 @@ input[name="q"] { min-width: 150px; }
     stroke-width: 2;
     color: #555;
 }
+
+.user-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.user-name-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.avatar-header-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
 /* === MESSAGGI DJANGO === */
 .alert {
     padding: 10px 15px;
@@ -532,6 +553,7 @@ input[name="q"] { min-width: 150px; }
     background-color: #fff;
     border-radius: 12px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    width: 100%;
 }
 
 .profile-box h2 {
@@ -556,12 +578,14 @@ input[name="q"] { min-width: 150px; }
 }
 
 .avatar-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-    gap: 1.5rem;
-    justify-items: center;
-    margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 1.2rem;
+  justify-items: center;
+  margin-top: 1rem;
+  width: 100%;
 }
+
 .avatar-preview {
     display: flex;
     justify-content: left;
@@ -572,4 +596,155 @@ input[name="q"] { min-width: 150px; }
     width: 100px;
     height: 100px;
     object-fit: cover;
+}
+
+.profile-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.user-info h2 {
+    margin-bottom: 0.5rem;
+}
+
+.user-info p {
+    margin: 4px 0;
+    font-size: 15px;
+}
+
+.status {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    gap: 6px;
+}
+.avatar-select-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.avatar-select {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+.custom-dropdown {
+  position: relative;
+  width: 140px;
+}
+
+.dropdown-selected {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #fff;
+  width: 140px;
+    margin-bottom: 10px;
+}
+hr {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 20px 0;
+}
+.dropdown-arrow {
+  font-size: 18px;
+  margin-left: 10px;
+  color: #333;
+  user-select: none;
+}
+
+.dropdown-selected img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.dropdown-options {
+  display: none;
+  position: absolute;
+  z-index: 10;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-top: 4px;
+  padding: 10px;
+  max-height: 250px;
+  overflow-y: auto;
+  width: 100%;
+}
+
+.dropdown-option {
+  padding: 5px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.dropdown-option img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  transition: transform 0.2s ease;
+}
+
+.dropdown-option:hover img {
+  transform: scale(1.1);
+}
+
+/* Modifica nome utente */
+.edit-icon {
+    margin-left: 8px;
+    color: #555;
+    text-decoration: none;
+    cursor: pointer;
+}
+.edit-icon:hover {
+    color: #007bff;
+}
+
+.username-input {
+    font-size: 1.5rem;
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    width: 100%;
+    max-width: 300px;
+    box-sizing: border-box;
+}
+
+/* Hover su "Online" per mostrare toggle DND */
+.status-hover {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+}
+
+.toggle-dnd-btn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: none;
+  color: inherit;
+}
+
+.status-hover:hover .toggle-dnd-btn {
+  display: inline-flex;
+  align-items: center;
+    background-color: transparent;
+}
+.toggle-dnd-btn:hover {
+transform: scale(1.2);
 }
