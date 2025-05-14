@@ -9,7 +9,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shepherd.js@8.3.1/dist/css/shepherd.css" />
 
     <!-- CSS e Font -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}?v={{ timestamp }}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mediaStyle.css' %}">
+    <link rel="stylesheet" href="{% static 'css/keyframesStyle.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="icon" href="{% static 'img/favicon/favicon.png' %}" type="image/png">
 
@@ -51,6 +53,8 @@
 
         <!-- Toggle task completate -->
         <script src="{% static 'js/toggle_completed.js' %}"></script>
+
+        <script src="{% static 'js/task_card_color.js' %}"></script>
 
         {% block extra_scripts %}{% endblock %}
     {% endblock %}

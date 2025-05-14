@@ -110,7 +110,7 @@
             </form>
             <div class="todo-list">
                 {% for task in tasks_da_fare %}
-                <div class="todo-card" style="animation-delay: {{ forloop.counter0|add:"0.05"|floatformat:2 }}s;">
+                <div class="todo-card" data-created="{{ task.created_at|date:'c' }}" data-due="{{ task.due_date|date:'c' }}" style="animation-delay: {{ forloop.counter0|add:"0.05"|floatformat:2 }}s;">
                     <div style="display: flex; align-items: center;">
                         <a href="{% url 'tasks:complete_task' task.id %}" class="circle" title="Completa"></a>
                         <strong style="margin-right: auto;">{{ task.title }}</strong>
