@@ -1,0 +1,7 @@
+{% extends 'base/user_base.html' %}
+{% block title %}Logout{% endblock %}
+
+{% block content %}
+  <meta http-equiv="refresh" content="2; url={% url 'login' %}">
+  <h2>Logout effettuato. Verrai reindirizzato...</h2>
+{% endblock %}
