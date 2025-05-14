@@ -1,0 +1,32 @@
+{% extends 'base/user_base.html' %}
+{% block title %}Calendario Task{% endblock %}
+
+{% block content %}
+  <h2>📅 Calendario Attività</h2>
+    <a href="{% url 'tasks:home' %}" class="btn-admin">Torna alla home</a>
+  <div id="calendar"></div>
+{% endblock %}
+
+{% block scripts %}
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const calendarEl = document.getElementById('calendar');
+      const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        locale: 'it',
+        height: 'auto',
+        events: '{% url "tasks:task_events" %}',
+        eventClick: function(info) {
+          info.jsEvent.preventDefault();
+          if (info.event.url) {
+            window.location.href = info.event.url;
+          }
+        }
+      });
+      calendar.render();
+    });
+  </script>
+{% endblock %}
