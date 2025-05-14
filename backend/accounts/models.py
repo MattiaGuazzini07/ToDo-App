@@ -19,3 +19,6 @@ class UserProfile(models.Model):
         if self.last_seen:
             return (now() - self.last_seen).seconds < 300
         return False
+
+    class Meta:
+        db_table = "todo_userprofile"
