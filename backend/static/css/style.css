@@ -74,7 +74,7 @@ button:hover { background-color: #0056b3; }
     margin-left: 10px;
     text-decoration: none;
 }
-.delete-icon { color: #888; margin-right: 20px; }
+.delete-icon { color: #888; margin-right: 20px; cursor:  pointer; }
 .delete-icon:hover .lucide-icon { color: red; }
 .edit-icon { color: #007bff; }
 .edit-icon:hover .lucide-icon { color: #0056b3; }
@@ -111,8 +111,9 @@ button:hover { background-color: #0056b3; }
     margin-right: 0;
 }
 
-.task-box, .todo-card {
-    background: #fff;
+.task-box,
+.todo-card {
+    background: #fff; /* fallback se JS fallisce */
     padding: 15px;
     border-radius: 12px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -120,11 +121,30 @@ button:hover { background-color: #0056b3; }
     list-style-type: none;
     min-width: 250px;
     flex: 0 1 300px;
+    transition: background-color 0.6s ease-in-out, transform 0.2s ease;
+    color: #1a1a1a; /* garantisce contrasto su sfondo chiaro */
 }
 
-.priority.low { color: green; }
-.priority.medium { color: orange; }
-.priority.high { color: red; }
+/* Effetto hover leggero */
+.todo-card:hover {
+    transform: scale(1.01);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+.priority.low {
+    color: #2e8b57; /* verde più leggibile su sfondo chiaro */
+    font-weight: 600;
+}
+
+.priority.medium {
+    color: #cc8500; /* arancione intenso */
+    font-weight: 600;
+}
+
+.priority.high {
+    color: #d00000; /* rosso vivo */
+    font-weight: 600;
+}
 
 .order-form {
     display: flex;
@@ -874,3 +894,7 @@ transform: scale(1.2);
     background: none;
 }
 
+[data-lucide="trash"]:hover {
+  color: red;
+  transition: color 0.3s ease;
+}
