@@ -74,7 +74,7 @@ button:hover { background-color: #0056b3; }
     margin-left: 10px;
     text-decoration: none;
 }
-.delete-icon { color: #888; margin-right: 20px; }
+.delete-icon { color: #888; margin-right: 20px; cursor:  pointer; }
 .delete-icon:hover .lucide-icon { color: red; }
 .edit-icon { color: #007bff; }
 .edit-icon:hover .lucide-icon { color: #0056b3; }
@@ -874,3 +874,7 @@ transform: scale(1.2);
     background: none;
 }
 
+[data-lucide="trash"]:hover {
+  color: red;
+  transition: color 0.3s ease;
+}
