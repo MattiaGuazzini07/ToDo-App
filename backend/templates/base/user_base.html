@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}La mia lista TODO{% endblock %}</title>
+
+    <!-- Shepherd.js CSS (versione 8.3.1 funzionante) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shepherd.js@8.3.1/dist/css/shepherd.css" />
+
+    <!-- CSS e Font -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v={{ timestamp }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="icon" href="{% static 'img/favicon/favicon.png' %}" type="image/png">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body class="{% if user.userprofile.prefers_dark_mode %}dark-theme{% endif %}">
+    <!-- Form nascosta per forzare generazione CSRF token -->
+    <form style="display: none;">
+        {% csrf_token %}
+    </form>
+
+    <div class="header">
+        {% block header %}{% endblock %}
+    </div>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    {% block scripts %}
+        <!-- Shepherd.js (solo se richiesto da contesto) -->
+        {% if show_tour or start_tour %}
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shepherd.js@8.3.1/dist/css/shepherd.css" />
+            <script src="https://cdn.jsdelivr.net/npm/shepherd.js@8.3.1/dist/js/shepherd.min.js"></script>
+            <script src="{% static 'js/tour.js' %}"></script>
+        {% endif %}
+
+        <!-- Lucide Icons -->
+        <script src="https://unpkg.com/lucide@latest"></script>
+        <script src="{% static 'js/icons.js' %}"></script>
+
+        <!-- Messaggi auto-dismiss -->
+        <script src="{% static 'js/auto_dismiss.js' %}"></script>
+
+        <!-- Toggle task completate -->
+        <script src="{% static 'js/toggle_completed.js' %}"></script>
+
+        {% block extra_scripts %}{% endblock %}
+    {% endblock %}
+</body>
+</html>
