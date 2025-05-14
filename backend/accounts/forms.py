@@ -22,8 +22,8 @@ class UserForm(forms.Form):
 class UserSettingsForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ['email', 'prefers_dark_mode']
+        fields = ['email', 'dark_mode']
         labels = {
             'email': 'Email alternativa',
-            'prefers_dark_mode': 'Tema scuro',
+            'dark_mode': 'Tema scuro',
         }

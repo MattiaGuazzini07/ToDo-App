@@ -9,7 +9,6 @@ from django.contrib import messages
 from django.db import IntegrityError
 from django.contrib.auth.models import User
 from django.db.models import Count, Q
-
 from .forms import UserForm, UserSettingsForm
 from .models import UserProfile
 from backend.tasks.models import Task

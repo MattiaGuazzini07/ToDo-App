@@ -33,10 +33,16 @@
         </div>
         <!-- TEMA SCURO -->
         <div class="field-wrapper" style="margin-top: 20px;">
-            {{ form.prefers_dark_mode.label_tag }} {{ form.prefers_dark_mode }}
+            <div class="dark-toggle-wrapper">
+                <label class="toggle-switch">
+                    <input type="checkbox" name="dark_mode" id="darkModeToggle" {% if form.dark_mode.value %}checked{% endif %}>
+                    <span class="slider"></span>
+                </label>
+                <span class="toggle-label">🌙 Tema scuro</span>
+            </div>
         </div>
 
-        <button type="submit" class="btn btn-primary">💾 Salva modifiche</button>
+        <button href="settings.html" type="submit" class="btn btn-primary">💾 Salva modifiche</button>
     </form>
         <a href="{% url 'tasks:home' %}" class="btn-admin">🏠 Torna alla home</a>
 

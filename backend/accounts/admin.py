@@ -3,5 +3,5 @@ from .models import UserProfile
 
 @admin.register(UserProfile)
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'email', 'has_seen_guide', 'prefers_dark_mode')
+    list_display = ('user', 'email', 'has_seen_guide', 'dark_mode')
     search_fields = ('user__username', 'email')
