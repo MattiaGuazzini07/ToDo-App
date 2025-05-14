@@ -1,0 +1,74 @@
+@media (max-width: 768px) {
+    body { margin: 10px; }
+    .header { flex-direction: column; align-items: flex-start; }
+    .task-box, .todo-card {
+        width: 100% !important;
+        max-width: 90%;
+        margin-right: 0;
+        margin-bottom: 12px;
+        float: none;
+    }
+    .main-content{
+        flex-direction: column;
+    }
+    .order-form { flex-direction: column; align-items: stretch; gap: 10px; }
+    input, select, button:not(.small-button) { width: 100%; }
+    .logout_button_container {
+        float: none;
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+    }
+    .auth-container {
+        padding: 20px;
+        width: 90%;
+        margin: 20px auto;
+    }
+    .todo-list,
+    .completed-list,
+    .collapsible-content {
+        flex-direction: column;
+        gap: 15px;
+    }
+    .user-panel {
+        text-align: start;
+        margin-bottom: 20px;
+    }
+    .btn-logout, .btn-admin {
+        margin-top: 10px;
+        align-items: start;
+    }
+    .form-box {
+        float: none !important;
+        margin: 0;
+        width: 100%;
+        max-width: 100% !important;
+        box-sizing: border-box;
+    }
+    #calendar {
+        padding: 10px;
+        font-size: 13px;
+    }
+    .user-dropdown {
+        width: 90%;
+        padding-top: 12px;
+    }
+    .user-dropdown .dropdown-menu {
+        position: static;
+        width: 100%;
+        margin-top: 10px;
+        box-shadow: none;
+    }
+    .user-name {
+        display: block;
+        margin-bottom: 10px;
+    }
+    .user-dropdown .dropdown-menu a,
+    .user-dropdown .dropdown-menu form {
+        display: block;
+        margin-bottom: 10px;
+        width: 100%;
+        max-width: 100%; /* ✅ Impedisce ai bottoni di uscire */
+        box-sizing: border-box; /* ✅ Include padding e border nel calcolo */
+    }
+}
