@@ -26,15 +26,37 @@ def home(request):
         messages.success(request, "✅ Attività creata con successo!")
         return redirect('tasks:home')
 
-    tasks_da_fare = Task.objects.filter(user=request.user, is_completed=False)
-    tasks_fatti = Task.objects.filter(user=request.user, is_completed=True)
+    # Qui leggiamo i filtri reali usati nel form
+    search = request.GET.get('q') or ""
+    priority = request.GET.get('priority') or ""
+    completed = request.GET.get('completed')  # "true" | "false" | None
+
+    queryset = Task.objects.filter(user=request.user)
+
+    if completed == "true":
+        queryset = queryset.filter(is_completed=True)
+    elif completed == "false":
+        queryset = queryset.filter(is_completed=False)
+
+    if priority:
+        queryset = queryset.filter(priority=priority)
+
+    if search:
+        queryset = queryset.filter(title__icontains=search)
+
+    # Divisione finale
+    tasks_da_fare = queryset.filter(is_completed=False)
+    tasks_fatti = queryset.filter(is_completed=True)
 
     return render(request, 'tasks/user/home.html', {
         'form': form,
         'tasks_da_fare': tasks_da_fare,
         'tasks_fatti': tasks_fatti,
-        'start_tour': start_tour,      # <-- fondamentale
-        'show_tour': show_tour,        # <-- per caricare comunque Shepherd
+        'start_tour': start_tour,
+        'show_tour': show_tour,
+        'search_query': search,
+        'priority_filter': priority,
+        'completed_filter': completed,
     })
 
 @login_required
