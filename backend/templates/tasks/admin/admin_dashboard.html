@@ -39,7 +39,7 @@
   </thead>
   <tbody>
     {% if pinned_user %}
-    <tr style="background-color: #fff3cd;">
+    <tr style="{% if user.userprofile.dark_mode %}background-color:#856404;{% else %}background-color:#fff3cd;{% endif %}">
       <td><a href="{% url 'accounts:user_tasks' pinned_user.id %}">{{ pinned_user.username }}</a> ⭐</td>
       <td>{{ pinned_user.email }}</td>
       <td>{{ pinned_user.date_joined|date:"Y-m-d H:i" }}</td>

@@ -44,7 +44,6 @@ button {
     border-radius: 4px;
     cursor: pointer;
 }
-button:hover { background-color: #0056b3; }
 
 .logout_button_container {
     float: right;
@@ -81,15 +80,7 @@ button:hover { background-color: #0056b3; }
 
 .field { margin-bottom: 15px; }
 
-.form-box {
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    max-width: 400px;
-    width: 100%;
-    box-sizing: border-box;
-}
+
 .task-section {
     flex: 1;
     min-width: 400px;
@@ -110,7 +101,15 @@ button:hover { background-color: #0056b3; }
     float: none;
     margin-right: 0;
 }
-
+.form-box {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    max-width: 400px;
+    width: 100%;
+    box-sizing: border-box;
+}
 .task-box,
 .todo-card {
     background: #fff; /* fallback se JS fallisce */
@@ -145,41 +144,84 @@ button:hover { background-color: #0056b3; }
     color: #d00000; /* rosso vivo */
     font-weight: 600;
 }
-
-.order-form {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-}
-.order-form select,
-.order-form button,
-.order-form input[type="text"] {
-    padding: 10px;
-    font-size: 14px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    background-color: #fff;
+.filter-bar {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 1rem;
 }
 
-.order-form input,
-.order-form select,
-.order-form button {
-    width: auto; /* o semplicemente non forzarlo */
-    flex: 1; /* opzionale, se vuoi adattarli */
+/* Input principale: prende spazio fluido */
+.filter-bar input {
+  flex: 1;
+  min-width: 160px;
 }
 
-.order-form .small-button {
-    padding: 8px 12px;
-    font-size: 14px;
-    border-radius: 6px;
-    background-color: #0066cc;
-    color: white;
-    border: none;
-    cursor: pointer;
+/* Select: larghezza fissa */
+.filter-bar select {
+  max-width: 250px;
+    width: 100%;
 }
-.order-form .small-button:hover { background-color: #004a99; }
+
+/* Tutti gli elementi base */
+.filter-bar input,
+.filter-bar select,
+.filter-bar button,
+.filter-bar a {
+  font-size: 0.85rem;
+  padding: 0.45rem 0.8rem;
+  border-radius: 25px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+/* Focus style */
+.filter-bar input:focus,
+.filter-bar select:focus {
+  outline: none;
+  border-color: #007bff;
+  background-color: #fff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.15);
+}
+
+/* Bottoni submit e reset */
+.filter-bar button,
+.filter-bar a {
+  min-width: auto;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* Bottone Filtra */
+.filter-bar button {
+  background-color: #4f46e5;
+  color: white;
+}
+
+.filter-bar button:hover {
+  background-color: #3730a3;
+}
+
+/* Bottone Reset */
+.filter-bar a.reset-btn {
+  background-color: #e2e2e2;
+  color: #333;
+}
+
+.filter-bar a.reset-btn:hover {
+  background-color: #c8c8c8;
+}
+
+.filter-input:hover,
+.filter-select:hover,
+.filter-btn:hover {
+    transform: scale(1.02);
+}
 
 input[name="q"] { min-width: 150px; }
 
@@ -212,11 +254,11 @@ input[name="q"] { min-width: 150px; }
     background-color: #4e4bff;
 }
 .btn-logout {
-    background-color: #ff5c5c;
+    background-color: #ff5c5c !important;
     color: white;
 }
 .btn-logout:hover {
-    background-color: #950808;
+    background-color: #950808 !important;
 }
 
 .todo-list, .completed-list, .collapsible-content {
@@ -874,4 +916,73 @@ transform: scale(1.2);
 
 .field-wrapper {
     padding: 20px;
+}
+.field label {
+    display: inline-block;
+    background-color: #e0e7ff; /* Azzurro soft */
+    color: #1e40af;            /* Blu scuro */
+    padding: 6px 12px;
+    font-weight: 600;
+    border-radius: 25px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    transition: background-color 0.3s ease;
+}
+
+.field label:hover {
+    background-color: #c7d2fe; /* Hover leggero */
+}
+.field input,
+.field select,
+.field textarea {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 1rem;
+    font-family: inherit;
+    border: 2px solid #cbd5e1;
+    border-radius: 25px;
+    background-color: #f8fafc;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+    border-color: #6366f1;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); /* viola soft */
+}
+::placeholder {
+    color: #94a3b8;
+    font-style: italic;
+}
+button[type="submit"] {
+    background-color: #4f46e5;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #4338ca;
+}
+.field input:focus,
+.field select:focus {
+  transition: all 0.25s ease;
+  transform: scale(1.01);
+  border-color: #6366f1;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.15);
+}
+
+.priority-select {
+  border: 2px solid #cbd5e1;
+  border-radius: 999px;
+  padding: 10px 14px;
+  transition: border-color 0.3s ease;
 }

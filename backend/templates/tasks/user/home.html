@@ -79,33 +79,29 @@
                     <label for="{{ form.priority.id_for_label }}">Priorità</label><br>
                     {{ form.priority }}
                 </div>
-                <button type="submit">Salva</button>
+                <button type="submit">
+                  <i class="fa-solid fa-check"></i> Salva
+                </button>
             </form>
         </div>
 
         <!-- QUI VA LA TUA LISTA DI TASK -->
         <div class="task-section">
             <h3>Attività da fare</h3>
-            <form method="get" class="order-form">
-                <input type="text" name="q" placeholder="Cerca per titolo" value="{{ search_query }}">
+            <form method="get" class="filter-bar">
+                <input type="text" name="q" placeholder="🔍 Cerca per titolo" value="{{ search_query }}" class="filter-input small">
 
-                <select name="priority">
+                <select name="priority" class="filter-select small">
                     <option value="">Tutte le priorità</option>
                     <option value="low" {% if priority_filter == "low" %}selected{% endif %}>Bassa</option>
                     <option value="medium" {% if priority_filter == "medium" %}selected{% endif %}>Media</option>
                     <option value="high" {% if priority_filter == "high" %}selected{% endif %}>Alta</option>
                 </select>
 
-                <select name="completed">
-                    <option value="">Stato</option>
-                    <option value="false" {% if completed_filter == "false" %}selected{% endif %}>Da fare</option>
-                    <option value="true" {% if completed_filter == "true" %}selected{% endif %}>Completati</option>
-                </select>
-
-                <button type="submit" class="small-button">Filtra</button>
+                <button type="submit" class="filter-btn small">Filtra</button>
 
                 {% if request.GET %}
-                    <a href="{% url 'tasks:home' %}" class="small-button" style="background-color: #ccc; color: black;">Reset</a>
+                    <a href="{% url 'tasks:home' %}" class="filter-btn small reset-btn">Reset</a>
                 {% endif %}
             </form>
             <div class="todo-list">
