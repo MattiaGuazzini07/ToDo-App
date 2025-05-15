@@ -8,6 +8,7 @@
         margin-bottom: 12px;
         float: none;
     }
+    .todo-card{ max-height: 100px; }
     .main-content{
         flex-direction: column;
     }
@@ -70,5 +71,27 @@
         width: 100%;
         max-width: 100%; /* ✅ Impedisce ai bottoni di uscire */
         box-sizing: border-box; /* ✅ Include padding e border nel calcolo */
+    }
+    /* === Responsive filters (mobile) === */
+    .filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-bar input,
+    .filter-bar select,
+    .filter-bar button,
+    .filter-bar a {
+        width: 100%;
+        min-width: unset;
+    }
+
+    .filter-bar button,
+    .filter-bar a {
+        text-align: center;
+    }
+
+    .filter-bar a {
+        margin-top: 0.3rem;
     }
 }
