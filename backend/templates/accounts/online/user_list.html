@@ -1,0 +1,116 @@
+{% extends 'base/user_base.html' %}
+{% load static %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/social.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="user-list-container">
+
+  <!-- 🔍 Sezione Ricerca -->
+  <h2 class="section-title">Trova altri utenti</h2>
+<form method="get" class="search-form">
+    <input type="text" name="q" placeholder="Cerca utenti..." value="{{ request.GET.q }}">
+    <button type="submit">Cerca</button>
+  </form>
+
+  {% if request.GET.q %}
+    {% if users %}
+      <div class="search-results">
+        <h3 class="section-subtitle">Risultati della ricerca:</h3>
+        <div class="user-card-grid">
+          {% for user in users %}
+            <div class="user-card">
+              <img src="{% static 'img/avatars/'|add:user.userprofile.avatar %}" alt="avatar" class="user-avatar">
+              <a href="{% url 'accounts:user_profile' user.username %}" class="user-name">
+                {{ user.username }}
+              </a>
+              <span class="user-status">
+                {% if user.userprofile.do_not_disturb %}
+                  🔕 Do not disturb
+                {% elif user.userprofile.is_online %}
+                  🟢 Online
+                {% else %}
+                  ⚪ Offline
+                {% endif %}
+              </span>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% else %}
+      <p class="no-results">Nessun utente trovato.</p>
+    {% endif %}
+  {% endif %}
+
+  <!-- 👥 Sezione Amici -->
+  <h3 class="section-title">I tuoi amici</h3>
+  {% if friends %}
+    <div class="friend-card-grid">
+      {% for friend in friends %}
+        <div class="user-card">
+          <img src="{% static 'img/avatars/'|add:friend.userprofile.avatar %}" alt="avatar" class="user-avatar">
+          <a href="{% url 'accounts:user_profile' friend.username %}" class="user-name">
+            {{ friend.username }}
+          </a>
+          <span class="user-status">
+            <h2>{{ profile_user.username }}</h2>
+            {% if profile_user.userprofile.do_not_disturb %}
+              <p class="status">
+                <i class="lucide-icon" data-lucide="moon" style="color: #ff6600;"></i> Non disturbare
+              </p>
+            {% elif profile_user.userprofile.is_online %}
+              <p class="status">
+                <i class="lucide-icon" data-lucide="wifi" style="color: #28a745;"></i> Online
+              </p>
+            {% else %}
+              <p class="status">
+                <i class="lucide-icon" data-lucide="wifi-off" style="color: #999;"></i> Offline
+              </p>
+            {% endif %}
+          </span>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="no-results"> Non hai ancora amici</p>
+  {% endif %}
+
+    <!-- 👤 Sezione Profilo -->
+    <h3 class="section-title">Il tuo profilo</h3>
+    <div class="profile-card">
+      <img src="{% static 'img/avatars/'|add:user.userprofile.avatar %}" alt="Avatar" class="profile-avatar">
+      <div class="profile-info">
+        <h2>{{ user.username }}</h2>
+        {% if user.userprofile.do_not_disturb %}
+          <p class="status">
+            <i class="lucide-icon" data-lucide="moon" style="color: #ff6600;"></i> Non disturbare
+          </p>
+        {% elif user.userprofile.is_online %}
+          <p class="status">
+            <i class="lucide-icon" data-lucide="wifi" style="color: #28a745;"></i> Online
+          </p>
+        {% else %}
+          <p class="status">
+            <i class="lucide-icon" data-lucide="wifi-off" style="color: #999;"></i> Offline
+          </p>
+        {% endif %}
+      </div>
+        <div class="profile-meta">
+            <p><strong>Ultimo accesso:</strong>
+            {% if user.userprofile.last_seen %}
+                {{ user.userprofile.last_seen|date:"d M Y H:i" }}
+            {% else %}
+                mai
+            {% endif %}
+            </p>
+            <p><strong>Iscritto il:</strong> {{ user.date_joined|date:"d M Y" }}</p>
+            <p><strong>Task completati:</strong> {{ completed_tasks_count }}</p>
+            <p><strong>Amici:</strong> {{ friends_count }}</p>
+        </div>
+    </div>
+</div>
+
+<a href="{% url 'tasks:home' %}" class="btn-admin" style="margin: 20px">Torna alla home</a>
+</div>
+{% endblock %}

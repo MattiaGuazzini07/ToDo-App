@@ -3,6 +3,7 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
+from django.http import Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.contrib import messages
@@ -13,7 +14,7 @@ from .forms import UserForm, UserSettingsForm
 from .models import UserProfile
 from backend.tasks.models import Task
 from backend.tasks.forms import TaskForm
-
+from backend.accounts.models import Friendship
 
 def signup(request):
     if request.method == 'POST':
@@ -149,3 +150,117 @@ def delete_user(request, user_id):
     user.delete()
     messages.success(request, "Utente eliminato con successo.")
     return redirect('accounts:admin_dashboard')
+
+@login_required
+def send_friend_request(request, username):
+    to_user = get_object_or_404(User, username=username)
+
+    if to_user == request.user:
+        messages.error(request, "You cannot send a friend request to yourself.")
+        return redirect('profile', username=username)
+
+    # Check if a request or friendship already exists
+    existing = Friendship.objects.filter(
+        from_user=request.user, to_user=to_user
+    ).exists() or Friendship.objects.filter(
+        from_user=to_user, to_user=request.user
+    ).exists()
+
+    if existing:
+        messages.warning(request, "Friend request already sent or you're already friends.")
+    else:
+        Friendship.objects.create(from_user=request.user, to_user=to_user)
+        messages.success(request, f"Friend request sent to {to_user.username}.")
+
+    return redirect('accounts:user_profile', username=username)
+
+@login_required
+def user_list(request):
+    users = User.objects.exclude(id=request.user.id)
+    query = request.GET.get('q')
+    if query:
+        users = users.filter(username__icontains=query)
+    else:
+        users = []
+
+    # Amici accettati
+    friendships = Friendship.objects.filter(
+        Q(from_user=request.user) | Q(to_user=request.user),
+        accepted=True
+    )
+
+    friends = [
+        f.to_user if f.from_user == request.user else f.from_user
+        for f in friendships
+    ]
+
+    completed_tasks_count = Task.objects.filter(user=request.user, completed_at__isnull=False).count()
+    friends_count = len(friends)
+
+    return render(request, 'accounts/online/user_list.html', {
+        'users': users,
+        'friends': friends,
+        'completed_tasks_count': completed_tasks_count,
+        'friends_count': friends_count,
+    })
+
+@login_required
+def user_profile(request, username):
+    profile_user = get_object_or_404(User, username=username)
+
+    already_friends = Friendship.objects.filter(
+        Q(from_user=request.user, to_user=profile_user) |
+        Q(from_user=profile_user, to_user=request.user),
+        accepted=True
+    ).exists()
+
+    pending_request = Friendship.objects.filter(
+        Q(from_user=request.user, to_user=profile_user) |
+        Q(from_user=profile_user, to_user=request.user),
+        accepted=False
+    ).first()
+
+    can_accept = pending_request and pending_request.to_user == request.user
+
+    # 🔢 Nuovo: conteggio task e amici del profilo visualizzato
+    completed_tasks_count = Task.objects.filter(user=profile_user, completed_at__isnull=False).count()
+
+    friendships = Friendship.objects.filter(
+        Q(from_user=profile_user) | Q(to_user=profile_user),
+        accepted=True
+    )
+
+    friends_count = friendships.count()
+
+    return render(request, 'accounts/online/user_profile.html', {
+        'profile_user': profile_user,
+        'already_friends': already_friends,
+        'pending': pending_request,
+        'can_accept': can_accept,
+        'completed_tasks_count': completed_tasks_count,
+        'friends_count': friends_count,  # 👈 passalo al template
+    })
+
+
+@login_required
+def accept_friend_request(request, username):
+    from backend.accounts.models import Friendship
+    from django.contrib.auth.models import User
+
+    sender = get_object_or_404(User, username=username)
+
+    friend_request = Friendship.objects.filter(
+        from_user=sender,
+        to_user=request.user,
+        accepted=False
+    ).first()
+
+    if not friend_request:
+        raise Http404("No valid friend request found.")
+
+    friend_request.accepted = True
+    friend_request.save()
+
+    messages.success(request, f"You are now friends with {sender.username}!")
+    return redirect('accounts:user_profile', username=sender.username)
+

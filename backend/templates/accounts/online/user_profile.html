@@ -1,0 +1,69 @@
+{% extends 'base/user_base.html' %}
+{% load static %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/social.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="profile-card">
+
+  <!-- 👤 Header utente -->
+  <div class="profile-header">
+    <img src="{% static 'img/avatars/'|add:profile_user.userprofile.avatar %}" alt="Avatar" class="profile-avatar">
+    <div class="profile-info">
+        <h2>{{ profile_user.username }}</h2>
+        {% if profile_user.userprofile.do_not_disturb %}
+          <p class="status">
+            <i class="lucide-icon" data-lucide="moon" style="color: #ff6600;"></i> Non disturbare
+          </p>
+        {% elif profile_user.userprofile.is_online %}
+          <p class="status">
+            <i class="lucide-icon" data-lucide="wifi" style="color: #28a745;"></i> Online
+          </p>
+        {% else %}
+          <p class="status">
+            <i class="lucide-icon" data-lucide="wifi-off" style="color: #999;"></i> Offline
+          </p>
+        {% endif %}
+    </div>
+  </div>
+
+  <!-- 📊 Info profilo -->
+  <div class="profile-meta">
+    <p><strong>Ultimo accesso:</strong>
+      {% if profile_user.userprofile.last_seen %}
+        {{ profile_user.userprofile.last_seen|date:"d M Y H:i" }}
+      {% else %}
+        mai
+      {% endif %}
+    </p>
+    <p><strong>Iscritto il:</strong> {{ profile_user.date_joined|date:"d M Y" }}</p>
+    <p><strong>Task completati:</strong> {{ completed_tasks_count }}</p>
+    <p><strong>Amici:</strong> {{ friends_count }}</p>
+  </div>
+
+  <!-- 🤝 Stato amicizia -->
+  <div class="profile-actions">
+    {% if already_friends %}
+          <p class="text-green-600 font-medium">✅ Siete amici</p>
+
+    {% elif pending %}
+      {% if can_accept %}
+        <form method="post" action="{% url 'accounts:accept_friend_request' profile_user.username %}">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-success">Accetta richiesta di amicizia</button>
+        </form>
+      {% else %}
+        <p class="text-yellow-600">⏳ Richiesta di amicizia in attesa</p>
+      {% endif %}
+    {% else %}
+      <form method="post" action="{% url 'accounts:send_friend_request' profile_user.username %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">Aggiungi amico</button>
+      </form>
+    {% endif %}
+    <a href="{% url 'accounts:user_list' %}" class="btn-admin">Torna alla lista utenti</a>
+  </div>
+
+</div>
+{% endblock %}
