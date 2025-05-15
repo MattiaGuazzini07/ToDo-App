@@ -260,6 +260,8 @@ input[name="q"] { min-width: 150px; }
 .btn-logout:hover {
     background-color: #950808 !important;
 }
+.user-name strong{
+    color: #333;}
 
 .todo-list, .completed-list, .collapsible-content {
     display: flex;

@@ -3,17 +3,17 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
-from django.http import Http404
+from django.http import Http404, JsonResponse, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.contrib import messages
 from django.db import IntegrityError
 from django.contrib.auth.models import User
 from django.db.models import Count, Q
-from .forms import UserForm, UserSettingsForm
-from .models import UserProfile
-from backend.tasks.models import Task
-from backend.tasks.forms import TaskForm
+from .forms import UserForm, UserSettingsForm, TeamForm, InviteMemberForm
+from .models import UserProfile, Friendship, Team, TeamMembership
+from backend.tasks.models import Task, TeamTask
+from backend.tasks.forms import TaskForm, TeamTaskForm
 from backend.accounts.models import Friendship
 
 def signup(request):
@@ -264,3 +264,122 @@ def accept_friend_request(request, username):
     messages.success(request, f"You are now friends with {sender.username}!")
     return redirect('accounts:user_profile', username=sender.username)
 
+@login_required
+def team_list(request):
+    memberships = TeamMembership.objects.filter(user=request.user).select_related('team')
+
+    # Form team task
+    team_task_form = TeamTaskForm(request.POST or None, prefix='teamtask', user=request.user)
+
+    # Form creazione team
+    team_form = TeamForm(request.POST or None, prefix='team')
+
+    if request.method == 'POST':
+        if 'teamtask-title' in request.POST:  # identificazione tramite prefix
+            if team_task_form.is_valid():
+                team_task = team_task_form.save(commit=False)
+                team_task.created_by = request.user
+                team_task.save()
+                team_task_form.save_m2m()
+                messages.success(request, "✅ Task assegnata ai team.")
+                return redirect('accounts:team_list')
+
+        elif 'team-name' in request.POST:  # campo del TeamForm
+            if team_form.is_valid():
+                team = team_form.save(commit=False)
+                team.owner = request.user
+                team.save()
+                TeamMembership.objects.create(user=request.user, team=team, role='admin')
+                messages.success(request, f"✅ Team '{team.name}' creato!")
+                return redirect('accounts:team_list')
+
+    return render(request, 'accounts/online/team/team_list.html', {
+        'memberships': memberships,
+        'team_form': team_form,
+        'team_task_form': team_task_form
+    })
+
+@login_required
+def team_detail(request, pk):
+    team = get_object_or_404(Team, pk=pk)
+
+    # Check se l'utente è membro
+    if not TeamMembership.objects.filter(user=request.user, team=team).exists():
+        return redirect('accounts:team_list')
+
+    members = TeamMembership.objects.filter(team=team).select_related('user')
+    team_tasks = TeamTask.objects.filter(teams=team).order_by('-created_at')
+    is_admin = TeamMembership.objects.filter(user=request.user, team=team, role='admin').exists()
+
+    form = InviteMemberForm(request.POST or None)
+    new_task_form = TeamTaskForm()
+
+    if request.method == 'POST':
+        # Caso 1: Invito utente (riconosciuto dalla presenza del campo "username")
+        if 'username' in request.POST and is_admin:
+            if form.is_valid():
+                username = form.cleaned_data['username']
+                role = form.cleaned_data['role']
+
+                try:
+                    user_to_add = User.objects.get(username=username)
+                except User.DoesNotExist:
+                    messages.error(request, "Utente non trovato.")
+                    return redirect('accounts:team_detail', pk=pk)
+
+                if TeamMembership.objects.filter(team=team, user=user_to_add).exists():
+                    messages.warning(request, f"{username} è già nel team.")
+                else:
+                    TeamMembership.objects.create(team=team, user=user_to_add, role=role)
+                    messages.success(request, f"{username} è stato aggiunto al team come {role}.")
+                return redirect('accounts:team_detail', pk=pk)
+
+        # Caso 2: Creazione nuova task
+        else:
+            new_task_form = TeamTaskForm(request.POST)
+            if new_task_form.is_valid():
+                task = new_task_form.save(commit=False)
+                task.created_by = request.user  # ✅ obbligatorio!
+                task.save()
+                task.teams.add(team)  # se è ManyToMany
+                messages.success(request, "Nuova attività creata con successo.")
+                return redirect('accounts:team_detail', pk=pk)
+            else:
+                messages.error(request, "Errore nella creazione del task. Controlla i dati.")
+
+    return render(request, 'accounts/online/team/team_detail.html', {
+        'team': team,
+        'members': members,
+        'form': form,
+        'team_tasks': team_tasks,
+        'is_admin': is_admin,
+        'new_task_form': new_task_form,
+    })
+
+@login_required
+def user_autocomplete(request):
+    query = request.GET.get('q', '')
+    if query:
+        users = User.objects.filter(username__icontains=query).exclude(id=request.user.id)[:5]
+        results = [
+            {
+                'username': user.username,
+                'avatar': user.userprofile.avatar  # se usi avatar nel profilo
+            }
+            for user in users
+        ]
+        return JsonResponse(results, safe=False)
+    return JsonResponse([], safe=False)
+
+@login_required
+def delete_team(request, pk):
+    try:
+        team = Team.objects.get(pk=pk)
+    except Team.DoesNotExist:
+        raise Http404("Questo team non esiste o è già stato eliminato.")
+
+    if not TeamMembership.objects.filter(user=request.user, team=team, role='admin').exists():
+        return HttpResponseForbidden("Non sei autorizzato a eliminare questo team.")
+
+    team.delete()
+    return redirect('accounts:team_list')

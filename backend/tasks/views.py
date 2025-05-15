@@ -18,7 +18,7 @@ def home(request):
     start_tour = request.GET.get("tour") == "1"
     show_tour = not request.user.userprofile.has_seen_guide
 
-    form = TaskForm(request.POST or None)
+    form = TaskForm(request.POST or None, user=request.user)
     if request.method == 'POST' and form.is_valid():
         task = form.save(commit=False)
         task.user = request.user
@@ -67,13 +67,11 @@ def complete_task(request, task_id):
     task.save()
     return redirect('tasks:home')
 
-
 @login_required
 def delete_task(request, task_id):
     task = get_object_or_404(Task, id=task_id, user=request.user)
     task.delete()
     return redirect('tasks:home')
-
 
 @login_required
 def uncomplete_task(request, task_id):
@@ -82,7 +80,6 @@ def uncomplete_task(request, task_id):
     task.completed_at = None
     task.save()
     return redirect('tasks:home')
-
 
 @login_required
 def edit_task(request, task_id):
@@ -110,18 +107,14 @@ def edit_task(request, task_id):
         'task': task,
     })
 
-
-
 @login_required
 def staff_dashboard(request):
     tasks = Task.objects.all().select_related('user').order_by('-created_at')
     return render(request, 'tasks/staff/staff_dashboard.html', {'tasks': tasks})
 
-
 @login_required
 def calendar_view(request):
     return render(request, "tasks/user/calendar.html")
-
 
 @login_required
 def task_events(request):
@@ -137,7 +130,6 @@ def task_events(request):
     ]
     return JsonResponse(events, safe=False)
 
-
 def _color(priority):
     return {
         "high": "#dc3545",
@@ -145,11 +137,9 @@ def _color(priority):
         "low": "#28a745",
     }.get(priority, "#007bff")
 
-
 @login_required
 def guida_view(request):
     return render(request, "tasks/user/guida.html")
-
 
 @login_required
 def tour_seen(request):

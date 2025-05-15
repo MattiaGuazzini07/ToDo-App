@@ -1,0 +1,19 @@
+.user-card {
+    background-color: #555555;
+}
+
+.profile-card {
+    background-color: #555555;
+    color: #ffffff;
+}
+
+.user-name,
+.profile-info h2,
+.status,
+.profile-meta p{
+    color: #e0e0e0;
+}
+
+.section-title{
+    color: #ffffff;
+}
