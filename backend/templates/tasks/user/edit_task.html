@@ -25,8 +25,11 @@
             {{ form.priority }}
         </div>
         <div class="field checkbox-field">
-            <label for="{{ form.is_completed.id_for_label }}">Completato</label>
-            {{ form.is_completed }}
+          <label for="isCompletedSwitch">COMPLETATO</label>
+          <label class="switch">
+            <input type="checkbox" id="isCompletedSwitch" name="is_completed" {% if form.is_completed.value %}checked{% endif %}>
+            <span class="slider round"></span>
+          </label>
         </div>
         <button type="submit">Salva modifiche</button>
     </form>

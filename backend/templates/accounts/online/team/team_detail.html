@@ -1,0 +1,266 @@
+{% extends "base/user_base.html" %}
+{% load static %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/teams.css' %}">
+    <link rel="stylesheet" href="{% static 'css/darkmodeSocial.css' %}">
+{% endblock %}
+{% block content %}
+    <!-- TITOLO -->
+    <h2 class="mb-4">{{ team.name }}</h2>
+    <div class="team-description">
+        <p>{{ team.description }}</p>
+    </div>
+    <a href="{% url 'accounts:team_list' %}" class="btn-admin">Torna ai team</a>
+    <a href="{% url 'tasks:home' %}" class="btn-admin">Torna alla home</a>
+<!-- Messaggi -->
+{% if messages %}
+  <div class="messages">
+    {% for message in messages %}
+      <div class="alert {{ message.tags }}">{{ message|safe }}</div>
+    {% endfor %}
+  </div>
+{% endif %}
+<div class="teams-page-layout">
+  <!-- SINISTRA -->
+  <div class="teams-column-left">
+
+    <!-- Form nuova task -->
+    <div class="teams-form-section">
+      <h5 class="mb-3">Crea nuova attività</h5>
+      <form method="post">
+        {% csrf_token %}
+        {% for field in new_task_form %}
+          <div class="mb-2">
+            {{ field.label_tag }}
+            {{ field }}
+            {% if field.errors %}
+              <div class="text-danger">{{ field.errors }}</div>
+            {% endif %}
+          </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary w-100 mt-2">Crea Task</button>
+      </form>
+    </div>
+
+    <!-- Membri -->
+    <div class="teams-form-section">
+      <h5 class="mb-3">Membri del team</h5>
+      <ul class="list-group team-member-list">
+        {% for member in members %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center gap-2">
+                <img src="{% static 'img/avatars/' %}{{ member.user.userprofile.avatar }}"
+                 alt="avatar di {{ member.user.username }}"
+                 class="rounded-circle" style="width:32px; height:32px;">
+              <span>{{ member.user.username }}</span>
+            </div>
+            <span class="badge badge-role badge-role-{{ member.role|lower }}">{{ member.role|title }}</span>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- Invito -->
+    {% if is_admin %}
+      <div class="teams-form-section">
+        <h5 class="mb-3">Invita un membro</h5>
+        <form method="post" class="invite-form">
+          {% csrf_token %}
+          <label for="username">Username da invitare:</label>
+          <input type="text" id="username-input" name="username" class="form-control" autocomplete="off">
+            <label for="{{ form.role.id_for_label }}">Ruolo:</label>
+          <select name="{{ form.role.name }}" class="form-control">
+            {% for option in form.role.field.choices %}
+              <option value="{{ option.0 }}" {% if option.0 == form.role.value %}selected{% endif %}>{{ option.1 }}</option>
+            {% endfor %}
+          </select>
+
+          <button type="submit" class="btn btn-primary w-100 mt-3">Invita</button>
+        </form>
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- DESTRA (task) -->
+  <div class="teams-column-right">
+    <h4 class="mb-3">Attività del team</h4>
+
+
+    {% if team_tasks %}
+      <div class="mb-4">
+        <h5>Da completare</h5>
+        <div class="team-cards-wrapper">
+          {% for task in team_tasks %}
+            {% if not task.is_completed %}
+              <div class="team-task-card" data-created="{{ task.created_at|date:'c' }}" data-due="{{ task.due_date|date:'c' }}">
+                <div style="display: flex; align-items: center;">
+                    <a href="{% url 'tasks:team_complete_task' task.id %}" class="circle" title="Completa"></a>
+                    <strong style="margin-right: auto;">{{ task.title }}</strong>
+                    <a href="{% url 'tasks:team_delete_task' task.id %}" class="delete-icon" title="Elimina">
+                        <i data-lucide="trash"></i>
+                    </a>
+                    <a href="{% url 'tasks:team_edit_task' task.id %}" class="edit-icon" title="Modifica">
+                        <i data-lucide="pencil"></i>
+                    </a>
+                </div>
+                <div>
+                    <span class="priority {{ task.priority }}">Priorità: {{ task.get_priority_display }}</span><br>
+                    {% if task.due_date %}
+                      <span>Scadenza: {{ task.due_date|date:"d/m/Y" }}</span>
+                    {% endif %}
+                    <br><span>Assegnata da: {{ task.created_by.username }}</span>
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+
+      <div>
+        <h5>Completate</h5>
+        <div class="team-cards-wrapper">
+          {% for task in team_tasks %}
+            {% if task.is_completed %}
+              <div class="team-task-card">
+                <div style="display: flex; align-items: center;">
+                    <a href="{% url 'tasks:team_uncomplete_task' task.id %}" class="circle completed" title="Segna come da fare"></a>
+                    <strong style="margin-right: auto;">{{ task.title }}</strong>
+                    <a href="{% url 'tasks:team_delete_task' task.id %}" class="delete-icon" title="Elimina">
+                        <i data-lucide="trash"></i>
+                    </a>
+                </div>
+                <div>
+                    <span class="priority {{ task.priority }}">Priorità: {{ task.get_priority_display }}</span><br>
+                    <span>Completata il: {{ task.completed_at|date:"d/m/Y" }}</span><br>
+                    <span>Assegnata da: {{ task.created_by.username }}</span><br>
+                    <span>Completata da: {{ task.completed_by.username }}</span>
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    {% else %}
+      <p class="text-muted">Nessuna attività assegnata a questo team.</p>
+    {% endif %}
+    {% if is_admin %}
+<hr>
+<h4 class="mt-4 mb-3">📊 Dashboard Team</h4>
+
+<!-- 🔸 TABELLA MEMBRI -->
+<div class="table-responsive mb-4">
+  <table class="custom-table">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Data iscrizione</th>
+        <th>Task create</th>
+        <th>Task completate</th>
+        <th>Azioni</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for member in members %}
+      <tr>
+        <td>{{ member.user.username }}</td>
+        <td>{{ member.joined_at|date:"d/m/Y" }}</td>
+        <td>{{ member.created_tasks_count }}</td>
+        <td>{{ member.completed_tasks_count }}</td>
+        <td>
+          {% if member.user != user %}
+          <form method="post" action="{% url 'accounts:remove_from_team' team.id member.user.id %}" onsubmit="return confirm('Vuoi rimuovere {{ member.user.username }} dal team?');">
+            {% csrf_token %}
+            <button type="submit" class="btn-danger">Rimuovi</button>
+          </form>
+          {% else %}
+          <em>Tu</em>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+
+<!-- 🔸 GRAFICO CHART.JS -->
+<div class="chart-container">
+  <h5 style="text-align: center;">Completamento attività del team</h5>
+  <canvas id="teamTaskChart" width="400" height="300"></canvas>
+</div>
+<h5 style="text-align: center; margin-top: 40px;">Task completate per membro</h5>
+<div class="chart-container">
+    <canvas id="memberChart"></canvas>
+</div>
+
+
+{% endif %}
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'js/autocomplete_team_invite.js' %}"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  // GRAFICO 1 – Completamento attività team
+  const totalTasks = {{ team_tasks|length }};
+  const completedTasks = {{ completed_count }};
+  const pendingTasks = totalTasks - completedTasks;
+
+  console.log("📊 DEBUG → total:", totalTasks, "completed:", completedTasks, "pending:", pendingTasks);
+
+  const ctxTeam = document.getElementById('teamTaskChart')?.getContext('2d');
+  if (ctxTeam) {
+    new Chart(ctxTeam, {
+      type: 'doughnut',
+      data: {
+        labels: ['Completate', 'Da fare'],
+        datasets: [{
+          data: [completedTasks, pendingTasks],
+          backgroundColor: ['#28a745', '#ffc107'],
+          borderColor: ['#fff', '#fff'],
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false
+      }
+    });
+  }
+
+  // GRAFICO 2 – Task completate per membro
+  const memberLabels = {{ member_labels|safe }};
+  const memberData = {{ member_completati|safe }};
+
+  console.log("📊 memberLabels:", memberLabels);
+  console.log("📊 memberData:", memberData);
+
+  const ctxMembers = document.getElementById('memberChart')?.getContext('2d');
+  if (ctxMembers && memberLabels.length && memberData.length) {
+    new Chart(ctxMembers, {
+      type: 'bar',
+      data: {
+        labels: memberLabels,
+        datasets: [{
+          label: 'Task completate',
+          data: memberData,
+          backgroundColor: '#4caf50'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: { beginAtZero: true }
+        }
+      }
+    });
+  }
+});
+</script>
+{% endblock %}
+
+
+

@@ -1,0 +1,355 @@
+/* ✅ Contenitore dei suggerimenti */
+.autocomplete-list {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  max-height: 200px;
+  overflow-y: auto;
+  margin-top: 4px;
+  background-color: #fff;
+  position: absolute;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.autocomplete-item {
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.2s;
+}
+
+.autocomplete-item:hover {
+  background-color: #f1f1f1;
+}
+
+.autocomplete-item img {
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+}
+
+/* ✅ Team List */
+.team-list {
+  margin-bottom: 2rem;
+}
+
+.team-list .list-group-item {
+  font-size: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ✅ Task Card (usata anche nella home) */
+.team-task-card {
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 20px;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  max-width: 300px;
+}
+
+.team-task-card h5 {
+  margin-bottom: .5rem;
+}
+
+.team-task-card .badge {
+  margin-top: .5rem;
+}
+
+/* ✅ Lista membri */
+.team-member-list {
+  margin-top: 1rem;
+}
+
+.team-member-list .list-group-item {
+  padding: .6rem 1rem;
+  font-size: 0.95rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ✅ Wrapper colonne principali */
+.team-forms-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+/* ✅ Card sinistra (membri, form) */
+.teams-form-section {
+  padding: 1.5rem;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  width: 100%;
+  max-width: 500px;
+  box-sizing: border-box;
+  margin-bottom: 30px;
+  border: none; /* ← rimuove la riga grigia */
+}
+
+
+.teams-form-section h4,
+.teams-form-section h5 {
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.teams-form-section form label {
+  font-weight: 500;
+  margin-top: .75rem;
+  display: block;
+}
+
+.teams-form-section form input,
+.teams-form-section form select {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-top: 0.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.teams-form-section button {
+  margin-top: .5rem;
+  width: 100%;
+}
+
+/* ✅ Task wrapper (colonna destra) */
+.team-cards-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+/* ✅ Card riutilizzabile */
+.team-card {
+  flex: 1 1 300px;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  max-width: 250px;
+}
+
+.team-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: .5rem;
+}
+
+.team-card-header h5 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+/* ✅ Badge ruoli */
+.badge-role {
+  background-color: #e9ecef;
+  color: #333;
+  padding: 0.3em 0.6em;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+.badge-role-admin {
+  background-color: #d9534f;
+  color: white;
+}
+.badge-role-staff {
+  background-color: #f0ad4e;
+  color: white;
+}
+.badge-role-member {
+  background-color: #5bc0de;
+  color: white;
+}
+
+/* ✅ Pulsanti */
+.team-card-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.btn-deleteTeam {
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  padding: 0.5em 1em;
+  border-radius: 25px;
+  cursor: pointer;
+}
+.btn-deleteTeam:hover {
+  background-color: #c82333;
+}
+.column-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.teams-form-section select {
+  border: 1px solid #ccc !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+
+
+/* ✅ Layout migliorato per affiancamento colonne team */
+.teams-page-layout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.teams-column-left {
+  flex: 1 1 350px;
+  max-width: 500px;
+  min-width: 300px;
+}
+
+.teams-column-right {
+  flex: 2 1 600px;
+  min-width: 300px;
+}
+
+/* ✅ Hover su card attività */
+.team-task-card {
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 20px;
+  padding: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  max-width: 300px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.team-task-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+}
+
+
+
+/* ✅ CARD TASK IN STILE HOME (come .todo-card) */
+.team-task-card {
+  background: #fff;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  list-style-type: none;
+  min-width: 250px;
+  flex: 0 1 300px;
+  transition: background-color 0.6s ease-in-out, transform 0.2s ease;
+  color: #1a1a1a;
+  animation: fadeSlideIn 0.4s ease forwards;
+}
+.team-task-card:hover {
+  transform: scale(1.01);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+.team-task-card .priority.low {
+  color: #2e8b57;
+  font-weight: 600;
+}
+.team-task-card .priority.medium {
+  color: #cc8500;
+  font-weight: 600;
+}
+.team-task-card .priority.high {
+  color: #d00000;
+  font-weight: 600;
+}
+
+.team-task-card .circle {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border: 2px solid #333;
+  border-radius: 50%;
+  margin-right: 8px;
+  vertical-align: middle;
+  background-color: white;
+}
+.team-task-card .circle.completed {
+  background-color: #333;
+}
+
+.team-task-card .edit-icon,
+.team-task-card .delete-icon {
+  margin-left: 10px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.team-task-card .edit-icon {
+  color: #007bff;
+}
+.team-task-card .edit-icon:hover .lucide-icon {
+  color: #0056b3;
+}
+.team-task-card .delete-icon {
+  color: #888;
+  margin-right: 20px;
+}
+.team-task-card .delete-icon:hover .lucide-icon {
+  color: red;
+}
+.chart-container {
+  max-width: 500px;
+  height: 300px;     /* IMPORTANTE */
+  margin: 20px auto;
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.table th, .table td {
+  text-align: left;
+  padding: 12px;
+  vertical-align: middle;
+}
+
+.table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+}
+
+.table td form {
+  display: inline;
+}
+
+.custom-table {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    width: 100%;
+}
+
+.custom-table thead {
+    background-color: #f1f1f1;
+}
+
+.custom-table th, .custom-table td {
+    color: #222;
+    vertical-align: middle;
+}
+
