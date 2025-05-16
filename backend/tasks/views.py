@@ -1,13 +1,13 @@
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404, redirect
-from django.utils import timezone
 from django.http import JsonResponse, HttpResponse
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404, redirect, render
+from django.utils import timezone
 from django.contrib import messages
-from datetime import datetime
-
-from .models import Task
+from .models import Task, TeamTask
 from .forms import TaskForm
 from ..accounts.models import UserProfile
+from django.urls import reverse
+import json
 
 
 @login_required
@@ -18,7 +18,7 @@ def home(request):
     start_tour = request.GET.get("tour") == "1"
     show_tour = not request.user.userprofile.has_seen_guide
 
-    form = TaskForm(request.POST or None)
+    form = TaskForm(request.POST or None, user=request.user)
     if request.method == 'POST' and form.is_valid():
         task = form.save(commit=False)
         task.user = request.user
@@ -67,13 +67,11 @@ def complete_task(request, task_id):
     task.save()
     return redirect('tasks:home')
 
-
 @login_required
 def delete_task(request, task_id):
     task = get_object_or_404(Task, id=task_id, user=request.user)
     task.delete()
     return redirect('tasks:home')
-
 
 @login_required
 def uncomplete_task(request, task_id):
@@ -82,7 +80,6 @@ def uncomplete_task(request, task_id):
     task.completed_at = None
     task.save()
     return redirect('tasks:home')
-
 
 @login_required
 def edit_task(request, task_id):
@@ -110,18 +107,14 @@ def edit_task(request, task_id):
         'task': task,
     })
 
-
-
 @login_required
 def staff_dashboard(request):
     tasks = Task.objects.all().select_related('user').order_by('-created_at')
     return render(request, 'tasks/staff/staff_dashboard.html', {'tasks': tasks})
 
-
 @login_required
 def calendar_view(request):
     return render(request, "tasks/user/calendar.html")
-
 
 @login_required
 def task_events(request):
@@ -137,7 +130,6 @@ def task_events(request):
     ]
     return JsonResponse(events, safe=False)
 
-
 def _color(priority):
     return {
         "high": "#dc3545",
@@ -145,14 +137,82 @@ def _color(priority):
         "low": "#28a745",
     }.get(priority, "#007bff")
 
-
 @login_required
 def guida_view(request):
     return render(request, "tasks/user/guida.html")
-
 
 @login_required
 def tour_seen(request):
     request.user.userprofile.has_seen_guide = True
     request.user.userprofile.save()
     return HttpResponse(status=204)
+
+# ✅ VERSIONE TEAM delle VIEW
+
+@login_required
+def team_complete_task(request, task_id):
+    task = get_object_or_404(TeamTask, id=task_id)
+    task.is_completed = True
+    task.completed_by = request.user
+    task.completed_at = timezone.now()
+    task.save()
+
+    next_url = request.GET.get('next')
+    if next_url:
+        return redirect(next_url)
+    teams = task.teams.all()
+    if teams.exists():
+        return redirect(reverse('accounts:team_detail', kwargs={'pk': teams.first().id}))
+    return redirect('tasks:home')
+
+@login_required
+def team_uncomplete_task(request, task_id):
+    task = get_object_or_404(TeamTask, id=task_id)
+    task.is_completed = False
+    task.save()
+
+    next_url = request.GET.get('next')
+    if next_url:
+        return redirect(next_url)
+    teams = task.teams.all()
+    if teams.exists():
+        return redirect(reverse('accounts:team_detail', kwargs={'pk': teams.first().id}))
+    return redirect('tasks:home')
+
+@login_required
+def team_delete_task(request, task_id):
+    task = TeamTask.objects.filter(id=task_id).first()
+    if not task:
+        messages.error(request, "Task non trovata o già eliminata.")
+        return redirect('accounts:team_list')
+
+    team = task.teams.first()
+    task.delete()
+
+    next_url = request.GET.get('next')
+    if next_url:
+        return redirect(next_url)
+    if team:
+        return redirect('accounts:team_detail', pk=team.id)
+    return redirect('tasks:home')
+
+@login_required
+def team_edit_task(request, task_id):
+    task = get_object_or_404(TeamTask, id=task_id)
+    team = task.teams.first()
+
+    if request.method == 'POST':
+        form = TaskForm(request.POST, instance=task)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Task aggiornata con successo ✅")
+            if team:
+                return redirect(reverse('accounts:team_detail', kwargs={'pk': team.id}))
+            return redirect('tasks:home')
+    else:
+        form = TaskForm(instance=task)
+
+    return render(request, 'tasks/user/edit_task.html', {
+        'form': form,
+        'task': task,
+    })

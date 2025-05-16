@@ -21,8 +21,12 @@
             <li>🔐 <a href="#sicurezza">Sicurezza</a></li>
             <li>📱 <a href="#dispositivi">Accessibilità</a></li>
             <li>📬 <a href="#supporto">Supporto</a></li>
-            <li>🧭 <a href="#prossime">Prossime funzionalità</a></li>
-            <li>❓ <a href="#faq">FAQ</a></li>
+            <li>🧱 <a href="#profilo">Profilo utente</a></li>
+            <li>🔵 <a href="#online">Area Online e Amicizie</a></li>
+            <li>👥 <a href="#team">Team e collaborazione</a></li>
+            <li>📊 <a href="#adminteam">Dashboard Team Admin</a></li>
+            <li>🧩 <a href="#prossime">Prossime funzionalità</a></li>
+            <li>❓ <a href="#qa">Domande e Risposte</a></li>
         </ul>
         <a href="{% url 'tasks:home' %}" class="btn-admin">🏠 Torna alla Home</a>
     </section>
@@ -113,30 +117,83 @@
         <p>Dubbi o problemi? Scrivici a <a href="mailto:support@todoapp.dev">support@todoapp.dev</a></p>
     </section>
 
+    <section class="guida-blocco" id="profilo">
+        <h3>🧱 Gestione del profilo</h3>
+        <p>Dal menu utente accedi alla sezione <strong>Profilo</strong>, dove puoi:</p>
+        <ul>
+            <li>📷 Cambiare il tuo avatar</li>
+            <li>👤 Aggiornare nome e email</li>
+            <li>🔌 Impostare il tuo stato: Online, Offline o Non disturbare</li>
+        </ul>
+        <p>Lo stato verrà mostrato agli amici nell'area online.</p>
+    </section>
+
+    <section class="guida-blocco" id="online">
+        <h3>🔵 Area Online e Amicizie</h3>
+        <p>Nella sezione <strong>Online</strong>, puoi cercare altri utenti per creare una rete di amicizie:</p>
+        <ul>
+            <li>👥 Cerca un utente dalla barra di ricerca</li>
+            <li>✉ Invia una richiesta di amicizia</li>
+            <li>✔ Accetta o rifiuta le richieste ricevute</li>
+            <li>⏺ Visualizza lo stato (Online/Offline/Non disturbare)</li>
+        </ul>
+        <p>Presto potrai condividere task direttamente con i tuoi amici!</p>
+    </section>
+
+    <section class="guida-blocco" id="team">
+        <h3>👥 Team e collaborazione</h3>
+        <p>Vuoi lavorare in gruppo? Puoi creare un team e invitare altri utenti:</p>
+        <ul>
+            <li>🌐 Crea un team dalla sezione <strong>Team</strong></li>
+            <li>➕ Invita persone nel tuo team</li>
+            <li>✅ I membri possono creare, modificare e completare task</li>
+        </ul>
+        <p>Ogni membro ha visione completa delle attività del team.</p>
+    </section>
+
+    <section class="guida-blocco" id="adminteam">
+        <h3>📊 Dashboard Admin del Team</h3>
+        <p>Come <strong>Admin di un team</strong>, hai funzionalità avanzate:</p>
+        <ul>
+            <li>🔄 Visualizza dashboard e grafici di sintesi</li>
+            <li>❌ Rimuovi membri se necessario</li>
+            <li>📊 Monitora l'attività generale del gruppo</li>
+        </ul>
+        <p>Le dashboard admin ti aiutano a gestire meglio i progetti collaborativi.</p>
+    </section>
+
     <section class="guida-blocco" id="prossime">
-        <h3>🧭 Prossime funzionalità</h3>
+        <h3>🧱 Prossime funzionalità</h3>
         <ul>
             <li>Task condivisi con amici/colleghi</li>
+            <li>Notifiche tra amici (es. richieste accettate, messaggi)</li>
             <li>Tag e categorie personalizzabili</li>
-            <li>Notifiche via email e push</li>
             <li>Temi grafici e modalità notturna</li>
             <li>Esportazione e backup</li>
         </ul>
     </section>
 
-    <section class="guida-blocco" id="faq">
-        <h3>❓ Domande frequenti (FAQ)</h3>
+    <section class="guida-blocco" id="qa">
+        <h3>❔ Domande & Risposte</h3>
         <details>
-            <summary><strong>Posso usare ToDo su più dispositivi?</strong></summary>
-            <p>Sì, basta usare lo stesso account da qualsiasi browser.</p>
+            <summary><strong>Come faccio a vedere se un amico è online?</strong></summary>
+            <p>Vai nella sezione <strong>Online</strong>: ogni utente ha un'icona accanto al nome che indica lo stato (verde = online, rosso = non disturbare, grigio = offline).</p>
         </details>
         <details>
-            <summary><strong>Posso condividere le attività?</strong></summary>
-            <p>La funzione è in arrivo! Presto potrai collaborare in tempo reale.</p>
+            <summary><strong>Chi può creare un team?</strong></summary>
+            <p>Chiunque! Appena crei un team, diventi automaticamente Admin e puoi invitare altri utenti.</p>
         </details>
         <details>
-            <summary><strong>ToDo funziona offline?</strong></summary>
-            <p>Non ancora, ma stiamo lavorando per permetterlo in futuro.</p>
+            <summary><strong>Un membro può eliminare i task del team?</strong></summary>
+            <p>Sì, i membri possono creare, modificare e completare i task del team, ma solo l'admin può gestire i membri o eliminare l'intero team.</p>
+        </details>
+        <details>
+            <summary><strong>Posso cambiare stato da "non disturbare" a "online"?</strong></summary>
+            <p>Sì, basta andare nel tuo <strong>Profilo</strong> e selezionare lo stato desiderato.</p>
+        </details>
+        <details>
+            <summary><strong>Se rifiuto una richiesta di amicizia, l'altro utente lo sa?</strong></summary>
+            <p>No, non riceverà alcuna notifica. Semplicemente la richiesta verrà rimossa dalla tua lista.</p>
         </details>
     </section>
 
