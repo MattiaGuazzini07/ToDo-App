@@ -19,11 +19,10 @@
         locale: 'it',
         height: 'auto',
         events: '{% url "tasks:task_events" %}',
+          // premendo sugli eventi non succede nulla
         eventClick: function(info) {
-          info.jsEvent.preventDefault();
-          if (info.event.url) {
-            window.location.href = info.event.url;
-          }
+            info.jsEvent.preventDefault();
+            info.jsEvent.stopPropagation();
         }
       });
       calendar.render();
