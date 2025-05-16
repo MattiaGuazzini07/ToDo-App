@@ -3,9 +3,17 @@ from .models import Task, TeamTask
 from backend.accounts.models import Team
 
 class TaskForm(forms.ModelForm):
+    is_completed = forms.BooleanField(
+        required=False,
+        widget=forms.CheckboxInput(attrs={
+            'class': 'custom-switch',
+            'id': 'isCompletedSwitch'
+        })
+    )
+
     class Meta:
         model = Task
-        fields = ['title', 'due_date', 'priority', 'team']
+        fields = ['title', 'due_date', 'priority', 'team', 'is_completed']
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'due_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
@@ -21,6 +29,7 @@ class TaskForm(forms.ModelForm):
             self.fields['team'].queryset = Team.objects.filter(members__user=user)
         else:
             self.fields['team'].queryset = Team.objects.none()
+
 
 class TeamTaskForm(forms.ModelForm):
     class Meta:

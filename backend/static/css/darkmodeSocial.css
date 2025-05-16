@@ -1,19 +1,40 @@
-.user-card {
+/* 🌙 DARK MODE STYLE - ToDo App */
+body.dark-theme .user-card {
     background-color: #555555;
 }
 
-.profile-card {
+body.dark-theme .profile-card,
+body.dark-theme .team-card,
+body.dark-theme .teams-form-section{
     background-color: #555555;
     color: #ffffff;
 }
 
-.user-name,
-.profile-info h2,
-.status,
-.profile-meta p{
+body.dark-theme .user-name,
+body.dark-theme .profile-info h2,
+body.dark-theme .status,
+body.dark-theme .profile-meta p{
     color: #e0e0e0;
 }
 
-.section-title{
+body.dark-theme .section-title{
+    color: #ffffff;
+}
+
+body.dark-theme .list-group-item{
+    background-color: rgb(51, 51, 51);
+    color: #ffffff;
+}
+
+body.dark-theme .custom-table thead,
+body.dark-theme .custom-table th,
+body.dark-theme .custom-table td,
+body.dark-theme .custom-table tr{
+    background-color: rgb(51, 51, 51) !important ;
+    color: #ffffff !important;
+}
+
+body.dark-theme .team-task-card{
+    background-color: #555555;
     color: #ffffff;
 }

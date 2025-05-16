@@ -337,3 +337,19 @@
   display: inline;
 }
 
+.custom-table {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    width: 100%;
+}
+
+.custom-table thead {
+    background-color: #f1f1f1;
+}
+
+.custom-table th, .custom-table td {
+    color: #222;
+    vertical-align: middle;
+}
+

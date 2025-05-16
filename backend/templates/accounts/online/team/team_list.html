@@ -1,5 +1,9 @@
 {% extends "base/user_base.html" %}
 {% load static %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/teams.css' %}">
+    <link rel="stylesheet" href="{% static 'css/darkmodeSocial.css' %}">
+{% endblock %}
 {% block content %}
 <div class="container mt-4">
     <h2>I miei Team</h2>

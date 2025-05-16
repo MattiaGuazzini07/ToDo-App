@@ -1,5 +1,9 @@
 {% extends "base/user_base.html" %}
 {% load static %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/teams.css' %}">
+    <link rel="stylesheet" href="{% static 'css/darkmodeSocial.css' %}">
+{% endblock %}
 {% block content %}
     <!-- TITOLO -->
     <h2 class="mb-4">{{ team.name }}</h2>
@@ -145,8 +149,8 @@
 
 <!-- 🔸 TABELLA MEMBRI -->
 <div class="table-responsive mb-4">
-  <table class="table table-striped" style="width:100%; background:white; border-radius: 10px; overflow: hidden;">
-    <thead style="background-color: #f1f1f1;">
+  <table class="custom-table">
+    <thead>
       <tr>
         <th>Nome</th>
         <th>Data iscrizione</th>
@@ -177,6 +181,7 @@
     </tbody>
   </table>
 </div>
+
 
 <!-- 🔸 GRAFICO CHART.JS -->
 <div class="chart-container">
