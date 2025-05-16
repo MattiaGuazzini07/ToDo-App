@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 app_name = "accounts"
 
@@ -18,4 +20,9 @@ urlpatterns = [
     path('teams/<int:pk>/', views.team_detail, name='team_detail'),
     path('autocomplete/user/', views.user_autocomplete, name='user_autocomplete'),
     path('team/<int:pk>/delete/', views.delete_team, name='delete_team'),
+    path('teams/<int:pk>/leave/', views.leave_team, name='leave_team'),
+    path("team/<int:team_id>/remove/<int:user_id>/", views.remove_from_team, name="remove_from_team"),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

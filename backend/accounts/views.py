@@ -1,4 +1,4 @@
-import os
+import os, json
 from django.conf import settings
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.forms import UserCreationForm
@@ -241,7 +241,6 @@ def user_profile(request, username):
         'friends_count': friends_count,  # 👈 passalo al template
     })
 
-
 @login_required
 def accept_friend_request(request, username):
     from backend.accounts.models import Friendship
@@ -303,19 +302,27 @@ def team_list(request):
 def team_detail(request, pk):
     team = get_object_or_404(Team, pk=pk)
 
-    # Check se l'utente è membro
     if not TeamMembership.objects.filter(user=request.user, team=team).exists():
         return redirect('accounts:team_list')
 
-    members = TeamMembership.objects.filter(team=team).select_related('user')
-    team_tasks = TeamTask.objects.filter(teams=team).order_by('-created_at')
     is_admin = TeamMembership.objects.filter(user=request.user, team=team, role='admin').exists()
+
+    # Annotazioni task per ogni membro
+    members = TeamMembership.objects.filter(team=team).select_related('user').annotate(
+    created_tasks_count=Count('user__teamtask', filter=Q(user__teamtask__teams=team), distinct=True),
+    completed_tasks_count=Count('user__team_completed_tasks', filter=Q(user__team_completed_tasks__teams=team),distinct=True)
+    )
+
+
+    team_tasks = TeamTask.objects.filter(teams=team).order_by('-created_at')
+    completed_count = team_tasks.filter(is_completed=True).count()
+    member_labels = [m.user.username for m in members]
+    member_completati = [m.completed_tasks_count for m in members]
 
     form = InviteMemberForm(request.POST or None)
     new_task_form = TeamTaskForm()
 
     if request.method == 'POST':
-        # Caso 1: Invito utente (riconosciuto dalla presenza del campo "username")
         if 'username' in request.POST and is_admin:
             if form.is_valid():
                 username = form.cleaned_data['username']
@@ -334,14 +341,13 @@ def team_detail(request, pk):
                     messages.success(request, f"{username} è stato aggiunto al team come {role}.")
                 return redirect('accounts:team_detail', pk=pk)
 
-        # Caso 2: Creazione nuova task
         else:
             new_task_form = TeamTaskForm(request.POST)
             if new_task_form.is_valid():
                 task = new_task_form.save(commit=False)
-                task.created_by = request.user  # ✅ obbligatorio!
+                task.created_by = request.user
                 task.save()
-                task.teams.add(team)  # se è ManyToMany
+                task.teams.add(team)
                 messages.success(request, "Nuova attività creata con successo.")
                 return redirect('accounts:team_detail', pk=pk)
             else:
@@ -354,6 +360,9 @@ def team_detail(request, pk):
         'team_tasks': team_tasks,
         'is_admin': is_admin,
         'new_task_form': new_task_form,
+        'completed_count': completed_count,  # 👈 per Chart.js
+        'member_labels': member_labels,
+        'member_completati': member_completati,
     })
 
 @login_required
@@ -383,3 +392,34 @@ def delete_team(request, pk):
 
     team.delete()
     return redirect('accounts:team_list')
+
+@login_required
+def leave_team(request, pk):
+    team = get_object_or_404(Team, pk=pk)
+    membership = TeamMembership.objects.filter(user=request.user, team=team).first()
+
+    if membership:
+        membership.delete()
+
+    return redirect('accounts:team_list')
+
+@login_required
+def remove_from_team(request, team_id, user_id):
+    team = get_object_or_404(Team, id=team_id)
+    is_admin = TeamMembership.objects.filter(team=team, user=request.user, role="admin").exists()
+
+    if not is_admin:
+        messages.error(request, "Non sei autorizzato a rimuovere membri dal team.")
+        return redirect("accounts:team_detail", pk=team_id)
+
+    if request.method == "POST":
+        member = TeamMembership.objects.filter(team=team, user_id=user_id).first()
+        if not member:
+            messages.error(request, "Membro non trovato.")
+        elif member.user == request.user:
+            messages.warning(request, "Non puoi rimuovere te stesso.")
+        else:
+            member.delete()
+            messages.success(request, f"{member.user.username} è stato rimosso dal team.")
+
+    return redirect("accounts:team_detail", pk=team_id)

@@ -4,6 +4,7 @@ from django.utils.timezone import now
 from django.conf import settings
 from django.utils import timezone
 from django.core.exceptions import ValidationError
+from typing import Any, Optional
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -62,13 +63,22 @@ class Team(models.Model):
         return self.name
 
 class TeamMembership(models.Model):
+    ROLE_CHOICES = [
+        ('Admin', 'Admin'),
+        ('Staff', 'Staff'),
+        ('Member', 'Member'),
+    ]
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='members')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    team = models.ForeignKey(Team, on_delete=models.CASCADE)
-    role = models.CharField(max_length=20, choices=[('admin', 'Admin'), ('member', 'Member')])
-    joined_at = models.DateTimeField(auto_now_add=True)
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='Member')
+    joined_at = models.DateTimeField(auto_now_add=True)  # ← se non esiste, aggiungilo qui
 
     class Meta:
-        unique_together = ('user', 'team')
+        unique_together = ('team', 'user')
+
+    def __init__(self, *args: Any, **kwargs: Any):
+        super().__init__(*args, **kwargs)  # ✅ CORRETTO
+        self.completed_tasks_count = None
 
     def __str__(self):
         return f"{self.user.username} in {self.team.name} as {self.role}"

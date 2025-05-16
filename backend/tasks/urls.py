@@ -14,4 +14,9 @@ urlpatterns = [
     path("calendar/events/", views.task_events, name="task_events"),
     path("guida/", views.guida_view, name="guida"),  # ✅ guida_view per il link nella navbar
     path("tour/seen/", views.tour_seen, name="tour_seen"),  # ✅ per Shepherd.js
+    path("team/complete/<int:task_id>/", views.team_complete_task, name="team_complete_task"),
+    path("team/uncomplete/<int:task_id>/", views.team_uncomplete_task, name="team_uncomplete_task"),
+    path("team/edit/<int:task_id>/", views.team_edit_task, name="team_edit_task"),
+    path("team/delete/<int:task_id>/", views.team_delete_task, name="team_delete_task"),
+
 ]

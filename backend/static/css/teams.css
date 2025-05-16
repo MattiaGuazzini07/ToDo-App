@@ -208,3 +208,132 @@
   outline: none !important;
   box-shadow: none !important;
 }
+
+
+
+/* ✅ Layout migliorato per affiancamento colonne team */
+.teams-page-layout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.teams-column-left {
+  flex: 1 1 350px;
+  max-width: 500px;
+  min-width: 300px;
+}
+
+.teams-column-right {
+  flex: 2 1 600px;
+  min-width: 300px;
+}
+
+/* ✅ Hover su card attività */
+.team-task-card {
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 20px;
+  padding: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  max-width: 300px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.team-task-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+}
+
+
+
+/* ✅ CARD TASK IN STILE HOME (come .todo-card) */
+.team-task-card {
+  background: #fff;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  list-style-type: none;
+  min-width: 250px;
+  flex: 0 1 300px;
+  transition: background-color 0.6s ease-in-out, transform 0.2s ease;
+  color: #1a1a1a;
+  animation: fadeSlideIn 0.4s ease forwards;
+}
+.team-task-card:hover {
+  transform: scale(1.01);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+.team-task-card .priority.low {
+  color: #2e8b57;
+  font-weight: 600;
+}
+.team-task-card .priority.medium {
+  color: #cc8500;
+  font-weight: 600;
+}
+.team-task-card .priority.high {
+  color: #d00000;
+  font-weight: 600;
+}
+
+.team-task-card .circle {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border: 2px solid #333;
+  border-radius: 50%;
+  margin-right: 8px;
+  vertical-align: middle;
+  background-color: white;
+}
+.team-task-card .circle.completed {
+  background-color: #333;
+}
+
+.team-task-card .edit-icon,
+.team-task-card .delete-icon {
+  margin-left: 10px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.team-task-card .edit-icon {
+  color: #007bff;
+}
+.team-task-card .edit-icon:hover .lucide-icon {
+  color: #0056b3;
+}
+.team-task-card .delete-icon {
+  color: #888;
+  margin-right: 20px;
+}
+.team-task-card .delete-icon:hover .lucide-icon {
+  color: red;
+}
+.chart-container {
+  max-width: 500px;
+  height: 300px;     /* IMPORTANTE */
+  margin: 20px auto;
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.table th, .table td {
+  text-align: left;
+  padding: 12px;
+  vertical-align: middle;
+}
+
+.table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+}
+
+.table td form {
+  display: inline;
+}
+
